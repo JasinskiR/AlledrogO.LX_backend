@@ -10,7 +10,7 @@ public record PostTag
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new PostTagCannotBeEmptyException();
+            throw new AlledrogoTagCannotBeEmptyException();
         }
 
         Value = value;

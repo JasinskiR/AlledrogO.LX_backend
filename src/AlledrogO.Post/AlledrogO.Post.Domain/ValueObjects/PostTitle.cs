@@ -9,7 +9,7 @@ public record PostTitle
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new PostTitleCannotBeEmptyException();
+            throw new AlledrogoTitleCannotBeEmptyException();
         }
 
         Value = value;

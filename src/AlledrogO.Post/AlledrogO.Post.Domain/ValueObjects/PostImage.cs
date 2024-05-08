@@ -10,7 +10,7 @@ public record PostImage
     {
         if (string.IsNullOrWhiteSpace(url))
         {
-            throw new PostImageUrlCannotBeEmptyException();
+            throw new AlledrogoImageUrlCannotBeEmptyException();
         }
 
         Url = url;
