@@ -8,11 +8,11 @@ namespace AlledrogO.Post.Domain.Entities;
 public class Author : AggregateRoot<Guid>
 {
     private LinkedList<Post> _posts;
-    private AuthorData _authorData;
+    public AuthorData AuthorData { get; private set; }
     
     internal Author(AuthorData authorData, IEnumerable<Post> posts)
     {
-        _authorData = authorData;
+        AuthorData = authorData;
         _posts = new LinkedList<Post>(posts);
     }
     

@@ -1,3 +1,4 @@
+using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.Repositories;
 using AlledrogO.Shared.Commands;
@@ -25,5 +26,8 @@ public class CreatePostHandler : ICommandHandler<CreatePost>
         {
             throw new AuthorNotFoundException(authorId);
         }
+        
+        var post = _postFactory.Create(id, title, description, authorId, author.AuthorData);
+        await _postRepository.AddAsync(post);
     }
 }
