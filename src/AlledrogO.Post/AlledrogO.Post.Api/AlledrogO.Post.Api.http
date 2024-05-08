@@ -1,0 +1,6 @@
+@AlledrogO.Post.Api_HostAddress = http://localhost:5044
+
+GET {{AlledrogO.Post.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
