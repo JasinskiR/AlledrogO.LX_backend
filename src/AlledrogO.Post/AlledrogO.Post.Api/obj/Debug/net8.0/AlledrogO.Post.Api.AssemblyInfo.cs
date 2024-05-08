@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AlledrogO.Post.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8f0d053d765d505955284130a25ad75d9fcf7d1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6b346dbd773be34f3d7d51ec209d50abdfa652a4")]
 [assembly: System.Reflection.AssemblyProductAttribute("AlledrogO.Post.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AlledrogO.Post.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
