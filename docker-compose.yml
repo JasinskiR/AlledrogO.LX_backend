@@ -7,3 +7,14 @@
       dockerfile: src/AlledrogO.Post/AlledrogO.Post.Api/Dockerfile
     ports:
       - "5000:8080"
+  alledrogo.database:
+    image: postgres:latest
+    container_name: Postgres
+    environment:
+      - POSTGRES_DB=alledrogo
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/alledrogo-db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
