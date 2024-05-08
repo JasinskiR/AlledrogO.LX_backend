@@ -3,14 +3,14 @@ using AlledrogO.Post.Domain.ValueObjects.Exceptions;
 
 namespace AlledrogO.Post.Domain.ValueObjects;
 
-public record AuthorData
+public record AuthorDetails
 {
     [EmailAddress]
     private string Email { get; }
     [Phone]
     private string PhoneNumber { get; }
     
-    public AuthorData(string email, string phoneNumber)
+    public AuthorDetails(string email, string phoneNumber)
     {
         ValidationContext emailContext = new ValidationContext(this, null, null)
         {

@@ -5,16 +5,16 @@ using AlledrogO.Shared.Commands;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
 
-public class AddPostImageHandler : ICommandHandler<AddPostImage>
+public class DeletePostImageHandler : ICommandHandler<DeletePostImage>
 {
     private readonly IPostRepository _postRepository;
 
-    public AddPostImageHandler(IPostRepository postRepository)
+    public DeletePostImageHandler(IPostRepository postRepository)
     {
         _postRepository = postRepository;
     }
 
-    public async Task HandleAsync(AddPostImage command)
+    public async Task HandleAsync(DeletePostImage command)
     {
         var (postId, imageUrl) = command;
         var post = await _postRepository.GetAsync(postId);
@@ -23,8 +23,7 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage>
         {
             throw new PostNotFoundException(postId);
         }
-        var image = new PostImage(imageUrl);
-        post.AddImage(image);
+        post.RemoveImage(imageUrl);
         await _postRepository.UpdateAsync(post);
     }
 }

@@ -1,30 +1,28 @@
 using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Domain.Repositories;
-using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
 
-public class AddPostImageHandler : ICommandHandler<AddPostImage>
+public class RenamePostTitleHandler : ICommandHandler<RenamePostTitle>
 {
     private readonly IPostRepository _postRepository;
 
-    public AddPostImageHandler(IPostRepository postRepository)
+    public RenamePostTitleHandler(IPostRepository postRepository)
     {
         _postRepository = postRepository;
     }
 
-    public async Task HandleAsync(AddPostImage command)
+    public async Task HandleAsync(RenamePostTitle command)
     {
-        var (postId, imageUrl) = command;
+        var (postId, title) = command;
         var post = await _postRepository.GetAsync(postId);
         
         if (post is null)
         {
             throw new PostNotFoundException(postId);
         }
-        var image = new PostImage(imageUrl);
-        post.AddImage(image);
+        post.UpdateTitle(title);
         await _postRepository.UpdateAsync(post);
     }
 }
