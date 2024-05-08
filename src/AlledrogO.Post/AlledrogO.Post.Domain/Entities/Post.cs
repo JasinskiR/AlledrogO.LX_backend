@@ -6,11 +6,21 @@ namespace AlledrogO.Post.Domain.Entities;
 
 public class Post : AggregateRoot<Guid>
 {
-    private PostTitle _title;
+    public PostTitle Title { get; private set; }
     private PostDescription _description;
     private LinkedList<PostImage> _images = new();
     private List<PostTag> _tags = new();
     private PostStatus _status;
     private Author _author;
     private AuthorData _sharedAuthorData;
+    
+    internal void Publish()
+    {
+        _status = PostStatus.Published;
+    }
+    
+    internal void Archive()
+    {
+        _status = PostStatus.Archived;
+    }
 }
