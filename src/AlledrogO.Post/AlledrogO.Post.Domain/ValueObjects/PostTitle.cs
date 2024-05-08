@@ -5,7 +5,7 @@ namespace AlledrogO.Post.Domain.ValueObjects;
 public record PostTitle
 {
     private string Value { get; }
-    private PostTitle(string value)
+    public PostTitle(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

@@ -6,7 +6,7 @@ public record PostTag
 {
     private string Value { get; }
 
-    private PostTag(string value)
+    public PostTag(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

@@ -6,7 +6,7 @@ public record PostImage
 {
     private string Url { get; }
 
-    private PostImage(string url)
+    public PostImage(string url)
     {
         if (string.IsNullOrWhiteSpace(url))
         {

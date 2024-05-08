@@ -6,7 +6,7 @@ public record PostDescription
 {
     private string Value { get; }
 
-    private PostDescription(string value)
+    public PostDescription(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {

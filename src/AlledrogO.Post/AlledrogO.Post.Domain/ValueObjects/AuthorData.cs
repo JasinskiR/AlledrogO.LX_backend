@@ -10,7 +10,7 @@ public record AuthorData
     [Phone]
     private string PhoneNumber { get; }
     
-    private AuthorData(string email, string phoneNumber)
+    public AuthorData(string email, string phoneNumber)
     {
         ValidationContext emailContext = new ValidationContext(this, null, null)
         {
