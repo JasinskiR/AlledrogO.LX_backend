@@ -24,7 +24,7 @@ public class Author : AggregateRoot<Guid>
             throw new PostWithSameTitleAlreadyExistsException(post.Title);
         }
         _posts.AddLast(post);
-        AddEvent(new PostAdded(this, post));
+        AddEvent(new PostAddedDE(this, post));
     }
     
     public void PublishPost(string title)

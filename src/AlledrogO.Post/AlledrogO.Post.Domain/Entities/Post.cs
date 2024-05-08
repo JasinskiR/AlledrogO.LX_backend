@@ -1,4 +1,5 @@
 using AlledrogO.Post.Domain.Consts;
+using AlledrogO.Post.Domain.Events;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Domain;
 
@@ -17,10 +18,12 @@ public class Post : AggregateRoot<Guid>
     internal void Publish()
     {
         _status = PostStatus.Published;
+        AddEvent(new PostPublishedDE(this));
     }
     
     internal void Archive()
     {
         _status = PostStatus.Archived;
+        AddEvent(new PostArchivedDE(this));
     }
 }

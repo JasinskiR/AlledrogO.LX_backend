@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AlledrogO.Shared")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+160a2a6b00f4fee439728734a689fc78eee3fb6b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fb5f6ed72dc19fbae83d8c0452510ada23ab1fba")]
 [assembly: System.Reflection.AssemblyProductAttribute("AlledrogO.Shared")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AlledrogO.Shared")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

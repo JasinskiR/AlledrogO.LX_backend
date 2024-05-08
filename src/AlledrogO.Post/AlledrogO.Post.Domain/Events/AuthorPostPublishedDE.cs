@@ -3,4 +3,4 @@ using AlledrogO.Shared.Domain;
 
 namespace AlledrogO.Post.Domain.Events;
 
-public record PostAdded(Author Author, Entities.Post Post) : IDomainEvent;
+public record AuthorPostPublishedDE(Author Author, Entities.Post Post) : IDomainEvent;
