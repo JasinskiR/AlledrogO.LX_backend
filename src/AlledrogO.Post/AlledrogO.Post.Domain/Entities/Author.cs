@@ -1,5 +1,6 @@
 using AlledrogO.Post.Domain.Entities.Exceptions;
 using AlledrogO.Post.Domain.Events;
+using AlledrogO.Post.Domain.Events.Post;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Domain;
 
