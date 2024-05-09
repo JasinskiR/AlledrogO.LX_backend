@@ -1,41 +1,52 @@
 using System.ComponentModel.DataAnnotations;
 using AlledrogO.Post.Domain.ValueObjects.Exceptions;
+using FluentValidation;
 
 namespace AlledrogO.Post.Domain.ValueObjects;
 
 public record AuthorDetails
 {
-    [EmailAddress]
-    private string Email { get; }
-    [Phone]
-    private string PhoneNumber { get; }
+    public string Email { get; private set; }
+    public string PhoneNumber { get; private set; }
     
     public AuthorDetails(string email, string phoneNumber)
     {
-        ValidationContext emailContext = new ValidationContext(this, null, null)
+        var authorDetails = new AuthorDetails
         {
-            MemberName = nameof(Email)
+            Email = email,
+            PhoneNumber = phoneNumber
         };
-        
-        List<ValidationResult> emailResults = new();
-        if (!Validator.TryValidateProperty(email, emailContext, emailResults))
+        var validator = new AuthorDetailsValidator();
+        var result = validator.Validate(authorDetails);
+        if (!result.IsValid)
         {
-            throw new AuthorDataInvalidEmailException(email);
+            var failure = result.Errors.FirstOrDefault();
+            if (failure.PropertyName == nameof(Email))
+            {
+                throw new AuthorDataInvalidEmailException(email);
+            }
+            else if (failure.PropertyName == nameof(PhoneNumber))
+            {
+                throw new AuthorDataInvalidPhoneNumberException(phoneNumber);
+            }
         }
-        
-        ValidationContext phoneContext = new ValidationContext(this, null, null)
-        {
-            MemberName = nameof(PhoneNumber)
-        };
-        
-        List<ValidationResult> phoneResults = new();
-        if (!Validator.TryValidateProperty(phoneNumber, phoneContext, phoneResults))
-        {
-            throw new AuthorDataInvalidPhoneNumberException(phoneNumber);
-        }
-
         Email = email;
         PhoneNumber = phoneNumber;
+    }
+
+    private AuthorDetails()
+    {
+    }
+
+    private class AuthorDetailsValidator : AbstractValidator<AuthorDetails>
+    {
+        public AuthorDetailsValidator()
+        {
+            RuleFor(x => x.Email).EmailAddress();
+            RuleFor(x => x.PhoneNumber)
+                .NotEmpty()
+                .Matches(@"^\d{9}$");
+        }
     }
     
 }
