@@ -1,5 +1,6 @@
 using AlledrogO.Post.Domain.Consts;
 using AlledrogO.Post.Infrastructure.EF.Models;
+using AlledrogO.Post.Infrastructure.EF.Models.ReadModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

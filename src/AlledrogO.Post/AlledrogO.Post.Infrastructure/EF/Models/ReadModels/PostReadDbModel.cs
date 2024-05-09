@@ -1,6 +1,6 @@
 using AlledrogO.Post.Domain.Consts;
 
-namespace AlledrogO.Post.Infrastructure.EF.Models;
+namespace AlledrogO.Post.Infrastructure.EF.Models.ReadModels;
 
 public class PostReadDbModel
 {

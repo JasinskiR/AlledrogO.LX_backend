@@ -1,4 +1,4 @@
-namespace AlledrogO.Post.Infrastructure.EF.Models;
+namespace AlledrogO.Post.Infrastructure.EF.Models.ReadModels;
 
 public class TagReadDbModel
 {
