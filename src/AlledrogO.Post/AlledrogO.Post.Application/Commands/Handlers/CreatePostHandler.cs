@@ -26,8 +26,10 @@ public class CreatePostHandler : ICommandHandler<CreatePost>
         {
             throw new AuthorNotFoundException(authorId);
         }
-        
         var post = _postFactory.Create(id, title, description, authorId, author.AuthorDetails);
-        await _postRepository.AddAsync(post);
+        author.AddPost(post);
+        var t1 = _postRepository.AddAsync(post);
+        var t2 = _authorRepository.UpdateAsync(author);
+        await Task.WhenAll(t1, t2);
     }
 }
