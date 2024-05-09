@@ -22,13 +22,14 @@ public class CreatePostWithCustomDetailsHandler : ICommandHandler<CreatePostWith
 
     public async Task HandleAsync(CreatePostWithCustomDetails command)
     {
-        var (id, title, description, authorId, authotDetails) = command;
+        var (title, description, authorId, authotDetails) = command;
         var author = await _authorRepository.GetAsync(authorId);
         if (author is null)
         {
             throw new AuthorNotFoundException(authorId);
         }
         var details = new AuthorDetails(authotDetails.Email, authotDetails.PhoneNumber);
+        var id = Guid.NewGuid();
         var post = _postFactory.CreateWithCustomDetails(id, title, description, author, details);
         author.AddPost(post);
         var t1 = _postRepository.AddAsync(post);

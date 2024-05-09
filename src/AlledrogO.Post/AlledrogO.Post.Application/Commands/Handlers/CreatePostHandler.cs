@@ -20,12 +20,13 @@ public class CreatePostHandler : ICommandHandler<CreatePost>
 
     public async Task HandleAsync(CreatePost command)
     {
-        var (id, title, description, authorId) = command;
+        var ( title, description, authorId) = command;
         var author = await _authorRepository.GetAsync(authorId);
         if (author is null)
         {
             throw new AuthorNotFoundException(authorId);
         }
+        var id = Guid.NewGuid();
         var post = _postFactory.Create(id, title, description, author);
         author.AddPost(post);
         var t1 = _postRepository.AddAsync(post);

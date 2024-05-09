@@ -11,7 +11,7 @@ public class Post : AggregateRoot<Guid>
     public PostTitle Title { get; private set; }
     private PostDescription _description;
     private LinkedList<PostImage> _images = new();
-    private List<PostTag> _tags = new();
+    private LinkedList<Tag> _tags = new();
     private PostStatus _status;
     private Author _author;
     private AuthorDetails _sharedAuthorDetails;
@@ -51,21 +51,21 @@ public class Post : AggregateRoot<Guid>
         }
         _images.Remove(image);
     }
-    public void AddTag(PostTag tag)
+    public void AddTag(Tag tag)
     {
-        var tagExists = _tags.Contains(tag);
+        var tagExists = _tags.Any(t => t.Id == tag.Id);
         if (tagExists)
         {
-            throw new PostTagAlreadyExistsException(tag);
+            throw new TagAlreadyPinnedToPostException(tag.Name, Title);
         }
-        _tags.Add(tag);
+        _tags.AddLast(tag);
     }
-    public void RemoveTag(PostTag tag)
+    public void RemoveTag(Tag tag)
     {
         var tagExists = _tags.Contains(tag);
         if (!tagExists)
         {
-            throw new PostTagNotFoundException(tag);
+            throw new TagNotPinnedToPostException(tag.Name, Title);
         }
         _tags.Remove(tag);
     }

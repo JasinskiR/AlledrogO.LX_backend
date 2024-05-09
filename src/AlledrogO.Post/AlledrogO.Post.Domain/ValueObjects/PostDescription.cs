@@ -10,7 +10,7 @@ public record PostDescription
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new AlledrogoDescriptionCannotBeEmptyException();
+            throw new PostDescriptionCannotBeEmptyException();
         }
 
         Value = value;
