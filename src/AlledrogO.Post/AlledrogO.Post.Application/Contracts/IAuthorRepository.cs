@@ -1,6 +1,6 @@
 using AlledrogO.Post.Domain.Entities;
 
-namespace AlledrogO.Post.Domain.Repositories;
+namespace AlledrogO.Post.Application.Contracts;
 
 public interface IAuthorRepository
 {

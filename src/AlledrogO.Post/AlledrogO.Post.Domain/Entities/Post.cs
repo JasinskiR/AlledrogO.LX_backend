@@ -28,6 +28,16 @@ public class Post : AggregateRoot<Guid>
         AddEvent(new PostArchivedDE(this));
     }
     
+    internal Post(Guid id, PostTitle title, PostDescription description, Author author, AuthorDetails authorDetails)
+    {
+        Id = id;
+        Title = title;
+        _description = description;
+        _author = author;
+        _sharedAuthorDetails = authorDetails;
+        _status = PostStatus.Draft;
+    }
+    
     public void AddImage(PostImage image)
     {
         _images.AddLast(image);
