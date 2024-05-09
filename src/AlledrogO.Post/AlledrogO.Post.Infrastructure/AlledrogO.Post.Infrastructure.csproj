@@ -10,4 +10,8 @@
       <ProjectReference Include="..\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+    </ItemGroup>
+
 </Project>
