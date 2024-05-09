@@ -1,8 +1,8 @@
-using AlledrogO.Shared.Domain.Exceptions;
+using AlledrogO.Shared.Exceptions;
 
 namespace AlledrogO.Post.Domain.ValueObjects.Exceptions;
 
-public class AuthorDataInvalidEmailException : AuthorException
+public class AuthorDataInvalidEmailException : AlledrogoException
 {
     public AuthorDataInvalidEmailException(string email) : base($"Author email '{email}' is invalid")
     {

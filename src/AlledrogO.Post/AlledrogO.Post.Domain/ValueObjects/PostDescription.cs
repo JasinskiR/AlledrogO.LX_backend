@@ -6,11 +6,11 @@ public record PostDescription
 {
     private string Value { get; }
 
-    private PostDescription(string value)
+    public PostDescription(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new PostDescriptionCannotBeEmptyException();
+            throw new AlledrogoDescriptionCannotBeEmptyException();
         }
 
         Value = value;
