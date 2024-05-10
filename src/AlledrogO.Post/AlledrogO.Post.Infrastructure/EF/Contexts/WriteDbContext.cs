@@ -7,9 +7,9 @@ namespace AlledrogO.Post.Infrastructure.EF.Contexts;
 
 public class WriteDbContext : DbContext
 {
-    DbSet<Domain.Entities.Post> Posts { get; set; }
-    DbSet<Author> Authors { get; set; }
-    DbSet<Tag> Tags { get; set; }
+    public DbSet<Domain.Entities.Post> Posts { get; set; }
+    public DbSet<Author> Authors { get; set; }
+    public DbSet<Tag> Tags { get; set; }
     
     public WriteDbContext(DbContextOptions<WriteDbContext> options) 
         : base(options)
