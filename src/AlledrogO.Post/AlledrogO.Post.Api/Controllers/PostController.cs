@@ -1,3 +1,4 @@
+using AlledrogO.Post.Application.Commands;
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
@@ -42,5 +43,12 @@ public class PostController : ControllerBase
             return NotFound();
         }
         return Ok(result);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody] CreatePost command)
+    {
+        var result = await _commandDispatcher.DispatchAsync<CreatePost, Guid>(command);
+        return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
 }

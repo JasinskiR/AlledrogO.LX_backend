@@ -5,7 +5,7 @@ using AlledrogO.Shared.Commands;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
 
-public class CreatePostHandler : ICommandHandler<CreatePost>
+public class CreatePostHandler : ICommandHandler<CreatePost, Guid>
 {
     private readonly IPostRepository _postRepository;
     private readonly IAuthorRepository _authorRepository;
@@ -18,7 +18,7 @@ public class CreatePostHandler : ICommandHandler<CreatePost>
         _postFactory = postFactory;
     }
 
-    public async Task HandleAsync(CreatePost command)
+    public async Task<Guid> HandleAsync(CreatePost command)
     {
         var ( title, description, authorId) = command;
         var author = await _authorRepository.GetAsync(authorId);
@@ -32,5 +32,6 @@ public class CreatePostHandler : ICommandHandler<CreatePost>
         var t1 = _postRepository.AddAsync(post);
         var t2 = _authorRepository.UpdateAsync(author);
         await Task.WhenAll(t1, t2);
+        return id;
     }
 }
