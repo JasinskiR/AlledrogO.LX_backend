@@ -36,6 +36,7 @@ public static class Extensions
    
    public static IServiceCollection AddShared(this IServiceCollection services)
    {
+       services.AddTransient<ExceptionMiddleware>();
        services.AddHostedService<AppInitializer>();
        return services;
    }
