@@ -11,5 +11,5 @@ public class PostDto
     public IEnumerable<string> Tags { get; set; }
     public PostStatus Status { get; set; }
     public Guid AuthorId { get; set; }
-    public AuthorDetailsDto Author { get; set; }
+    public AuthorDetailsDto AuthorDetails { get; set; }
 }
