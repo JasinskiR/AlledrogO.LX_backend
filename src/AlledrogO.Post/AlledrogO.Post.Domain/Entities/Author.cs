@@ -1,5 +1,6 @@
 using AlledrogO.Post.Domain.Entities.Exceptions;
 using AlledrogO.Post.Domain.Events;
+using AlledrogO.Post.Domain.Events.Post;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Domain;
 
@@ -10,8 +11,9 @@ public class Author : AggregateRoot<Guid>
     private LinkedList<Post> _posts;
     public AuthorDetails AuthorDetails { get; private set; }
     
-    internal Author(AuthorDetails authorDetails, IEnumerable<Post> posts)
+    internal Author(Guid id, AuthorDetails authorDetails, IEnumerable<Post> posts)
     {
+        Id = id;
         AuthorDetails = authorDetails;
         _posts = new LinkedList<Post>(posts);
     }

@@ -10,6 +10,7 @@ public static class Extensions
     {
         services.AddCommands();
         services.AddSingleton<IPostFactory, PostFactory>();
+        services.AddSingleton<ITagFactory, TagFactory>();
         
         // here could be scanning for policies
         return services;

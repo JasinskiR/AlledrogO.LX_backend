@@ -4,12 +4,12 @@ namespace AlledrogO.Post.Domain.ValueObjects;
 
 public record PostTitle
 {
-    private string Value { get; }
+    public string Value { get; }
     public PostTitle(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new AlledrogoTitleCannotBeEmptyException();
+            throw new PostTitleCannotBeEmptyException();
         }
 
         Value = value;
