@@ -4,7 +4,7 @@ namespace AlledrogO.Post.Domain.ValueObjects;
 
 public record PostDescription
 {
-    private string Value { get; }
+    public string Value { get; }
 
     public PostDescription(string value)
     {

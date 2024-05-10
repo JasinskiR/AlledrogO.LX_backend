@@ -4,7 +4,7 @@ namespace AlledrogO.Post.Domain.ValueObjects;
 
 public record PostImage
 {
-    private string Url { get; }
+    public string Url { get; }
 
     public PostImage(string url)
     {

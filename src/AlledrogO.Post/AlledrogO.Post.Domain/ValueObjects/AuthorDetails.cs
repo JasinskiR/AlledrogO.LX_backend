@@ -33,10 +33,19 @@ public record AuthorDetails
         Email = email;
         PhoneNumber = phoneNumber;
     }
-
-    private AuthorDetails()
+    
+    public static AuthorDetails Create(string details)
     {
+        var detailsArray = details.Split(", ");
+        return new AuthorDetails(detailsArray[0], detailsArray[1]);
     }
+
+    public override string ToString()
+    {
+        return $"{Email}, {PhoneNumber}";
+    }
+
+    private AuthorDetails() {}
 
     private class AuthorDetailsValidator : AbstractValidator<AuthorDetails>
     {

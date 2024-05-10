@@ -9,6 +9,7 @@ public class WriteDbContext : DbContext
 {
     DbSet<Domain.Entities.Post> Posts { get; set; }
     DbSet<Author> Authors { get; set; }
+    DbSet<Tag> Tags { get; set; }
     
     public WriteDbContext(DbContextOptions<WriteDbContext> options) 
         : base(options)
@@ -20,10 +21,10 @@ public class WriteDbContext : DbContext
         modelBuilder.HasDefaultSchema("PostSchema");
         
         var configuration = new WriteConfiguration();
-        // modelBuilder.ApplyConfiguration<Domain.Entities.Post>(configuration);
-        // modelBuilder.ApplyConfiguration<Author>(configuration);
-        // modelBuilder.ApplyConfiguration<Tag>(configuration);
-        // modelBuilder.ApplyConfiguration<PostImage>(configuration);
+        modelBuilder.ApplyConfiguration<Domain.Entities.Post>(configuration);
+        modelBuilder.ApplyConfiguration<Author>(configuration);
+        modelBuilder.ApplyConfiguration<Tag>(configuration);
+        modelBuilder.ApplyConfiguration<PostImage>(configuration);
         
         base.OnModelCreating(modelBuilder);
     }

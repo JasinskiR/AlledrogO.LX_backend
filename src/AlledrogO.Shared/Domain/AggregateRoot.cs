@@ -4,6 +4,8 @@ public abstract class AggregateRoot<TId>
 {
     public TId Id { get; protected set; }
     
+    public uint Version { get; private set;}
+    
     public IEnumerable<IDomainEvent> Events => _events;
     
     private readonly List<IDomainEvent> _events = new();

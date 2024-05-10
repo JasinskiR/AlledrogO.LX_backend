@@ -4,7 +4,7 @@ namespace AlledrogO.Post.Domain.ValueObjects;
 
 public record TagName
 {
-    private string Value { get; }
+    public string Value { get; }
 
     public TagName(string value)
     {
