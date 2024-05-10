@@ -1,6 +1,9 @@
 using System.Reflection;
 using AlledrogO.Shared.Commands;
+using AlledrogO.Shared.Exceptions;
 using AlledrogO.Shared.Queries;
+using AlledrogO.Shared.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AlledrogO.Shared;
@@ -29,5 +32,17 @@ public static class Extensions
           .AsImplementedInterfaces()
           .WithScopedLifetime());
        return services;
+   }
+   
+   public static IServiceCollection AddShared(this IServiceCollection services)
+   {
+       services.AddHostedService<AppInitializer>();
+       return services;
+   }
+    
+   public static IApplicationBuilder UseShared(this IApplicationBuilder app)
+   {
+       app.UseMiddleware<ExceptionMiddleware>();
+       return app;
    }
 }

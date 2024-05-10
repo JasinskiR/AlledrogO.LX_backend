@@ -27,6 +27,10 @@ public class Post : AggregateRoot<Guid>
         _status = PostStatus.Draft;
     }
     
+    private Post()
+    {
+    }
+    
     internal void Publish()
     {
         _status = PostStatus.Published;

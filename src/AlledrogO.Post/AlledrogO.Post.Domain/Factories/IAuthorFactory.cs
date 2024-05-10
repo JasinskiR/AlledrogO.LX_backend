@@ -5,5 +5,5 @@ namespace AlledrogO.Post.Domain.Factories;
 
 public interface IAuthorFactory
 {
-    Author Create(Guid id, AuthorDetails authorDetails, IEnumerable<Entities.Post> posts);
+    Author Create(Guid id, AuthorDetails authorDetails, List<Entities.Post> posts);
 }

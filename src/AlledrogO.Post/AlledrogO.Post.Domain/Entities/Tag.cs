@@ -18,6 +18,10 @@ public class Tag : AggregateRoot<Guid>
         PostCount = (uint)_posts.Count;
     }
     
+    private Tag()
+    {
+    }
+    
     private void AddManyPosts(IEnumerable<Post> posts)
     {
         foreach (var post in posts)

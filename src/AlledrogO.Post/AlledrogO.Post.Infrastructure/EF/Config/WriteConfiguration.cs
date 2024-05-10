@@ -61,10 +61,15 @@ public class WriteConfiguration:
     {
         builder.HasKey(a => a.Id);
         
+        builder.Property(p => p.Version)
+            .IsRowVersion();
+        
+        var detailsConverter = new ValueConverter<AuthorDetails, string>(
+            details => details.ToString(),
+            details => AuthorDetails.Create(details));
         builder.Property(a => a.AuthorDetails)
-            .HasConversion(
-                details => details.ToString(),
-                details => AuthorDetails.Create(details));
+            .HasConversion(detailsConverter)
+            .HasColumnName("AuthorDetails");
         
         builder.HasMany(typeof(Domain.Entities.Post), "_posts");
         
@@ -74,6 +79,9 @@ public class WriteConfiguration:
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
         builder.HasKey(t => t.Id);
+        
+        builder.Property(p => p.Version)
+            .IsRowVersion();
         
         builder.Property(t => t.Name)
             .HasConversion(

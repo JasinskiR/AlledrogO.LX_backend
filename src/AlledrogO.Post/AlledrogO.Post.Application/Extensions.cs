@@ -6,7 +6,7 @@ namespace AlledrogO.Post.Application;
 
 public static class Extensions
 {
-    public static IServiceCollection AddPostApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddCommands();
         services.AddSingleton<IPostFactory, PostFactory>();

@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
+      <ProjectReference Include="..\AlledrogO.Post.Infrastructure\AlledrogO.Post.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>

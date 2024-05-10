@@ -11,11 +11,23 @@ public class Author : AggregateRoot<Guid>
     private LinkedList<Post> _posts;
     public AuthorDetails AuthorDetails { get; private set; }
     
-    internal Author(Guid id, AuthorDetails authorDetails, IEnumerable<Post> posts)
+    internal Author(Guid id, AuthorDetails authorDetails, List<Post> posts)
     {
         Id = id;
         AuthorDetails = authorDetails;
-        _posts = new LinkedList<Post>(posts);
+        AddManyPosts(posts);
+    }
+    
+    private Author()
+    {
+    }
+    
+    private void AddManyPosts(IEnumerable<Post> posts)
+    {
+        foreach (var post in posts)
+        {
+            AddPost(post);
+        }
     }
     
     public void AddPost(Post post)
