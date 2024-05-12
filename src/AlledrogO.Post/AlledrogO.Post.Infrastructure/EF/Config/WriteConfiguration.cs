@@ -69,7 +69,7 @@ public class WriteConfiguration:
             details => AuthorDetails.Create(details));
         builder.Property(a => a.AuthorDetails)
             .HasConversion(detailsConverter)
-            .HasColumnName("AuthorDetails");
+            .HasColumnName("Details");
         
         builder.HasMany(typeof(Domain.Entities.Post), "_posts");
         

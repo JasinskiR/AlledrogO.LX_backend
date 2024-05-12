@@ -12,14 +12,15 @@ public class PostgresAuthorRepository : IAuthorRepository
 
     public PostgresAuthorRepository(WriteDbContext dbContext)
     {
-        _authors = dbContext.Authors;
+        _authors = dbContext.Set<Author>();
         _dbContext = dbContext;
     }
 
     public Task<Author> GetAsync(Guid id)
     {
         return _authors
-            .SingleOrDefaultAsync(a => a.Id == id);
+            .Include("posts")
+            .FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public async Task AddAsync(Author author)

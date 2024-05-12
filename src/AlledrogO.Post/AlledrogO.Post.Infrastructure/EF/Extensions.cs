@@ -16,6 +16,7 @@ public static class Extensions
         services.AddScoped<IPostRepository, PostgresPostRepository>();
         services.AddScoped<IAuthorRepository, PostgresAuthorRepository>();
         services.AddScoped<ITagRepository, PostgresTagRepository>();
+        services.AddScoped<IAuthorReadService, PostgresAuthorReadService>();
 
         var options = configuration.GetOptions<PostgresOptions>("Postgres")
             ?? throw new Exception("Postgres options not found");
