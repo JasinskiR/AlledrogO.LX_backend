@@ -21,6 +21,14 @@ public class PostController : ControllerBase
         _commandDispatcher = commandDispatcher;
     }
     
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<PostCardDto>>> Get()
+    {
+        var query = new GetPostCards();
+        var result = await _queryDispatcher.QueryAsync(query);
+        return Ok(result);
+    }
+    
     [HttpGet("{Id:guid}")]
     public async Task<ActionResult<PostDto>> Get([FromRoute] GetPostById query)
     {

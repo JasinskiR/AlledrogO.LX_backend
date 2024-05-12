@@ -28,4 +28,14 @@ public static class Extensions
 
         };
     }
+    
+    public static PostCardDto AsCardDto(this PostDbModel model)
+    {
+        return new PostCardDto
+        {
+            Id = model.Id,
+            Title = model.Title,
+            Image = model.Images.FirstOrDefault()?.Url ?? string.Empty,
+        };
+    }
 }
