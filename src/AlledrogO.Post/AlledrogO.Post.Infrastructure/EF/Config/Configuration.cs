@@ -24,22 +24,32 @@ internal sealed class Configuration :
             .HasConversion(
             status => status.ToString(),
             status => Enum.Parse<PostStatus>(status));
+        
+        builder.HasMany(p => p.Tags)
+            .WithMany(t => t.Posts)
+            .UsingEntity(j => j.ToTable("PostTag"));
+        
+        
+        builder.ToTable("Posts");
     }
 
     public void Configure(EntityTypeBuilder<AuthorDbModel> builder)
     {
         builder.Property(p => p.Version)
             .IsRowVersion();
+
+        builder.ToTable("Authors");
     }
 
     public void Configure(EntityTypeBuilder<PostImageDbModel> builder)
     {
-        
+        builder.ToTable("PostImages");
     }
 
     public void Configure(EntityTypeBuilder<TagDbModel> builder)
     {
         builder.Property(p => p.Version)
             .IsRowVersion();
+        builder.ToTable("Tags");
     }
 }
