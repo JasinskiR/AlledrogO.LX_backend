@@ -6,7 +6,10 @@ namespace AlledrogO.Post.Domain.Entities;
 
 public class Tag : AggregateRoot<Guid>
 {
+    public Guid Id { get; private set; }
     public TagName Name { get; private set; }
+    
+    public IEnumerable<Post> Posts => _posts;
     private List<Post> _posts = new();
     public uint PostCount { get; private set; }
     

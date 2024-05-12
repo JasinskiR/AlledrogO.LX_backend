@@ -9,22 +9,28 @@ namespace AlledrogO.Post.Domain.Entities;
 
 public class Post : AggregateRoot<Guid>
 {
+    public Guid Id { get; private set; }
     public PostTitle Title { get; private set; }
-    private PostDescription _description;
+    public PostDescription Description { get; private set; }
+    
+    public IEnumerable<PostImage> Images => _images;
     private LinkedList<PostImage> _images = new();
+    
+    public IEnumerable<Tag> Tags => _tags;
     private LinkedList<Tag> _tags = new();
-    private PostStatus _status;
-    private Author _author;
-    private AuthorDetails _sharedAuthorDetails;
+    
+    public PostStatus Status { get; private set; }
+    public Author Author { get; private set; }
+    public AuthorDetails SharedAuthorDetails { get; private set; }
     
     internal Post(Guid id, PostTitle title, PostDescription description, Author author, AuthorDetails authorDetails)
     {
         Id = id;
         Title = title;
-        _description = description;
-        _author = author;
-        _sharedAuthorDetails = authorDetails;
-        _status = PostStatus.Draft;
+        Description = description;
+        Author = author;
+        SharedAuthorDetails = authorDetails;
+        Status = PostStatus.Draft;
     }
     
     private Post()
@@ -33,13 +39,13 @@ public class Post : AggregateRoot<Guid>
     
     internal void Publish()
     {
-        _status = PostStatus.Published;
+        Status = PostStatus.Published;
         AddEvent(new PostPublishedDE(this));
     }
     
     internal void Archive()
     {
-        _status = PostStatus.Archived;
+        Status = PostStatus.Archived;
         AddEvent(new PostArchivedDE(this));
     }
     
@@ -95,13 +101,13 @@ public class Post : AggregateRoot<Guid>
     
     public void UpdateDescription(PostDescription description)
     {
-        _description = description;
-        AddEvent(new PostDescriptionUpdatedDE(this, _description));
+        Description = description;
+        AddEvent(new PostDescriptionUpdatedDE(this, Description));
     }
     
     public void UpdateAuthorDetails(AuthorDetails authorDetails)
     {
-        _sharedAuthorDetails = authorDetails;
-        AddEvent(new PostAuthorDetailsUpdatedDE(this, _sharedAuthorDetails));
+        SharedAuthorDetails = authorDetails;
+        AddEvent(new PostAuthorDetailsUpdatedDE(this, SharedAuthorDetails));
     }
 }
