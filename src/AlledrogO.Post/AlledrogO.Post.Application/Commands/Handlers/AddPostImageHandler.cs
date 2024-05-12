@@ -3,19 +3,25 @@ using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Application.Services;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
+using Microsoft.Extensions.Hosting;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
 
-public class AddPostImageHandler : ICommandHandler<AddPostImage>
+public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
 {
     private readonly IPostRepository _postRepository;
+    private readonly IHostEnvironment _environment;
+    private static string _imagesDirectory = "images";
+    private readonly string _staticFilesPath;
 
-    public AddPostImageHandler(IPostRepository postRepository)
+    public AddPostImageHandler(IPostRepository postRepository, IHostEnvironment environment)
     {
         _postRepository = postRepository;
+        _environment = environment;
+        _staticFilesPath = Path.Combine(_environment.ContentRootPath, "wwwroot");
     }
 
-    public async Task HandleAsync(AddPostImage command)
+    public async Task<string> HandleAsync(AddPostImage command)
     {
         var (postId, file) = command;
         
@@ -33,13 +39,15 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage>
         }
         
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
+        var absPath = Path.Combine(_staticFilesPath, _imagesDirectory, fileName);
         
-        using var stream = new FileStream(path, FileMode.Create);
+        using var stream = new FileStream(absPath, FileMode.Create);
         await file.CopyToAsync(stream);
-        
-        var image = new PostImage(path);
+
+        var serverImagePath = string.Join("/", _imagesDirectory, fileName);
+        var image = new PostImage(serverImagePath);
         post.AddImage(image);
         await _postRepository.UpdateAsync(post);
+        return serverImagePath;
     }
 }

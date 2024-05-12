@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Http;
 
 namespace AlledrogO.Post.Application.Commands;
 
-public record AddPostImage(Guid PostId, IFormFile Image) : ICommand;
+public record AddPostImage(Guid PostId, IFormFile Image) : ICommand<string>;

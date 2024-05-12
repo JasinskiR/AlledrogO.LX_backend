@@ -27,7 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
     .Produces(200)
     .ExcludeFromDescription();

@@ -57,7 +57,11 @@ public class PostController : ControllerBase
     {
         var command = new AddPostImage(Id, file);
 
-        await _commandDispatcher.DispatchAsync(command);
-        return NoContent();
+        var result = await _commandDispatcher.DispatchAsync<AddPostImage, string>(command);
+        if (result is null)
+        {
+            return BadRequest();
+        }
+        return Ok(result);
     }
 }
