@@ -21,7 +21,7 @@ public class PostController : ControllerBase
         _commandDispatcher = commandDispatcher;
     }
     
-    [HttpGet("{id:guid}")]
+    [HttpGet("{Id:guid}")]
     public async Task<ActionResult<PostDto>> Get([FromRoute] GetPostById query)
     {
         var result = await _queryDispatcher.QueryAsync(query);
@@ -33,8 +33,8 @@ public class PostController : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<PostDto>>> Get([FromBody] SearchPosts query)
+    [HttpPost("Search")]
+    public async Task<ActionResult<IEnumerable<PostDto>>> Search([FromBody] SearchPosts query)
     {
         var result = await _queryDispatcher.QueryAsync(query);
         

@@ -23,6 +23,7 @@ public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostDto
         
         var dbQuery = _posts
             .Include(p => p.Tags)
+            .Include(p => p.Author)
             .AsQueryable();
         
         if (dbQuery is not null)
