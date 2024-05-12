@@ -9,16 +9,4 @@ public class TagDbModel
     public string Name { get; set; }
     public uint PostCount { get; set; }
     public ICollection<PostDbModel> Posts { get; set; }
-    
-    // public static TagDbModel Create(Tag tag)
-    // {
-    //     return new TagDbModel
-    //     {
-    //         Id = tag.Id,
-    //         Version = tag.Version,
-    //         Name = tag.Name,
-    //         PostCount = tag.PostCount,
-    //         Posts = tag.Posts.Select(p => PostDbModel.Create(p)).ToList(),
-    //     };
-    // }
 }

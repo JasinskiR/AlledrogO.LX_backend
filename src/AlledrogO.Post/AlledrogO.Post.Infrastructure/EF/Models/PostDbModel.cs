@@ -15,21 +15,4 @@ public class PostDbModel
     public ICollection<PostImageDbModel> Images { get; set; }
     public ICollection<TagDbModel> Tags { get; set; }
     public AuthorDbModel Author { get; set; }
-    
-    // public static PostDbModel Create(Domain.Entities.Post post)
-    // {
-    //     return new PostDbModel
-    //     {
-    //         Id = post.Id,
-    //         Version = post.Version,
-    //         Title = post.Title,
-    //         Description = post.Description,
-    //         Status = post.Status,
-    //         SharedAuthorDetails = post.SharedAuthorDetails.ToString(),
-    //         Images = post.Images.Select(i => PostImageDbModel.Create(i)).ToList(),
-    //         Tags = post.Tags.Select(t => t.ToDbModel()).ToList(),
-    //
-    //         
-    //     };
-    // }
 }

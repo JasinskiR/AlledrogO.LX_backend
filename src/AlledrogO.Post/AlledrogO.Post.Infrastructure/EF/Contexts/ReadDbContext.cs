@@ -19,7 +19,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("PostSchema");
         
-        var configuration = new Configuration();
+        var configuration = new ReadConfiguration();
         modelBuilder.ApplyConfiguration<PostDbModel>(configuration);
         modelBuilder.ApplyConfiguration<AuthorDbModel>(configuration);
         modelBuilder.ApplyConfiguration<TagDbModel>(configuration);
@@ -27,6 +27,4 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
         
         base.OnModelCreating(modelBuilder);
     }
-    
-    
 }

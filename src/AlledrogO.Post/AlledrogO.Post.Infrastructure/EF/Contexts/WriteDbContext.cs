@@ -27,7 +27,6 @@ public class WriteDbContext : DbContext
         modelBuilder.ApplyConfiguration<Author>(configuration);
         modelBuilder.ApplyConfiguration<Tag>(configuration);
         modelBuilder.ApplyConfiguration<PostImage>(configuration);
-
         
         base.OnModelCreating(modelBuilder);
     }

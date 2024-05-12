@@ -8,13 +8,4 @@ public class PostImageDbModel
     public Guid Id { get; set; }
     public string Url { get; set; }
     public PostDbModel Post { get; set; }
-    
-    // public static PostImageDbModel Create(PostImage image)
-    // {
-    //     return new PostImageDbModel
-    //     {
-    //         Id = new Guid(),
-    //         Url = image.Url,
-    //     };
-    // }
 }

@@ -19,7 +19,7 @@ public class PostgresAuthorRepository : IAuthorRepository
     public async Task<Author> GetAsync(Guid id)
     {
         return await _authors
-            .Include("Posts")
+            .Include(a => a.Posts)
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 
