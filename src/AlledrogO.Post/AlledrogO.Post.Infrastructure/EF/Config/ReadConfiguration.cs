@@ -1,18 +1,17 @@
 using AlledrogO.Post.Domain.Consts;
 using AlledrogO.Post.Infrastructure.EF.Models;
-using AlledrogO.Post.Infrastructure.EF.Models.ReadModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AlledrogO.Post.Infrastructure.EF.Config;
 
 internal sealed class ReadConfiguration : 
-    IEntityTypeConfiguration<PostReadDbModel>,
-    IEntityTypeConfiguration<AuthorReadDbModel>,
-    IEntityTypeConfiguration<PostImageReadDbModel>,
-    IEntityTypeConfiguration<TagReadDbModel>
+    IEntityTypeConfiguration<PostDbModel>,
+    IEntityTypeConfiguration<AuthorDbModel>,
+    IEntityTypeConfiguration<PostImageDbModel>,
+    IEntityTypeConfiguration<TagDbModel>
 {
-    public void Configure(EntityTypeBuilder<PostReadDbModel> builder)
+    public void Configure(EntityTypeBuilder<PostDbModel> builder)
     {
         builder.ToTable("Posts");
         
@@ -42,7 +41,7 @@ internal sealed class ReadConfiguration :
                 details => AuthorDetailsReadDbModel.Create(details));
     }
 
-    public void Configure(EntityTypeBuilder<AuthorReadDbModel> builder)
+    public void Configure(EntityTypeBuilder<AuthorDbModel> builder)
     {
         builder.ToTable("Authors");
         
@@ -57,7 +56,7 @@ internal sealed class ReadConfiguration :
                 details => AuthorDetailsReadDbModel.Create(details));
     }
 
-    public void Configure(EntityTypeBuilder<PostImageReadDbModel> builder)
+    public void Configure(EntityTypeBuilder<PostImageDbModel> builder)
     {
         builder.ToTable("PostImages");
         
@@ -67,7 +66,7 @@ internal sealed class ReadConfiguration :
             .WithMany(p => p.Images);
     }
 
-    public void Configure(EntityTypeBuilder<TagReadDbModel> builder)
+    public void Configure(EntityTypeBuilder<TagDbModel> builder)
     {
         builder.ToTable("Tags");
         

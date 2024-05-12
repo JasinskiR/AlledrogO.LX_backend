@@ -3,21 +3,21 @@ using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
-using AlledrogO.Post.Infrastructure.EF.Models.ReadModels;
+using AlledrogO.Post.Infrastructure.EF.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlledrogO.Post.Infrastructure.EF.Repositories;
 
 public class PostgresAuthorReadService : IAuthorReadService
 {
-    private readonly DbSet<AuthorReadDbModel> _authors;
+    private readonly DbSet<AuthorDbModel> _authors;
     private readonly IAuthorFactory _authorFactory;
     private readonly IPostFactory _postFactory;
     public PostgresAuthorReadService(ReadDbContext dbContext, IAuthorFactory authorFactory, IPostFactory postFactory)
     {
         _authorFactory = authorFactory;
         _postFactory = postFactory;
-        _authors = dbContext.Set<AuthorReadDbModel>();
+        _authors = dbContext.Set<AuthorDbModel>();
     }
     
     public async Task<Author> GetAsync(Guid id)

@@ -1,7 +1,7 @@
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
-using AlledrogO.Post.Infrastructure.EF.Models.ReadModels;
+using AlledrogO.Post.Infrastructure.EF.Models;
 using AlledrogO.Shared.Queries;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.EF;
@@ -10,11 +10,11 @@ namespace AlledrogO.Post.Infrastructure.Queries.Handlers;
 
 public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostDto>>
 {
-    private readonly DbSet<PostReadDbModel> _posts;
+    private readonly DbSet<PostDbModel> _posts;
     
     public SearchPostsHandler(ReadDbContext dbContext)
     {
-        _posts = dbContext.Set<PostReadDbModel>();
+        _posts = dbContext.Set<PostDbModel>();
     }
     public async Task<IEnumerable<PostDto>> HandleAsync(SearchPosts query)
     {

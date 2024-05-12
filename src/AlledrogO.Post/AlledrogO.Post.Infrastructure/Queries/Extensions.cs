@@ -1,11 +1,11 @@
 using AlledrogO.Post.Application.DTOs;
-using AlledrogO.Post.Infrastructure.EF.Models.ReadModels;
+using AlledrogO.Post.Infrastructure.EF.Models;
 
 namespace AlledrogO.Post.Infrastructure.Queries;
 
 public static class Extensions
 {
-    public static PostDto AsDto(this PostReadDbModel model)
+    public static PostDto AsDto(this PostDbModel model)
     {
         return new PostDto
         {
