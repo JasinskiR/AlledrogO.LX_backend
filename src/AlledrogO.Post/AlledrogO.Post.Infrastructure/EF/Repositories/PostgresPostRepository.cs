@@ -16,9 +16,9 @@ internal sealed class PostgresPostRepository : IPostRepository
         _dbContext = dbContext;
     }
 
-    public Task<Domain.Entities.Post> GetAsync(Guid id)
+    public async Task<Domain.Entities.Post> GetAsync(Guid id)
     {
-        return _posts
+        return await _posts
             .Include(p => p.Author)
             .Include(p => p.Tags)
             .Include(p => p.Images)

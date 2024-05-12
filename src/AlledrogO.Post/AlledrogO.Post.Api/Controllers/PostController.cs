@@ -51,4 +51,13 @@ public class PostController : ControllerBase
         var result = await _commandDispatcher.DispatchAsync<CreatePost, Guid>(command);
         return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
+    
+    [HttpPost("{Id:guid}/Image")]
+    public async Task<IActionResult> UploadImage([FromRoute] Guid Id, IFormFile file)
+    {
+        var command = new AddPostImage(Id, file);
+
+        await _commandDispatcher.DispatchAsync(command);
+        return NoContent();
+    }
 }

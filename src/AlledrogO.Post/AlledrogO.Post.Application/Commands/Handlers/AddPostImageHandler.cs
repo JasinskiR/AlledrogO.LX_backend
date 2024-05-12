@@ -1,5 +1,6 @@
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Application.Exceptions;
+using AlledrogO.Post.Application.Services;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
 
@@ -16,14 +17,28 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage>
 
     public async Task HandleAsync(AddPostImage command)
     {
-        var (postId, imageUrl) = command;
-        var post = await _postRepository.GetAsync(postId);
+        var (postId, file) = command;
         
+        ImageValidator imageValidator = new();
+        var validationResult = await imageValidator.ValidateAsync(file);
+        if (!validationResult.IsValid)
+        {
+            throw new InvalidImageException(validationResult.Errors);
+        }
+        
+        var post = await _postRepository.GetAsync(postId);
         if (post is null)
         {
             throw new PostNotFoundException(postId);
         }
-        var image = new PostImage(imageUrl);
+        
+        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
+        
+        using var stream = new FileStream(path, FileMode.Create);
+        await file.CopyToAsync(stream);
+        
+        var image = new PostImage(path);
         post.AddImage(image);
         await _postRepository.UpdateAsync(post);
     }
