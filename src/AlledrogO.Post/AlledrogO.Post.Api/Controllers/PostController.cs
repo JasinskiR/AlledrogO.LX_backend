@@ -42,7 +42,7 @@ public class PostController : ControllerBase
     }
     
     [HttpPost("Search")]
-    public async Task<ActionResult<IEnumerable<PostDto>>> Search([FromBody] SearchPosts query)
+    public async Task<ActionResult<IEnumerable<PostCardDto>>> Search([FromBody] SearchPosts query)
     {
         var result = await _queryDispatcher.QueryAsync(query);
         

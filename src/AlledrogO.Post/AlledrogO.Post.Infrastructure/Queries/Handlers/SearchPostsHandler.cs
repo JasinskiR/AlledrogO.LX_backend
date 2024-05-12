@@ -8,7 +8,7 @@ using static Microsoft.EntityFrameworkCore.EF;
 
 namespace AlledrogO.Post.Infrastructure.Queries.Handlers;
 
-public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostDto>>
+public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostCardDto>>
 {
     private readonly DbSet<PostDbModel> _posts;
     
@@ -16,14 +16,14 @@ public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostDto
     {
         _posts = dbContext.Set<PostDbModel>();
     }
-    public async Task<IEnumerable<PostDto>> HandleAsync(SearchPosts query)
+    public async Task<IEnumerable<PostCardDto>> HandleAsync(SearchPosts query)
     {
         string searchString = query.Search.QueryString;
         List<string> tags = query.Search.Tags.ToList();
         
         var dbQuery = _posts
+            .Include(p => p.Images)
             .Include(p => p.Tags)
-            .Include(p => p.Author)
             .AsQueryable();
         
         if (dbQuery is not null)
@@ -32,7 +32,8 @@ public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostDto
             {
                 dbQuery = dbQuery
                     .Where(p =>
-                        Functions.ILike(p.Title, $"%{searchString}%"));
+                        Functions.ILike(p.Title, $"%{searchString}%") ||
+                        Functions.ILike(p.Description, $"%{searchString}%"));
             }
             if (tags.Any())
             {
@@ -41,11 +42,9 @@ public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostDto
                         p.Tags.Any(t => tags.Contains(t.Name)));
             }
         }
-
-        return await dbQuery
-            .Select(p => p.AsDto())
+        return await dbQuery!
+            .Select(p => p.AsCardDto())
             .AsNoTracking()
             .ToListAsync();
-
     }
 }

@@ -4,4 +4,4 @@ using AlledrogO.Shared.Queries;
 
 namespace AlledrogO.Post.Application.Queries;
 
-public record SearchPosts(PostSearchWithTagsDto Search) : IQuery<IEnumerable<PostDto>>;
+public record SearchPosts(PostSearchWithTagsDto Search) : IQuery<IEnumerable<PostCardDto>>;
