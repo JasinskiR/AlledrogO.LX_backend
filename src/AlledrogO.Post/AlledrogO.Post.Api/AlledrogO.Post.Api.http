@@ -1,6 +1,6 @@
-@AlledrogO.Post.Api_HostAddress = http://localhost:5044
+@AlledrogO.Post.Api_HostAddress = https://localhost:7056
 
-GET {{AlledrogO.Post.Api_HostAddress}}/weatherforecast/
+GET {{AlledrogO.Post.Api_HostAddress}}/api/Post/a7cfed78-a5f2-4b28-8014-3109f4cdbc37
 Accept: application/json
 
 ###

@@ -12,9 +12,9 @@ public static class Extensions
             Id = model.Id,
             Title = model.Title,
             Description = model.Description,
-            Images = model.Images
+            Images = model.Images?
                 .Select(i => i.Url)
-                .ToList(),
+                .ToList() ?? new List<string>(),
             Tags = model.Tags
                 .Select(t => t.Name)
                 .ToList(),

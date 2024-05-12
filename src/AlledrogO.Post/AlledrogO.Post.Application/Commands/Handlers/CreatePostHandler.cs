@@ -31,9 +31,9 @@ public class CreatePostHandler : ICommandHandler<CreatePost, Guid>
         var id = Guid.NewGuid();
         var post = _postFactory.Create(id, title, description, author);
         author.AddPost(post);
-        var t1 = _postRepository.AddAsync(post);
-        var t2 = _authorRepository.UpdateAsync(author);
-        await Task.WhenAll(t1, t2);
+        await _postRepository.AddAsync(post);
+        await _authorRepository.UpdateAsync(author);
+
         return id;
     }
 }

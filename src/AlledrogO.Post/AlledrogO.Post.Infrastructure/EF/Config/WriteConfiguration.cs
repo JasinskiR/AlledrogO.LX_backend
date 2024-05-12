@@ -70,7 +70,8 @@ public class WriteConfiguration:
                 details => AuthorDetails.Create(details))
             .HasColumnName("AuthorDetails");
 
-        builder.HasMany(a => a.Posts);
+        builder.HasMany(a => a.Posts)
+            .WithOne(p => p.Author);
         
         builder.ToTable("Authors");
     }

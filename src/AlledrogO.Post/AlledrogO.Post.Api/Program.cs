@@ -5,6 +5,7 @@ using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Post.Infrastructure;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.Post.Infrastructure.EF.Options;
+using AlledrogO.Post.Infrastructure.Queries;
 using AlledrogO.Shared;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,13 +23,12 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-// if (app.Environment.IsDevelopment())
-// {
-//     
-// }
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-app.UseSwagger();
-app.UseSwaggerUI();
 app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
     .Produces(200)
     .ExcludeFromDescription();
@@ -66,22 +66,22 @@ void testDb(WebApplicationBuilder webApplicationBuilder, WebApplication webAppli
     post1.AddTag(tag1);
     post1.AddTag(tag2);
 
-    using (var scope = webApplication.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<WriteDbContext>();
-        // context.Database.EnsureDeleted();
-        // context.Database.EnsureCreated();
-    
-        context.Authors.Add(author1);
-        context.SaveChanges();
-        
-        context.Tags.Add(tag1);
-        context.Tags.Add(tag2);
-        context.SaveChanges();
-        
-        context.Posts.Add(post1);
-        context.SaveChanges();
-    }
+    // using (var scope = webApplication.Services.CreateScope())
+    // {
+    //     var context = scope.ServiceProvider.GetRequiredService<WriteDbContext>();
+    //     // context.Database.EnsureDeleted();
+    //     // context.Database.EnsureCreated();
+    //
+    //     context.Authors.Add(author1);
+    //     context.SaveChanges();
+    //     
+    //     context.Tags.Add(tag1);
+    //     context.Tags.Add(tag2);
+    //     context.SaveChanges();
+    //     
+    //     context.Posts.Add(post1);
+    //     context.SaveChanges();
+    // }
 
     // using (var scope = webApplication.Services.CreateScope())
     // {
@@ -95,15 +95,27 @@ void testDb(WebApplicationBuilder webApplicationBuilder, WebApplication webAppli
     //     Console.WriteLine(result?.AuthorDetails.Email);
     // }
     //
-    // using (var scope = webApplication.Services.CreateScope())
-    // {
-    //     var context = scope.ServiceProvider.GetRequiredService<ReadDbContext>();
-    //
-    //     var result = context.Authors.FirstOrDefault(a => a.Id == author1.Id);
-    //     if (result == null)
-    //     {
-    //         Console.WriteLine("Author not found");
-    //     }
-    //     Console.WriteLine($"Found in read context: {result?.AuthorDetails}");
-    // }
+    using (var scope = webApplication.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ReadDbContext>();
+    
+        var result = context.Posts
+            .Where(p => p.Id == new Guid("a7cfed78-a5f2-4b28-8014-3109f4cdbc37"))
+            .Include(p => p.Author)
+            .Include(p => p.Tags)
+            .Include(p => p.Images)
+            .Select(p => p.AsDto())
+            .AsNoTracking()
+            .SingleOrDefault();
+            
+            // .Where(p => p.Id == query.Id)
+            // .Select(p => p.AsDto())
+            // .AsNoTracking()
+            // .SingleOrDefault();
+        if (result == null)
+        {
+            Console.WriteLine("Post not found");
+        }
+        Console.WriteLine($"Found in read context: {result?.AuthorDetails}");
+    }
 }

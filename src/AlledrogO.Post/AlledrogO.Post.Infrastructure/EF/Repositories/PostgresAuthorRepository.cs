@@ -16,10 +16,10 @@ public class PostgresAuthorRepository : IAuthorRepository
         _dbContext = dbContext;
     }
 
-    public Task<Author> GetAsync(Guid id)
+    public async Task<Author> GetAsync(Guid id)
     {
-        return _authors
-            .Include("posts")
+        return await _authors
+            .Include("Posts")
             .FirstOrDefaultAsync(a => a.Id == id);
     }
 

@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AlledrogO.Post.Infrastructure.EF;
 
-public static class Extensions
+internal static class Extensions
 {
     public static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {

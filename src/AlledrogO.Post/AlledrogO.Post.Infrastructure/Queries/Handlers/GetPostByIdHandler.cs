@@ -16,14 +16,16 @@ public class GetPostByIdHandler : IQueryHandler<GetPostById, PostDto>
         _posts = dbContext.Set<PostDbModel>();
     }
 
-    public Task<PostDto> HandleAsync(GetPostById query)
+    public async Task<PostDto> HandleAsync(GetPostById query)
     {
-        return _posts
+        var post = await _posts
             .Include(p => p.Author)
             .Include(p => p.Tags)
+            .Include(p => p.Images)
             .Where(p => p.Id == query.Id)
             .Select(p => p.AsDto())
             .AsNoTracking()
             .SingleOrDefaultAsync();
+        return post;
     }
 }
