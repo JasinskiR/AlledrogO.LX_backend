@@ -1,6 +1,12 @@
 using AlledrogO.Post.Application;
+using AlledrogO.Post.Domain.Entities;
+using AlledrogO.Post.Domain.Factories;
+using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Post.Infrastructure;
+using AlledrogO.Post.Infrastructure.EF.Contexts;
+using AlledrogO.Post.Infrastructure.EF.Options;
 using AlledrogO.Shared;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,4 +35,50 @@ app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
 app.UseShared();
 app.UseHttpsRedirection();
 app.MapControllers();
+
+var options = new DbContextOptionsBuilder<WriteDbContext>()
+    .UseNpgsql(builder.Configuration.GetConnectionString("Postgres"))
+    .Options;
+
+var authorFactory = new AuthorFactory();
+var author1 = authorFactory.Create(
+    new Guid(), 
+    new AuthorDetails("author1@mail.com", "123456789"),
+    Enumerable.Empty<Post>());
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<WriteDbContext>();
+    context.Database.EnsureDeleted();
+    context.Database.EnsureCreated();
+    
+    context.Authors.Add(author1);
+    context.SaveChanges();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<WriteDbContext>();
+
+    var result = context.Authors.FirstOrDefault(a => a.Id == author1.Id);
+    if (result == null)
+    {
+        Console.WriteLine("Author not found");
+    }
+    Console.WriteLine(result?.AuthorDetails.Email);
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ReadDbContext>();
+
+    var result = context.Authors.FirstOrDefault(a => a.Id == author1.Id);
+    if (result == null)
+    {
+        Console.WriteLine("Author not found");
+    }
+    Console.WriteLine($"Found in read context: {result?.AuthorDetails}");
+}
+
+
 app.Run();
