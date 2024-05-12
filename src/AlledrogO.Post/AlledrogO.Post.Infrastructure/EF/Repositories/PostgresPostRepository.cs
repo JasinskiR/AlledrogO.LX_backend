@@ -1,5 +1,6 @@
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
+using AlledrogO.Post.Infrastructure.EF.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlledrogO.Post.Infrastructure.EF.Repositories;
@@ -18,9 +19,9 @@ internal sealed class PostgresPostRepository : IPostRepository
     public Task<Domain.Entities.Post> GetAsync(Guid id)
     {
         return _posts
-            .Include("_author")
-            .Include("_tags")
-            .Include("_images")
+            .Include(p => p.Author)
+            .Include(p => p.Tags)
+            .Include(p => p.Images)
             .SingleOrDefaultAsync(p => p.Id == id);
     }
 

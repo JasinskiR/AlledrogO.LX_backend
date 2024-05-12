@@ -23,7 +23,9 @@ public class AppInitializer : IHostedService
         foreach (var dbContextType in dbContextTypes)
         {
             var dbContext = scope.ServiceProvider.GetRequiredService(dbContextType) as DbContext;
-            await dbContext.Database.MigrateAsync(cancellationToken);
+            dbContext.Database.EnsureDeleted();
+            dbContext.Database.EnsureCreated();
+            // await dbContext.Database.MigrateAsync(cancellationToken);
         }
     }
 

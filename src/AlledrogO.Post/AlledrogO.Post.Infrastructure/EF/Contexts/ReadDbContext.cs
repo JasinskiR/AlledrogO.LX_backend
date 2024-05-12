@@ -9,6 +9,7 @@ public class ReadDbContext : DbContext
     public DbSet<PostDbModel> Posts { get; set; }
     public DbSet<AuthorDbModel> Authors { get; set; }
     public DbSet<TagDbModel> Tags { get; set; }
+    public DbSet<PostImageDbModel> PostImages { get; set; }
     public ReadDbContext(DbContextOptions<ReadDbContext> options) 
         : base(options)
     {
@@ -18,7 +19,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("PostSchema");
         
-        var configuration = new ReadConfiguration();
+        var configuration = new Configuration();
         modelBuilder.ApplyConfiguration<PostDbModel>(configuration);
         modelBuilder.ApplyConfiguration<AuthorDbModel>(configuration);
         modelBuilder.ApplyConfiguration<TagDbModel>(configuration);

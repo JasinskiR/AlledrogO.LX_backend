@@ -20,16 +20,12 @@ public static class Extensions
                 .ToList(),
             Status = model.Status,
             AuthorId = model.Author.Id,
-            AuthorDetails = model.AuthorDetails.AsDto()
-        };
-    }
-    
-    public static AuthorDetailsDto AsDto(this AuthorDetailsReadDbModel model)
-    {
-        return new AuthorDetailsDto
-        {
-            Email = model.Email,
-            PhoneNumber = model.PhoneNumber
+            AuthorDetails = new AuthorDetailsDto()
+                {
+                    Email = model.SharedAuthorDetails.Split(", ")[0],
+                    PhoneNumber = model.SharedAuthorDetails.Split(", ")[1]
+                }
+
         };
     }
 }

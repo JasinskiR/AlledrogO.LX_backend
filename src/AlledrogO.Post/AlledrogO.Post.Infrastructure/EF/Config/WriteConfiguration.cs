@@ -27,32 +27,32 @@ public class WriteConfiguration:
                 title => new PostTitle(title))
             .HasColumnName("Title");
         
-        var descriptionConverter = new ValueConverter<PostDescription, string>(
-            description => description.Value,
-            description => new PostDescription(description));
-        builder.Property(typeof(PostDescription), "_description")
-            .HasConversion(descriptionConverter)
+
+        builder.Property(p => p.Description)
+            .HasConversion(
+                description => description.Value,
+                description => new PostDescription(description))
             .HasColumnName("Description");
-
-        builder.HasMany(typeof(PostImage), "_images");
-
-        builder.HasMany(typeof(Tag), "_tags");
         
-        var statusConverter = new ValueConverter<PostStatus, string>(
-            status => status.ToString(),
-            status => Enum.Parse<PostStatus>(status));
-        builder.Property(typeof(PostStatus) , "_status")
-            .HasConversion(statusConverter)
+        builder.Property(p => p.Status)
+            .HasConversion(
+                status => status.ToString(),
+                status => Enum.Parse<PostStatus>(status))
             .HasColumnName("Status");
+        
+        builder.Property(p => p.SharedAuthorDetails)
+            .HasConversion(
+                details => details.ToString(),
+                details => AuthorDetails.Create(details))
+            .HasColumnName("SharedAuthorDetails");
 
-        builder.HasOne(typeof(Author), "_author");
+        builder.HasMany(p => p.Images);
 
-        var authorDetailsConverter = new ValueConverter<AuthorDetails, string>(
-            details => details.ToString(),
-            details => AuthorDetails.Create(details));
-        builder.Property(typeof(AuthorDetails), "_sharedAuthorDetails")
-            .HasConversion(authorDetailsConverter)
-            .HasColumnName("AuthorDetails");
+        builder.HasMany(p => p.Tags)
+            .WithMany(t => t.Posts);
+
+        builder.HasOne(p => p.Author)
+            .WithMany(a => a.Posts);
         
         builder.ToTable("Posts");
     }
@@ -64,14 +64,13 @@ public class WriteConfiguration:
         builder.Property(p => p.Version)
             .IsRowVersion();
         
-        var detailsConverter = new ValueConverter<AuthorDetails, string>(
-            details => details.ToString(),
-            details => AuthorDetails.Create(details));
         builder.Property(a => a.AuthorDetails)
-            .HasConversion(detailsConverter)
-            .HasColumnName("Details");
-        
-        builder.HasMany(typeof(Domain.Entities.Post), "_posts");
+            .HasConversion(
+                details => details.ToString(),
+                details => AuthorDetails.Create(details))
+            .HasColumnName("AuthorDetails");
+
+        builder.HasMany(a => a.Posts);
         
         builder.ToTable("Authors");
     }
@@ -87,8 +86,11 @@ public class WriteConfiguration:
             .HasConversion(
                 name => name.Value,
                 name => new TagName(name));
+
+        builder.Property(t => t.PostCount);
         
-        builder.HasMany(typeof(Domain.Entities.Post), "_posts");
+        builder.HasMany(t => t.Posts)
+            .WithMany(p => p.Tags);
         
         builder.ToTable("Tags");
     }
