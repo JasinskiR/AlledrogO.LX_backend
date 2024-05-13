@@ -38,4 +38,25 @@ public static class Extensions
             Image = model.Images.FirstOrDefault()?.Url ?? string.Empty,
         };
     }
+    
+    public static AuthorDto AsDto(this AuthorDbModel model)
+    {
+        return new AuthorDto
+        {
+            Id = model.Id,
+            Details = model.AuthorDetails.AsDto(),
+            Posts = model.Posts?
+                .Select(p => p.Id)
+                .ToList() ?? new List<Guid>()
+        };
+    }
+    
+    internal static AuthorDetailsDto AsDto(this string details)
+    {
+        return new AuthorDetailsDto
+        {
+            Email = details.Split(", ")[0],
+            PhoneNumber = details.Split(", ")[1]
+        };
+    }
 }
