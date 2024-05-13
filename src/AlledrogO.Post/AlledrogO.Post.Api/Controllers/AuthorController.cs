@@ -24,8 +24,22 @@ public class AuthorController : ControllerBase
     {
         var query = new GetAuthors();
         var result = await _queryDispatcher.QueryAsync(query);
+        if (result is null)
+        {
+            return NotFound();
+        }
         return Ok(result);
     }
     
-    
+    [HttpGet("{Id:guid}")]
+    public async Task<ActionResult<AuthorDto>> Get([FromRoute] GetAuthorById query)
+    {
+        var result = await _queryDispatcher.QueryAsync(query);
+        
+        if (result is null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
 }
