@@ -1,8 +1,11 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
+
+ARG dotnet_cli_home_arg=/tmp/
+ENV DOTNET_CLI_HOME=$dotnet_cli_home_arg
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -20,4 +23,7 @@ RUN dotnet publish "AlledrogO.Post.Api.csproj" -c $BUILD_CONFIGURATION -o /app/p
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir -p /app/wwwroot/images
+RUN chmod -R 777 /app/wwwroot/images
+USER $APP_UID
 ENTRYPOINT ["dotnet", "AlledrogO.Post.Api.dll"]
