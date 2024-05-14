@@ -21,6 +21,10 @@ public class PostController : ControllerBase
         _commandDispatcher = commandDispatcher;
     }
     
+    /// <summary>
+    /// Retrieves all post cards for home page.
+    /// </summary>
+    /// <returns>Collection of post cards (id, title, image)</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<PostCardDto>>> Get()
     {
@@ -29,6 +33,11 @@ public class PostController : ControllerBase
         return Ok(result);
     }
     
+    /// <summary>
+    /// Retrieves post by id.
+    /// </summary>
+    /// <param name="query"> requires Guid as a post Id </param>
+    /// <returns> Post with specified Id </returns>
     [HttpGet("{Id:guid}")]
     public async Task<ActionResult<PostDto>> Get([FromRoute] GetPostById query)
     {
@@ -41,6 +50,11 @@ public class PostController : ControllerBase
         return Ok(result);
     }
     
+    /// <summary>
+    /// Search posts cards by title or description and tags
+    /// </summary>
+    /// <param name="query"> Query containing searchphrase and list of tags </param>
+    /// <returns> Collection of post cards (id, title, image)</returns>
     [HttpPost("Search")]
     public async Task<ActionResult<IEnumerable<PostCardDto>>> Search([FromBody] SearchPosts query)
     {
