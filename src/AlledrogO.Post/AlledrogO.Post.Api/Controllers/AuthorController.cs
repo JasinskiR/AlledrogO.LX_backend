@@ -1,3 +1,4 @@
+using AlledrogO.Post.Application.Commands;
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
@@ -31,6 +32,7 @@ public class AuthorController : ControllerBase
         return Ok(result);
     }
     
+    
     [HttpGet("{Id:guid}")]
     public async Task<ActionResult<AuthorDto>> Get([FromRoute] GetAuthorById query)
     {
@@ -40,6 +42,18 @@ public class AuthorController : ControllerBase
         {
             return NotFound();
         }
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Only for testing purposes
+    /// </summary>
+    /// <param name="command"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public async Task<ActionResult<Guid>> Create([FromBody] CreateAuthor command)
+    {
+        var result = await _commandDispatcher.DispatchAsync<CreateAuthor, Guid>(command);
         return Ok(result);
     }
 }
