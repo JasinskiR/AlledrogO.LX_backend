@@ -1,3 +1,4 @@
+using AlledrogO.Post.Application.Commands;
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
@@ -41,5 +42,12 @@ public class TagController : ControllerBase
             return NotFound();
         }
         return Ok(result);
+    }
+    
+    [HttpPost]
+    public async Task<ActionResult<Guid>> Post([FromBody] AddTagToPost command)
+    {
+        var result = await _commandDispatcher.DispatchAsync<AddTagToPost, Guid>(command);
+        return CreatedAtAction(nameof(Get), new { Id = result }, result);
     }
 }

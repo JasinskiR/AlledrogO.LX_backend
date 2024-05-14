@@ -1,12 +1,14 @@
 using AlledrogO.Post.Application.Contracts;
+using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Exceptions;
+using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
 
-public class AddTagToPostHandler : ICommandHandler<AddTagToPost>
+public class AddTagToPostHandler : ICommandHandler<AddTagToPost, Guid>
 {
     private readonly IPostRepository _postRepository;
     private readonly ITagRepository _tagRepository;
@@ -18,7 +20,7 @@ public class AddTagToPostHandler : ICommandHandler<AddTagToPost>
         _tagFactory = tagFactory;
     }
 
-    public async Task HandleAsync(AddTagToPost command)
+    public async Task<Guid> HandleAsync(AddTagToPost command)
     {
         (var postId, TagName tagName) = command;
         
@@ -39,7 +41,8 @@ public class AddTagToPostHandler : ICommandHandler<AddTagToPost>
             tag.AddPost(post);
             await _tagRepository.UpdateAsync(tag);
         }
-        post.AddTag(tag);
+        // post.AddTag(tag);
         await _postRepository.UpdateAsync(post);
+        return tag.Id;
     }
 }
