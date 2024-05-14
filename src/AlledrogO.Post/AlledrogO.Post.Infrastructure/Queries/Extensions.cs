@@ -5,7 +5,7 @@ namespace AlledrogO.Post.Infrastructure.Queries;
 
 public static class Extensions
 {
-    public static PostDto AsDto(this PostDbModel model)
+    internal static PostDto AsDto(this PostDbModel model)
     {
         return new PostDto
         {
@@ -29,7 +29,7 @@ public static class Extensions
         };
     }
     
-    public static PostCardDto AsCardDto(this PostDbModel model)
+    internal static PostCardDto AsCardDto(this PostDbModel model)
     {
         return new PostCardDto
         {
@@ -39,7 +39,7 @@ public static class Extensions
         };
     }
     
-    public static AuthorDto AsDto(this AuthorDbModel model)
+    internal static AuthorDto AsDto(this AuthorDbModel model)
     {
         return new AuthorDto
         {
@@ -51,12 +51,25 @@ public static class Extensions
         };
     }
     
-    internal static AuthorDetailsDto AsDto(this string details)
+    private static AuthorDetailsDto AsDto(this string details)
     {
         return new AuthorDetailsDto
         {
             Email = details.Split(", ")[0],
             PhoneNumber = details.Split(", ")[1]
+        };
+    }
+    
+    internal static TagDto AsDto(this TagDbModel model)
+    {
+        return new TagDto
+        {
+            Id = model.Id,
+            Name = model.Name,
+            PostCount = model.PostCount,
+            PostIds = model.Posts?
+                .Select(p => p.Id)
+                .ToList() ?? new List<Guid>()
         };
     }
 }
