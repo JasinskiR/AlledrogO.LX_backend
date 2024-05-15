@@ -46,7 +46,8 @@ public class AuthorController : ControllerBase
     }
     
     /// <summary>
-    /// Only for testing purposes
+    /// Only for testing purposes. Author creation should be done
+    /// automatically when creating a user in user module.
     /// </summary>
     /// <param name="command"></param>
     /// <returns></returns>
@@ -55,5 +56,19 @@ public class AuthorController : ControllerBase
     {
         var result = await _commandDispatcher.DispatchAsync<CreateAuthor, Guid>(command);
         return Ok(result);
+    }
+    
+    /// <summary>
+    /// Only for testing purposes. Author deletion should be done
+    /// automatically when deleting a user in user module.
+    /// Should delete all posts by author.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <returns></returns>
+    [HttpDelete("{Id:guid}")]
+    public async Task<ActionResult> Delete([FromRoute] DeleteAuthor command)
+    {
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
     }
 }

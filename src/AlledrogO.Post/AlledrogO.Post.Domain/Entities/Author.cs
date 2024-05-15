@@ -1,5 +1,6 @@
 using AlledrogO.Post.Domain.Entities.Exceptions;
 using AlledrogO.Post.Domain.Events;
+using AlledrogO.Post.Domain.Events.Author;
 using AlledrogO.Post.Domain.Events.Post;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Domain;
@@ -40,7 +41,7 @@ public class Author : AggregateRoot<Guid>
             throw new PostWithSameTitleAlreadyExistsException(post.Title);
         }
         _posts.AddLast(post);
-        AddEvent(new PostAddedDE(this, post));
+        AddEvent(new AuthorPostAddedDE(this, post));
     }
     
     public void PublishPost(string title)
@@ -55,6 +56,29 @@ public class Author : AggregateRoot<Guid>
         post.Archive();
     }
     
+    public void DeleteAllPosts()
+    {
+        DeleteManyPosts(Posts);
+    }
+    
+    public void DeletePost(Post post)
+    {
+        if (!Posts.Contains(post))
+        {
+            throw new PostNotFoundException(post.Title);
+        }
+        _posts.Remove(post);
+        AddEvent(new AuthorPostDeletedDE(this, post));
+    }
+    
+    public void DeleteManyPosts(IEnumerable<Post> posts)
+    {
+        foreach (var post in posts)
+        {
+            DeletePost(post);
+        }
+    }
+    
     private Post getPostByTitle(string title)
     {
         var post = _posts.FirstOrDefault(p => p.Title == title);
@@ -64,7 +88,4 @@ public class Author : AggregateRoot<Guid>
         }
         return post;
     }
-
-    
-    
 }
