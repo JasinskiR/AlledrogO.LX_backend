@@ -4,6 +4,7 @@ using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AlledrogO.Post.Api.Controllers;
 
@@ -21,6 +22,7 @@ public class AuthorController : ControllerBase
     }
     
     [HttpGet]
+    [SwaggerOperation("Only for testing purpose. Get all authors")]
     public async Task<ActionResult<IEnumerable<AuthorDto>>> Get()
     {
         var query = new GetAuthors();
@@ -32,9 +34,9 @@ public class AuthorController : ControllerBase
         return Ok(result);
     }
     
-    
     [HttpGet("{Id:guid}")]
-    public async Task<ActionResult<AuthorDto>> Get([FromRoute] GetAuthorById query)
+    [SwaggerOperation("Get author by ID")]
+    public async Task<ActionResult<AuthorDto>> GetById([FromRoute] GetAuthorById query)
     {
         var result = await _queryDispatcher.QueryAsync(query);
         
@@ -45,27 +47,19 @@ public class AuthorController : ControllerBase
         return Ok(result);
     }
     
-    /// <summary>
-    /// Only for testing purposes. Author creation should be done
-    /// automatically when creating a user in user module.
-    /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
     [HttpPost]
+    [SwaggerOperation("Only for testing purpose. Create author.", 
+        "Author creation should be done automatically when creating a user in user module.")]
     public async Task<ActionResult<Guid>> Create([FromBody] CreateAuthor command)
     {
         var result = await _commandDispatcher.DispatchAsync<CreateAuthor, Guid>(command);
         return Ok(result);
     }
     
-    /// <summary>
-    /// Only for testing purposes. Author deletion should be done
-    /// automatically when deleting a user in user module.
-    /// Should delete all posts by author.
-    /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
     [HttpDelete("{Id:guid}")]
+    [SwaggerOperation("Only for testing purpose. Delete author.", 
+            "Author deletion should be done automatically " +
+            "when deleting a user in user module. Should delete all posts by author.")]
     public async Task<ActionResult> Delete([FromRoute] DeleteAuthor command)
     {
         await _commandDispatcher.DispatchAsync(command);

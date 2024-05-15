@@ -7,6 +7,7 @@ using AlledrogO.Post.Infrastructure;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.Shared;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddShared();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(swagger =>
+{
+    swagger.EnableAnnotations();
+    swagger.CustomSchemaIds(x => x.FullName);
+    swagger.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Alledrogo API",
+        Version = "v1"
+    });
+});
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
