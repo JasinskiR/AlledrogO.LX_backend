@@ -3,6 +3,7 @@ using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Application.Services;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
@@ -11,13 +12,17 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
 {
     private readonly IPostRepository _postRepository;
     private readonly IHostEnvironment _environment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private static string _imagesDirectory = "images";
     private readonly string _staticFilesPath;
 
-    public AddPostImageHandler(IPostRepository postRepository, IHostEnvironment environment)
+    public AddPostImageHandler(IPostRepository postRepository, 
+        IHostEnvironment environment, 
+        IHttpContextAccessor httpContextAccessor)
     {
         _postRepository = postRepository;
         _environment = environment;
+        _httpContextAccessor = httpContextAccessor;
         _staticFilesPath = Path.Combine(_environment.ContentRootPath, "wwwroot");
     }
 
@@ -45,9 +50,15 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
         await file.CopyToAsync(stream);
 
         var serverImagePath = string.Join("/", _imagesDirectory, fileName);
-        var image = new PostImage(serverImagePath);
+        var request = _httpContextAccessor.HttpContext.Request;
+        var host = request.Host.ToUriComponent();
+        var scheme = request.Scheme;
+        var fullUrl = $"{scheme}://{host}/{serverImagePath}";
+        
+        var image = new PostImage(fullUrl);
         post.AddImage(image);
         await _postRepository.UpdateAsync(post);
-        return serverImagePath;
+        
+        return fullUrl;
     }
 }
