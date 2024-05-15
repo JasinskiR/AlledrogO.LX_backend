@@ -22,7 +22,7 @@ public class AuthorController : ControllerBase
     }
     
     [HttpGet]
-    [SwaggerOperation("Only for testing purpose. Get all authors")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Get all authors")]
     public async Task<ActionResult<IEnumerable<AuthorDto>>> Get()
     {
         var query = new GetAuthors();
@@ -48,7 +48,7 @@ public class AuthorController : ControllerBase
     }
     
     [HttpPost]
-    [SwaggerOperation("Only for testing purpose. Create author.", 
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Create author.", 
         "Author creation should be done automatically when creating a user in user module.")]
     public async Task<ActionResult<Guid>> Create([FromBody] CreateAuthor command)
     {
@@ -57,7 +57,7 @@ public class AuthorController : ControllerBase
     }
     
     [HttpDelete("{Id:guid}")]
-    [SwaggerOperation("Only for testing purpose. Delete author.", 
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Delete author.", 
             "Author deletion should be done automatically " +
             "when deleting a user in user module. Should delete all posts by author.")]
     public async Task<ActionResult> Delete([FromRoute] DeleteAuthor command)

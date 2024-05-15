@@ -2,6 +2,7 @@ using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Shared.Commands;
+using FluentValidation;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
 
@@ -21,6 +22,12 @@ public class CreatePostHandler : ICommandHandler<CreatePost, Guid>
     public async Task<Guid> HandleAsync(CreatePost command)
     {
         var ( title, description, authorId) = command;
+        var validator = new CreatePostValidator();
+        var validationResult = await validator.ValidateAsync(command);
+        if (!validationResult.IsValid)
+        {
+            throw new DtoValidationFailedException(validationResult.Errors.FirstOrDefault()!.ErrorMessage);
+        }
         
         var author = await _authorRepository.GetAsync(authorId);
         
@@ -35,5 +42,15 @@ public class CreatePostHandler : ICommandHandler<CreatePost, Guid>
         await _authorRepository.UpdateAsync(author);
 
         return id;
+    }
+    
+    private class CreatePostValidator : AbstractValidator<CreatePost>
+    {
+        public CreatePostValidator()
+        {
+            RuleFor(x => x.Title).NotEmpty();
+            RuleFor(x => x.Description).NotEmpty();
+            RuleFor(x => x.AuthorId).NotEmpty();
+        }
     }
 }
