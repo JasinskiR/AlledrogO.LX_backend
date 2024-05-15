@@ -28,6 +28,8 @@ if (app.Environment.IsDevelopment())
 {
  
 }
+
+app.UseCors("Angular");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseDefaultFiles();
