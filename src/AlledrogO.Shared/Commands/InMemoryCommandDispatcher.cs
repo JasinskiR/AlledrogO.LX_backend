@@ -11,11 +11,19 @@ public class InMemoryCommandDispatcher : ICommandDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public Task DispatchAsync<TCommand>(TCommand command) where TCommand : class, ICommand
+    public async Task DispatchAsync<TCommand>(TCommand command) where TCommand : class, ICommand
     {
         using var scope = _serviceProvider.CreateScope();
         var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>();
         
-        return handler.HandleAsync(command);
+        await handler.HandleAsync(command);
+    }
+
+    public async Task<TResult> DispatchAsync<TCommand, TResult>(TCommand command) where TCommand : class, ICommand<TResult>
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<TCommand, TResult>>();
+        
+        return await handler.HandleAsync(command);
     }
 }

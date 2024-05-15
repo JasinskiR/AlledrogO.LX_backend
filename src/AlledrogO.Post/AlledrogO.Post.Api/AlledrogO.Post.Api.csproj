@@ -9,7 +9,13 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,6 +27,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
+      <ProjectReference Include="..\AlledrogO.Post.Infrastructure\AlledrogO.Post.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -33,6 +40,10 @@
 
     <ItemGroup>
       <None Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\images\" />
     </ItemGroup>
 
 </Project>
