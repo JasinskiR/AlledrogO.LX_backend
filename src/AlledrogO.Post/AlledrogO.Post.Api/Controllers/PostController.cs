@@ -86,4 +86,18 @@ public class PostController : ControllerBase
         }
         return Ok(result);
     }
+    
+    [HttpPut("{PostId:guid}/Tag/{TagName}")]
+    public async Task<ActionResult> PutTag([FromRoute] AddTagToPost command)
+    {
+        var result = await _commandDispatcher.DispatchAsync<AddTagToPost, Guid>(command);
+        return CreatedAtAction(nameof(Get), new { Id = result }, result);
+    }
+    
+    [HttpDelete("{PostId:guid}/Tag/{TagName}")]
+    public async Task<ActionResult> DeleteTag([FromRoute] DeleteTagFromPost command)
+    {
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
 }
