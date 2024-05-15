@@ -3,4 +3,4 @@ using AlledrogO.Shared.Queries;
 
 namespace AlledrogO.Post.Application.Queries;
 
-public record GetTagById(Guid Id) : IQuery<TagDetailsDto>;
+public record GetTagByName(string Name) : IQuery<TagDetailsDto>;

@@ -60,9 +60,9 @@ public static class Extensions
         };
     }
     
-    internal static TagDto AsDto(this TagDbModel model)
+    internal static TagDetailsDto AsDetailsDto(this TagDbModel model)
     {
-        return new TagDto
+        return new TagDetailsDto
         {
             Id = model.Id,
             Name = model.Name,
@@ -70,6 +70,15 @@ public static class Extensions
             PostIds = model.Posts?
                 .Select(p => p.Id)
                 .ToList() ?? new List<Guid>()
+        };
+    }
+    
+    internal static TagDto AsDto(this TagDbModel model)
+    {
+        return new TagDto
+        {
+            Name = model.Name,
+            PostCount = model.PostCount,
         };
     }
 }

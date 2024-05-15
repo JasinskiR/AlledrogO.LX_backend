@@ -74,7 +74,7 @@ public class PostController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
     
-    [HttpPost("{Id:guid}/Image")]
+    [HttpPut("{Id:guid}/Image")]
     public async Task<IActionResult> UploadImage([FromRoute] Guid Id, IFormFile file)
     {
         var command = new AddPostImage(Id, file);
@@ -86,6 +86,13 @@ public class PostController : ControllerBase
         }
         return Ok(result);
     }
+    
+    // [HttpDelete("{Id:guid}/Image/{ImageId:guid}")]
+    // public async Task<IActionResult> DeleteImage([FromRoute] DeletePostImage command)
+    // {
+    //     await _commandDispatcher.DispatchAsync(command);
+    //     return Ok();
+    // }
     
     [HttpPut("{PostId:guid}/Tag/{TagName}")]
     public async Task<ActionResult> PutTag([FromRoute] AddTagToPost command)

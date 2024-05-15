@@ -7,21 +7,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AlledrogO.Post.Infrastructure.Queries.Handlers;
 
-public class GetTagsHandler : IQueryHandler<GetTags, IEnumerable<TagDto>>
+public class GetTagByNameHandler : IQueryHandler<GetTagByName, TagDetailsDto>
 {
     private readonly DbSet<TagDbModel> _tags;
 
-    public GetTagsHandler(ReadDbContext context)
+    public GetTagByNameHandler(ReadDbContext context)
     {
         _tags = context.Tags;
     }
 
-    public async Task<IEnumerable<TagDto>> HandleAsync(GetTags query)
+    public async Task<TagDetailsDto> HandleAsync(GetTagByName query)
     {
         return await _tags
-            .OrderByDescending(t => t.PostCount)
-            .Select(t => t.AsDto())
+            .Where(t => t.Name == query.Name)
+            .Include(t => t.Posts)
+            .Select(t => t.AsDetailsDto())
             .AsNoTracking()
-            .ToListAsync();
+            .FirstOrDefaultAsync();
     }
 }

@@ -23,8 +23,7 @@ public class TagController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TagDto>>> Get()
     {
-        var query = new GetTags();
-        var result = await _queryDispatcher.QueryAsync(query);
+        var result = await _queryDispatcher.QueryAsync(new GetTags());
         if (result is null)
         {
             return NotFound();
@@ -33,10 +32,21 @@ public class TagController : ControllerBase
     }
     
     [HttpGet("{Id:guid}")]
-    public async Task<ActionResult<TagDto>> Get([FromRoute] GetTagById query)
+    public async Task<ActionResult<TagDetailsDto>> Get([FromRoute] GetTagById query)
     {
         var result = await _queryDispatcher.QueryAsync(query);
         
+        if (result is null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+    
+    [HttpGet("{Name}")]
+    public async Task<ActionResult<TagDetailsDto>> Get([FromRoute] GetTagByName query)
+    {
+        var result = await _queryDispatcher.QueryAsync(query);
         if (result is null)
         {
             return NotFound();
