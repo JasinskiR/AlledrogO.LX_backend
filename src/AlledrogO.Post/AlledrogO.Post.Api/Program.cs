@@ -1,3 +1,4 @@
+using AlledrogO.Post.Api;
 using AlledrogO.Post.Application;
 using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Factories;
@@ -17,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
+builder.Services.AddCorsForAngular(builder.Configuration);
 
 var app = builder.Build();
 

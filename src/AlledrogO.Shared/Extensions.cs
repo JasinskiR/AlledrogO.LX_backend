@@ -4,6 +4,7 @@ using AlledrogO.Shared.Exceptions;
 using AlledrogO.Shared.Queries;
 using AlledrogO.Shared.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AlledrogO.Shared;
@@ -51,4 +52,6 @@ public static class Extensions
        app.UseMiddleware<ExceptionMiddleware>();
        return app;
    }
+   
+   
 }
