@@ -1,7 +1,7 @@
 using AlledrogO.Shared.Commands;
 using Microsoft.Extensions.Logging;
 
-namespace AlledrogO.Post.Infrastructure.Logging;
+namespace AlledrogO.Shared.Logging;
 
 internal sealed class LoggingCommandHandlerDecorator<TCommand> 
     : ICommandHandler<TCommand> where TCommand : class, ICommand
