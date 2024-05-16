@@ -40,11 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
-      <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Infrastructure\AlledrogO.Post.Infrastructure.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Api\AlledrogO.Post.Api.csproj" />
       <ProjectReference Include="..\..\Modules\AlledrogO.Shared\AlledrogO.Shared.csproj" />
     </ItemGroup>
 

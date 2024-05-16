@@ -3,6 +3,7 @@ using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
