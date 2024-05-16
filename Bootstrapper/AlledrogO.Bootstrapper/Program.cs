@@ -6,6 +6,7 @@ using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Post.Infrastructure;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.Shared;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -23,6 +24,12 @@ builder.Services.AddSwaggerGen(swagger =>
         Version = "v1"
     });
 });
+builder.Services.AddMassTransit(configurator =>
+{
+    configurator.SetKebabCaseEndpointNameFormatter();
+    configurator.UsingInMemory((context, config) => config.ConfigureEndpoints(context));
+});
+
 builder.Services.AddPostModule(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddCorsForAngular(builder.Configuration);
