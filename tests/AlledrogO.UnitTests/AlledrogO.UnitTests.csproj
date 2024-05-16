@@ -23,8 +23,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\AlledrogO.Post\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
-      <ProjectReference Include="..\..\src\AlledrogO.Post\AlledrogO.Post.Domain\AlledrogO.Post.Domain.csproj" />
+      <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
+      <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Domain\AlledrogO.Post.Domain.csproj" />
     </ItemGroup>
 
 </Project>

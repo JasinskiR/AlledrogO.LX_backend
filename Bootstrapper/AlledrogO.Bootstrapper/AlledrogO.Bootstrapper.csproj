@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <RootNamespace>AlledrogO.Post.Api</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,15 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
       <Content Remove="obj\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
-      <ProjectReference Include="..\AlledrogO.Post.Infrastructure\AlledrogO.Post.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -44,6 +37,15 @@
 
     <ItemGroup>
       <Folder Include="wwwroot\images\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Application\AlledrogO.Post.Application.csproj" />
+      <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Infrastructure\AlledrogO.Post.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Modules\AlledrogO.Shared\AlledrogO.Shared.csproj" />
     </ItemGroup>
 
 </Project>
