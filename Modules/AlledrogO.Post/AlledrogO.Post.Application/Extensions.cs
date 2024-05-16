@@ -1,5 +1,6 @@
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Shared;
+using AlledrogO.Shared.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AlledrogO.Post.Application;

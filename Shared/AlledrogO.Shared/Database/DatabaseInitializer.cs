@@ -2,17 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace AlledrogO.Shared.Services;
+namespace AlledrogO.Shared.Database;
 
-public class AppInitializer : IHostedService
+public class DatabaseInitializer : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
-    
-    public AppInitializer(IServiceProvider serviceProvider)
+
+    public DatabaseInitializer(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
-    
+
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
