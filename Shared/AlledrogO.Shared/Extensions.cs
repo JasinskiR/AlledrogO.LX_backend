@@ -11,8 +11,7 @@ public static class Extensions
 {
    public static IServiceCollection AddShared(this IServiceCollection services)
    {
-       services.AddQueries();
-       services.AddCommands();
+       
        services.AddTransient<ExceptionMiddleware>();
        services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
        return services;
