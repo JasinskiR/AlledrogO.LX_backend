@@ -11,11 +11,8 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddShared();
 builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
 builder.Services.AddSwaggerGen(swagger =>
 {
     swagger.EnableAnnotations();
@@ -26,8 +23,7 @@ builder.Services.AddSwaggerGen(swagger =>
         Version = "v1"
     });
 });
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddPostModule(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddCorsForAngular(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
