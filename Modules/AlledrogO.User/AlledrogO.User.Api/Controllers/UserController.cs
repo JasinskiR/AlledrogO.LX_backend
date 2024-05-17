@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using AlledrogO.User.Api.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,7 +48,7 @@ public class UserController : ControllerBase
             return BadRequest(new { Message = "Invalid email or password" });
         }
         _signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
-        var result = await _signInManager.PasswordSignInAsync(user, dto.Password, false, false);
+        var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
         
         if (result.Succeeded)
         {
@@ -61,5 +63,12 @@ public class UserController : ControllerBase
     {
         await _signInManager.SignOutAsync();
         return Ok(new { Message = "Logout successful" });
+    }
+    
+    [HttpGet("test")]
+    [Authorize]
+    public IActionResult Test()
+    {
+        return Ok($"Hello {User.Identity.Name}");
     }
 }
