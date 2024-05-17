@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using AlledrogO.Post.Application.Commands;
 using AlledrogO.Post.Application.DTOs;
+using AlledrogO.Post.Application.DTOs.External;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
@@ -66,13 +67,12 @@ public class PostController : ControllerBase
     [HttpPost]
     [Authorize]
     [SwaggerOperation("Create post.")]
-    public async Task<IActionResult> Post([FromBody] CreatePost command)
+    public async Task<IActionResult> Post([FromBody] CreatePostDto dto)
     {
-        var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (command.AuthorId.ToString() != loggedInUserId)
-        {
-            return Unauthorized();
-        }
+        var loggedInUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        
+        var command = new CreatePost(dto.Title, dto.Description, loggedInUserId);
+        
         var result = await _commandDispatcher.DispatchAsync<CreatePost, Guid>(command);
         return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
