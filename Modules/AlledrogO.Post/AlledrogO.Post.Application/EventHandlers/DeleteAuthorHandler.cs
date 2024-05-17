@@ -1,10 +1,12 @@
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Application.Exceptions;
-using AlledrogO.Shared.Commands;
+using AlledrogO.Shared.MassTransit;
+using AlledrogO.Shared.MassTransit.Events;
+using MassTransit;
 
-namespace AlledrogO.Post.Application.Commands.Handlers;
+namespace AlledrogO.Post.Application.EventHandlers;
 
-public class DeleteAuthorHandler : ICommandHandler<DeleteAuthor>
+public class DeleteAuthorHandler : IMessageMarker, IConsumer<UserDeletedEvent>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -13,9 +15,9 @@ public class DeleteAuthorHandler : ICommandHandler<DeleteAuthor>
         _authorRepository = authorRepository;
     }
 
-    public async Task HandleAsync(DeleteAuthor command)
+    public async Task Consume(ConsumeContext<UserDeletedEvent> context)
     {
-        var id = command.Id;
+        var id = context.Message.UserId;
         var author = await _authorRepository.GetAsync(id);
         if (author is null)
         {

@@ -46,14 +46,4 @@ public class AuthorController : ControllerBase
         }
         return Ok(result);
     }
-    
-    [HttpDelete("{Id:guid}")]
-    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Delete author.", 
-            "Author deletion should be done automatically " +
-            "when deleting a user in user module. Should delete all posts by author.")]
-    public async Task<ActionResult> Delete([FromRoute] DeleteAuthor command)
-    {
-        await _commandDispatcher.DispatchAsync(command);
-        return Ok();
-    }
 }

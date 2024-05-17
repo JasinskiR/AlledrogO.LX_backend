@@ -84,4 +84,22 @@ public class UserController : ControllerBase
     {
         return Ok($"Hello {User.Identity.Name}");
     }
+    
+    [HttpDelete("deleteAccount")]
+    [Authorize]
+    public async Task<IActionResult> DeleteAccount()
+    {
+        var user = await _userManager.FindByEmailAsync(User!.FindFirstValue(ClaimTypes.Email));
+        var result = await _userManager.DeleteAsync(user);
+        if (result.Succeeded)
+        {
+            await _bus.Publish(new UserDeletedEvent()
+            {
+                UserId = new Guid(user.Id)
+            });
+            await _signInManager.SignOutAsync();
+            return Ok(new { Message = "Account deleted" });
+        }
+        return BadRequest(new { Errors = result.Errors });
+    }
 }
