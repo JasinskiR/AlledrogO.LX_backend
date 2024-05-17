@@ -47,14 +47,14 @@ public class AuthorController : ControllerBase
         return Ok(result);
     }
     
-    [HttpPost]
-    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Create author.", 
-        "Author creation should be done automatically when creating a user in user module.")]
-    public async Task<ActionResult<Guid>> Create([FromBody] CreateAuthor command)
-    {
-        var result = await _commandDispatcher.DispatchAsync<CreateAuthor, Guid>(command);
-        return Ok(result);
-    }
+    // [HttpPost]
+    // [SwaggerOperation("ONLY FOR TESTING PURPOSE. Create author.", 
+    //     "Author creation should be done automatically when creating a user in user module.")]
+    // public async Task<ActionResult<Guid>> Create([FromBody] CreateAuthor command)
+    // {
+    //     var result = await _commandDispatcher.DispatchAsync<CreateAuthor, Guid>(command);
+    //     return Ok(result);
+    // }
     
     [HttpDelete("{Id:guid}")]
     [SwaggerOperation("ONLY FOR TESTING PURPOSE. Delete author.", 

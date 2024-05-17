@@ -1,6 +1,6 @@
 using System.Security.Claims;
+using AlledrogO.Shared.MassTransit.Events;
 using AlledrogO.User.Api.DTOs;
-using AlledrogO.User.Core.Events;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

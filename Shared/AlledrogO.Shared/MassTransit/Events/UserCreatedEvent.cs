@@ -1,4 +1,4 @@
-namespace AlledrogO.User.Core.Events;
+namespace AlledrogO.Shared.MassTransit.Events;
 
 public record UserCreatedEvent()
 {

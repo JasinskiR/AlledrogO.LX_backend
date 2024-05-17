@@ -1,5 +1,6 @@
 using AlledrogO.Post.Api;
 using AlledrogO.Post.Application;
+using AlledrogO.Post.Application.EventHandlers;
 using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
@@ -30,6 +31,7 @@ builder.Services.AddMassTransit(configurator =>
 {
     configurator.SetKebabCaseEndpointNameFormatter();
     configurator.UsingInMemory((context, config) => config.ConfigureEndpoints(context));
+    configurator.AddConsumer<CreateAuthorHandler>();
 });
 builder.Services.AddUserModule();
 builder.Services.AddPostModule(builder.Configuration);
