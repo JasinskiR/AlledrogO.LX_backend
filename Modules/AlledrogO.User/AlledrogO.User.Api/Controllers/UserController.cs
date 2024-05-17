@@ -1,5 +1,7 @@
 using System.Security.Claims;
 using AlledrogO.User.Api.DTOs;
+using AlledrogO.User.Core.Events;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +14,14 @@ public class UserController : ControllerBase
 {
     private readonly UserManager<Core.Entities.User> _userManager;
     private readonly SignInManager<Core.Entities.User> _signInManager;
+    private readonly IBus _bus;
 
-    public UserController(UserManager<Core.Entities.User> userManager, SignInManager<Core.Entities.User> signInManager)
+    public UserController(UserManager<Core.Entities.User> userManager, 
+        SignInManager<Core.Entities.User> signInManager, IBus bus)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _bus = bus;
     }
     
     [HttpPost("register")]
@@ -33,6 +38,13 @@ public class UserController : ControllerBase
 
         if (result.Succeeded)
         {
+            var createdUser = await _userManager.FindByEmailAsync(user.Email);
+            await _bus.Publish(new UserCreatedEvent()
+            {
+                UserId = new Guid(createdUser.Id),
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            });
             return Ok(new { Message = "Registration successful" });
         }
         
