@@ -1,21 +1,19 @@
 using AlledrogO.Post.Api;
-using AlledrogO.Post.Application;
 using AlledrogO.Post.Application.EventHandlers;
 using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
-using AlledrogO.Post.Infrastructure;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.Shared;
+using AlledrogO.Shared.MassTransit;
 using AlledrogO.User.Api;
-using AlledrogO.User.Core.Entities;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddShared();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
 {
@@ -27,17 +25,12 @@ builder.Services.AddSwaggerGen(swagger =>
         Version = "v1"
     });
 });
-builder.Services.AddMassTransit(configurator =>
-{
-    configurator.SetKebabCaseEndpointNameFormatter();
-    configurator.UsingInMemory((context, config) => config.ConfigureEndpoints(context));
-    configurator.AddConsumer<CreateAuthorHandler>();
-});
 builder.Services.AddUserModule();
 builder.Services.AddPostModule(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddCorsForAngular(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddShared();
 
 var app = builder.Build();
 

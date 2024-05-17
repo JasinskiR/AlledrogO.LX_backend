@@ -1,12 +1,13 @@
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
+using AlledrogO.Shared.MassTransit;
 using AlledrogO.Shared.MassTransit.Events;
 using MassTransit;
 
 namespace AlledrogO.Post.Application.EventHandlers;
 
-public class CreateAuthorHandler : IConsumer<UserCreatedEvent>
+public class CreateAuthorHandler : IMessageMarker, IConsumer<UserCreatedEvent>
 {
     private readonly IAuthorRepository _authorRepository;
     private readonly IAuthorFactory _authorFactory;
