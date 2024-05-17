@@ -1,8 +1,10 @@
+using System.Security.Claims;
 using AlledrogO.Post.Application.Commands;
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -62,9 +64,15 @@ public class PostController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize]
     [SwaggerOperation("Create post.")]
     public async Task<IActionResult> Post([FromBody] CreatePost command)
     {
+        var loggedInUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (command.AuthorId.ToString() != loggedInUserId)
+        {
+            return Unauthorized();
+        }
         var result = await _commandDispatcher.DispatchAsync<CreatePost, Guid>(command);
         return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
