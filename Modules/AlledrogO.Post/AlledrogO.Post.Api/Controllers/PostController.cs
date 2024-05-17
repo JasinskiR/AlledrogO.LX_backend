@@ -79,6 +79,7 @@ public class PostController : ControllerBase
     
     [HttpPut("{Id:guid}/Image")]
     [SwaggerOperation("Upload image for post in jpg or png format.")]
+    [Authorize]
     public async Task<IActionResult> UploadImage([FromRoute] Guid Id, IFormFile file)
     {
         var command = new AddPostImage(Id, file);

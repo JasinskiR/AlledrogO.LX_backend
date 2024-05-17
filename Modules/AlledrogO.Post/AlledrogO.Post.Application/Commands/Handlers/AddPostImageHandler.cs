@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Application.Services;
@@ -25,22 +26,28 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
         _httpContextAccessor = httpContextAccessor;
         _staticFilesPath = Path.Combine(_environment.ContentRootPath, "wwwroot");
     }
+    
 
     public async Task<string> HandleAsync(AddPostImage command)
     {
         var (postId, file) = command;
+        var post = await _postRepository.GetAsync(postId);
+        if (post is null)
+        {
+            throw new PostNotFoundException(postId);
+        }
+
+        var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (post.Author.Id.ToString() != userId)
+        {
+            throw new UnauthorizedEditException();
+        }
         
         ImageValidator imageValidator = new();
         var validationResult = await imageValidator.ValidateAsync(file);
         if (!validationResult.IsValid)
         {
             throw new InvalidImageException(validationResult.Errors);
-        }
-        
-        var post = await _postRepository.GetAsync(postId);
-        if (post is null)
-        {
-            throw new PostNotFoundException(postId);
         }
         
         var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
