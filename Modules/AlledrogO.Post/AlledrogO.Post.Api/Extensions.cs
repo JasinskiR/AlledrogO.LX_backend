@@ -1,6 +1,5 @@
 using AlledrogO.Post.Application;
 using AlledrogO.Post.Infrastructure;
-using AlledrogO.Shared.Modules;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,8 +17,6 @@ public static class Extensions
         
     public static IApplicationBuilder UsePostModule(this IApplicationBuilder app)
     {
-        // app.UseModuleRequests()
-        //     .Subscribe<
         return app;
     }
 }
