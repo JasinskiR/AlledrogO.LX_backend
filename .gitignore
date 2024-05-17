@@ -22,7 +22,7 @@
 **/.idea/**/modules.xml
 
 *.suo
-*.user
+#*.user
 .vs/
 [Bb]in/
 [Oo]bj/

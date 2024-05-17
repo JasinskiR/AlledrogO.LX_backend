@@ -6,6 +6,8 @@ using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Post.Infrastructure;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.Shared;
+using AlledrogO.User.Api;
+using AlledrogO.User.Core.Entities;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -29,7 +31,7 @@ builder.Services.AddMassTransit(configurator =>
     configurator.SetKebabCaseEndpointNameFormatter();
     configurator.UsingInMemory((context, config) => config.ConfigureEndpoints(context));
 });
-
+builder.Services.AddUserModule();
 builder.Services.AddPostModule(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddCorsForAngular(builder.Configuration);
@@ -54,7 +56,8 @@ app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
 app.UseShared();
 app.UseHttpsRedirection();
 app.MapControllers();
-
+app.UseUserModule();
+// app.MapGroup("/api/account").MapIdentityApi<User>();
 // testDb(builder, app);
 
 app.Run();
