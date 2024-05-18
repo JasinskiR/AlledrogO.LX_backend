@@ -12,12 +12,14 @@ public class PostTests
     private readonly IPostFactory _postFactory;
     private readonly IAuthorFactory _authorFactory;
     private readonly IPostImageFactory _postImageFactory;
+    private readonly ITagFactory _tagFactory;
     
     public PostTests()
     {
         _postImageFactory = new PostImageFactory();
         _authorFactory = new AuthorFactory();
         _postFactory = new PostFactory();
+        _tagFactory = new TagFactory();
     }
     
     private PostImage CreatePostImage(Post.Domain.Entities.Post post)
@@ -153,5 +155,37 @@ public class PostTests
         exception.ShouldBeNull();
         image1.IsMain.ShouldBeFalse();
         image2.IsMain.ShouldBeTrue();
+    }
+    
+    [Fact]
+    public void AddTag_With_New_Tag_Should_Add_Tag_Successfully()
+    {
+        // Arrange
+        var post = CreatePost();
+        var tag = _tagFactory.Create(Guid.NewGuid(), "Tag 1", Enumerable.Empty<Post.Domain.Entities.Post>());
+        
+        // Act
+        var exception = Record.Exception(() => post.AddTag(tag));
+        
+        // Assert
+        exception.ShouldBeNull();
+        post.Events.Count().ShouldBe(1);
+        post.Events.First().ShouldBeOfType<TagAddedDE>();
+    }
+    
+    [Fact]
+    public void AddTag_With_Existing_Tag_Should_Throw_TagAlreadyPinnedToPostException()
+    {
+        // Arrange
+        var post = CreatePost();
+        var tag = _tagFactory.Create(Guid.NewGuid(), "Tag 1", Enumerable.Empty<Post.Domain.Entities.Post>());
+        post.AddTag(tag);
+        
+        // Act
+        var exception = Record.Exception(() => post.AddTag(tag));
+        
+        // Assert
+        exception.ShouldNotBeNull();
+        exception.ShouldBeOfType<TagAlreadyPinnedToPostException>();
     }
 }
