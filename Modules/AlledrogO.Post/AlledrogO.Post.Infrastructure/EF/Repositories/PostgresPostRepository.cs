@@ -1,6 +1,5 @@
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
-using AlledrogO.Post.Infrastructure.EF.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AlledrogO.Post.Infrastructure.EF.Repositories;

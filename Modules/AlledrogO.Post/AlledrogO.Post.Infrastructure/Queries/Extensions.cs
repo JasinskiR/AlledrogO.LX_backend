@@ -13,8 +13,8 @@ public static class Extensions
             Title = model.Title,
             Description = model.Description,
             Images = model.Images?
-                .Select(i => i.Url)
-                .ToList() ?? new List<string>(),
+                .Select(i => i.AsDto()
+                ).ToList() ?? new List<PostImageDto>(),
             Tags = model.Tags
                 .Select(t => t.Name)
                 .ToList(),
@@ -35,7 +35,9 @@ public static class Extensions
         {
             Id = model.Id,
             Title = model.Title,
-            Image = model.Images.FirstOrDefault()?.Url ?? string.Empty,
+            Image = model.Images
+                .FirstOrDefault(i => i.IsMain)?
+                .Url ?? string.Empty,
         };
     }
     
@@ -79,6 +81,16 @@ public static class Extensions
         {
             Name = model.Name,
             PostCount = model.PostCount,
+        };
+    }
+    
+    internal static PostImageDto AsDto(this PostImageDbModel model)
+    {
+        return new PostImageDto
+        {
+            Id = model.Id,
+            Url = model.Url,
+            IsMain = model.IsMain
         };
     }
 }

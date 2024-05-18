@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Application.Services;
+using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
 using Microsoft.AspNetCore.Http;
@@ -13,11 +14,15 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
 {
     private readonly IPostRepository _postRepository;
     private readonly IImageService _imageService;
+    private readonly IPostImageFactory _postImageFactory;
     
-    public AddPostImageHandler(IPostRepository postRepository, IImageService imageService)
+    public AddPostImageHandler(IPostRepository postRepository, 
+        IImageService imageService, 
+        IPostImageFactory postImageFactory)
     {
         _postRepository = postRepository;
         _imageService = imageService;
+        _postImageFactory = postImageFactory;
     }
     
 
@@ -36,10 +41,13 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
             throw new InvalidImageException(validationResult.Errors);
         }
         
-        var image = await _imageService.SaveImageAsync(file);
+        var imageId = Guid.NewGuid();
+        var imageUrl = await _imageService.SaveImageAsync(file, imageId);
+        var savedImage = _postImageFactory.Create(imageId, post, imageUrl);
         
-        post.AddImage(image);
+        
+        post.AddImage(savedImage);
         await _postRepository.UpdateAsync(post);
-        return image.Url;
+        return imageUrl;
     }
 }

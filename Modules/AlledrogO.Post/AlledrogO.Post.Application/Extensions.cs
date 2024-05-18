@@ -15,6 +15,7 @@ public static class Extensions
         services.AddSingleton<IPostFactory, PostFactory>();
         services.AddSingleton<ITagFactory, TagFactory>();
         services.AddSingleton<IAuthorFactory, AuthorFactory>();
+        services.AddSingleton<IPostImageFactory, PostImageFactory>();
         services.AddScoped<IAuthorPermissionService, AuthorPermissionService>();
         services.AddImageService(configuration);
         // here could be scanning for policies

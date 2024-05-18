@@ -80,16 +80,16 @@ public class PostController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
     
-    [HttpPut("{Id:guid}/Image")]
+    [HttpPut("{PostId:guid}/Image")]
     [SwaggerOperation("Upload image for post in jpg or png format.")]
     [Authorize]
-    public async Task<IActionResult> UploadImage([FromRoute] Guid Id, IFormFile file)
+    public async Task<IActionResult> UploadImage([FromRoute] Guid PostId, IFormFile file)
     {
-        if (await _permissionService.CanEditPostAsync(LoggedInUserId, Id) is false)
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, PostId) is false)
         {
             return Forbid();
         }
-        var command = new AddPostImage(Id, file);
+        var command = new AddPostImage(PostId, file);
 
         var result = await _commandDispatcher.DispatchAsync<AddPostImage, string>(command);
         if (result is null)
@@ -97,6 +97,19 @@ public class PostController : ControllerBase
             return BadRequest();
         }
         return Ok(result);
+    }
+    
+    [HttpDelete("{PostId:guid}/Image/{ImageId:guid}")]
+    [SwaggerOperation("Delete image from post.")]
+    [Authorize]
+    public async Task<IActionResult> DeleteImage([FromRoute] DeletePostImage command)
+    {
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, command.PostId) is false)
+        {
+            return Forbid();
+        }
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
     }
     
     [HttpPut("{PostId:guid}/Tag/{TagName}")]

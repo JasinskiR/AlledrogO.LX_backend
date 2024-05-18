@@ -43,6 +43,8 @@ internal sealed class ReadConfiguration :
 
     public void Configure(EntityTypeBuilder<PostImageDbModel> builder)
     {
+        builder.Property(p => p.Version)
+            .IsRowVersion();
         builder.ToTable("PostImages");
     }
 

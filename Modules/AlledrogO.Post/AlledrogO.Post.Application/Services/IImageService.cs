@@ -1,3 +1,4 @@
+using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.ValueObjects;
 using FluentValidation;
 using MassTransit;
@@ -9,5 +10,6 @@ namespace AlledrogO.Post.Application.Services;
 public interface IImageService
 {
     public Task<ValidationResult> ValidateImageAsync(IFormFile image);
-    public Task<PostImage> SaveImageAsync(IFormFile file);
+    public Task<string> SaveImageAsync(IFormFile file, Guid imageId);
+    public Task DeleteImageAsync(string path);
 }

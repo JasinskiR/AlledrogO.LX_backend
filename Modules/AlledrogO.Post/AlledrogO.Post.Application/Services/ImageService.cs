@@ -1,3 +1,5 @@
+using AlledrogO.Post.Domain.Entities;
+using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -12,12 +14,16 @@ public class ImageService : IImageService
     private readonly ImageServiceConfiguration _configuration;
     private readonly IHostEnvironment _environment;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IPostImageFactory _postImageFactory;
 
     public ImageService(IOptions<ImageServiceConfiguration> options,
-        IHostEnvironment environment, IHttpContextAccessor httpContextAccessor)
+        IHostEnvironment environment, 
+        IHttpContextAccessor httpContextAccessor, 
+        IPostImageFactory postImageFactory)
     {
         _environment = environment;
         _httpContextAccessor = httpContextAccessor;
+        _postImageFactory = postImageFactory;
         _configuration = options.Value;
     }
 
@@ -58,9 +64,8 @@ public class ImageService : IImageService
     /// </summary>
     /// <param name="file"></param>
     /// <returns></returns>
-    public async Task<PostImage> SaveImageAsync(IFormFile file)
+    public async Task<string> SaveImageAsync(IFormFile file, Guid imageId)
     {
-        var imageId = Guid.NewGuid();
         var fileName = $"{imageId}{Path.GetExtension(file.FileName)}";
         var absPath = Path.Combine(_environment.ContentRootPath, _configuration.StaticFilesDir,
             _configuration.ImageDir, fileName);
@@ -76,6 +81,15 @@ public class ImageService : IImageService
         var scheme = request.Scheme;
         var fullUrl = $"{scheme}://{host}/{serverImagePath}";
 
-        return new PostImage(imageId, fullUrl);
+        return fullUrl;
+    }
+
+    public Task DeleteImageAsync(string path)
+    {
+        var imageName = Path.GetFileName(path);
+        var absPath = Path.Combine(_environment.ContentRootPath, _configuration.StaticFilesDir,
+            _configuration.ImageDir, imageName);
+        File.Delete(absPath);
+        return Task.CompletedTask;
     }
 }

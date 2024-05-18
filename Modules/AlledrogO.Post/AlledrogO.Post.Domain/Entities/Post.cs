@@ -54,7 +54,11 @@ public class Post : AggregateRoot<Guid>
         var imageExists = _images.Contains(image);
         if (imageExists)
         {
-            throw new PostImageAlreadyExistsException(image);
+            throw new PostImageAlreadyExistsException(image.Id);
+        }
+        if (_images.Any() == false)
+        {
+            image.SetAsMain();
         }
         _images.AddLast(image);
         AddEvent(new PostImageAddedDE(this, image));
@@ -65,10 +69,29 @@ public class Post : AggregateRoot<Guid>
         var imageExists = _images.Contains(image);
         if (!imageExists)
         {
-            throw new PostImageNotFoundException(image);
+            throw new PostImageNotFoundException(image.Id);
         }
         _images.Remove(image);
+        if (image.IsMain && _images.Any())
+        {
+            SetImageAsMain(_images.First());
+        }
         AddEvent(new PostImageRemovedDE(this, image));
+    }
+    
+    public void SetImageAsMain(PostImage image)
+    {
+        var imageExists = _images.Contains(image);
+        if (!imageExists)
+        {
+            throw new PostImageNotFoundException(image.Id);
+        }
+        foreach (var postImage in _images)
+        {
+            postImage.SetAsNotMain();
+        }
+        image.SetAsMain();
+        AddEvent(new PostImageSetAsMainDE(this, image));
     }
     
     public void AddTag(Tag tag)
