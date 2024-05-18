@@ -36,12 +36,6 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
         {
             throw new PostNotFoundException(postId);
         }
-
-        var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (post.Author.Id.ToString() != userId)
-        {
-            throw new UnauthorizedEditException();
-        }
         
         ImageValidator imageValidator = new();
         var validationResult = await imageValidator.ValidateAsync(file);

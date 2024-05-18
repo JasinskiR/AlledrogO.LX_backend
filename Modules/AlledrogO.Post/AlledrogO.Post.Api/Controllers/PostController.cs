@@ -3,6 +3,7 @@ using AlledrogO.Post.Application.Commands;
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.DTOs.External;
 using AlledrogO.Post.Application.Queries;
+using AlledrogO.Post.Application.Services;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -19,15 +20,19 @@ public class PostController : ControllerBase
 {
     private readonly IQueryDispatcher _queryDispatcher;
     private readonly ICommandDispatcher _commandDispatcher;
-
-    public PostController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher)
+    private readonly IAuthorPermissionService _permissionService;
+    private Guid LoggedInUserId => new(User.FindFirstValue(ClaimTypes.NameIdentifier));
+    
+    public PostController(IQueryDispatcher queryDispatcher, 
+        ICommandDispatcher commandDispatcher, IAuthorPermissionService permissionService)
     {
         _queryDispatcher = queryDispatcher;
         _commandDispatcher = commandDispatcher;
+        _permissionService = permissionService;
     }
 
     [HttpGet]
-    [SwaggerOperation("Get all post cards for home page.")]
+    [SwaggerOperation("Get all post cards for home page (only published)")]
     public async Task<ActionResult<IEnumerable<PostCardDto>>> Get()
     {
         var query = new GetPostCards();
@@ -51,7 +56,7 @@ public class PostController : ControllerBase
     
 
     [HttpPost("Search")]
-    [SwaggerOperation("Search posts.", 
+    [SwaggerOperation("Search for posts (only published).", 
         "Returns post cards with search query in title or description. You can provide tags to filter posts.")]
     public async Task<ActionResult<IEnumerable<PostCardDto>>> Search([FromBody] SearchPosts query)
     {
@@ -69,9 +74,7 @@ public class PostController : ControllerBase
     [SwaggerOperation("Create post.")]
     public async Task<IActionResult> Post([FromBody] CreatePostDto dto)
     {
-        var loggedInUserId = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        
-        var command = new CreatePost(dto.Title, dto.Description, loggedInUserId);
+        var command = new CreatePost(dto.Title, dto.Description, LoggedInUserId);
         
         var result = await _commandDispatcher.DispatchAsync<CreatePost, Guid>(command);
         return CreatedAtAction(nameof(Get), new { id = result }, null);
@@ -82,6 +85,10 @@ public class PostController : ControllerBase
     [Authorize]
     public async Task<IActionResult> UploadImage([FromRoute] Guid Id, IFormFile file)
     {
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, Id) is false)
+        {
+            return Forbid();
+        }
         var command = new AddPostImage(Id, file);
 
         var result = await _commandDispatcher.DispatchAsync<AddPostImage, string>(command);
@@ -92,11 +99,14 @@ public class PostController : ControllerBase
         return Ok(result);
     }
     
-    
     [HttpPut("{PostId:guid}/Tag/{TagName}")]
     [SwaggerOperation("Add tag to post.")]
     public async Task<ActionResult> PutTag([FromRoute] AddTagToPost command)
     {
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, command.PostId) is false)
+        {
+            return Forbid();
+        }
         var result = await _commandDispatcher.DispatchAsync<AddTagToPost, Guid>(command);
         return CreatedAtAction(nameof(Get), new { Id = result }, result);
     }
@@ -105,6 +115,10 @@ public class PostController : ControllerBase
     [SwaggerOperation("Delete tag from post.")]
     public async Task<ActionResult> DeleteTag([FromRoute] DeleteTagFromPost command)
     {
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, command.PostId) is false)
+        {
+            return Forbid();
+        }
         await _commandDispatcher.DispatchAsync(command);
         return Ok();
     }

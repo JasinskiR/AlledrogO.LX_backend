@@ -1,8 +1,10 @@
+using System.Security.Claims;
 using AlledrogO.Post.Application.Commands;
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -15,6 +17,7 @@ public class AuthorController : ControllerBase
     private readonly IQueryDispatcher _queryDispatcher;
     private readonly ICommandDispatcher _commandDispatcher;
 
+    private Guid LoggedInUserId => new(User.FindFirstValue(ClaimTypes.NameIdentifier));
     public AuthorController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher)
     {
         _queryDispatcher = queryDispatcher;
@@ -34,16 +37,45 @@ public class AuthorController : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet("{Id:guid}")]
-    [SwaggerOperation("Get author by ID")]
-    public async Task<ActionResult<AuthorDto>> GetById([FromRoute] GetAuthorById query)
+    [HttpGet("info")]
+    [SwaggerOperation("Get info about logged author")]
+    [Authorize]
+    public async Task<ActionResult<AuthorDto>> GetInfo()
     {
+        var query = new GetAuthorById(LoggedInUserId);
         var result = await _queryDispatcher.QueryAsync(query);
-        
         if (result is null)
         {
             return NotFound();
         }
         return Ok(result);
     }
+    
+    [HttpGet("posts")]
+    [SwaggerOperation("Get all posts of logged author (all statuses)")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<PostCardDto>>> GetPosts()
+    {
+        var query = new GetPostCardsByAuthor(LoggedInUserId);
+        var result = await _queryDispatcher.QueryAsync(query);
+        if (result is null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+    
+    
+    // [HttpGet("{Id:guid}")]
+    // [SwaggerOperation("Get author by ID")]
+    // public async Task<ActionResult<AuthorDto>> GetById([FromRoute] GetAuthorById query)
+    // {
+    //     var result = await _queryDispatcher.QueryAsync(query);
+    //     
+    //     if (result is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return Ok(result);
+    // }
 }
