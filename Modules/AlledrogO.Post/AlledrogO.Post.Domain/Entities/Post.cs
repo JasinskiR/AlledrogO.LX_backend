@@ -37,13 +37,13 @@ public class Post : AggregateRoot<Guid>
     {
     }
     
-    internal void Publish()
+    public void Publish()
     {
         Status = PostStatus.Published;
         AddEvent(new PostPublishedDE(this));
     }
     
-    internal void Archive()
+    public void Archive()
     {
         Status = PostStatus.Archived;
         AddEvent(new PostArchivedDE(this));

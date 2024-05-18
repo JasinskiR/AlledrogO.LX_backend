@@ -80,6 +80,32 @@ public class PostController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
     
+    [HttpPut("{PostId:guid}/Publish")]
+    [SwaggerOperation("Publish post.")]
+    [Authorize]
+    public async Task<IActionResult> Publish([FromRoute] PublishPost command)
+    {
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, command.PostId) is false)
+        {
+            return Forbid();
+        }
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+    
+    [HttpPut("{PostId:guid}/Archive")]
+    [SwaggerOperation("Archive post.")]
+    [Authorize]
+    public async Task<IActionResult> Archive([FromRoute] ArchivePost command)
+    {
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, command.PostId) is false)
+        {
+            return Forbid();
+        }
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+    
     [HttpPut("{PostId:guid}/Image")]
     [SwaggerOperation("Upload image for post in jpg or png format.")]
     [Authorize]

@@ -1,3 +1,4 @@
+using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Entities.Exceptions;
 using AlledrogO.Post.Domain.Events.Post;
 using AlledrogO.Post.Domain.Factories;
@@ -10,10 +11,18 @@ public class PostTests
 {
     private readonly IPostFactory _postFactory;
     private readonly IAuthorFactory _authorFactory;
+    private readonly IPostImageFactory _postImageFactory;
+    
     public PostTests()
     {
+        _postImageFactory = new PostImageFactory();
         _authorFactory = new AuthorFactory();
         _postFactory = new PostFactory();
+    }
+    
+    private PostImage CreatePostImage(Post.Domain.Entities.Post post)
+    {
+        return _postImageFactory.Create(Guid.NewGuid(), post, "image1.jpg");
     }
     
     private Post.Domain.Entities.Post CreatePost()
@@ -23,11 +32,12 @@ public class PostTests
             new Guid(), 
             authorDetails, 
             Enumerable.Empty<Post.Domain.Entities.Post>());
-        return _postFactory.Create(
+        var post = _postFactory.Create(
             new Guid(),
             "Post 1",
             "Description 1",
             author);
+        return post;
     }
     
     [Fact]
@@ -49,10 +59,10 @@ public class PostTests
     {
         // Arrange
         var post = CreatePost();
+        var image = CreatePostImage(post);
     
         // Act
-        var exception = Record.Exception(() => post.AddImage(
-            new PostImage(new Guid(),"image1.jpg")));
+        var exception = Record.Exception(() => post.AddImage(image));
     
         // Assert
         exception.ShouldBeNull();
@@ -65,10 +75,11 @@ public class PostTests
     {
         // Arrange
         var post = CreatePost();
-        post.AddImage( new PostImage(new Guid(),"image1.jpg"));
+        var image = CreatePostImage(post);
+        post.AddImage(image);
         
         // Act
-        var exception = Record.Exception(() => post.AddImage( new PostImage(new Guid(),"image1.jpg")));
+        var exception = Record.Exception(() => post.AddImage(image));
         
         // Assert
         exception.ShouldNotBeNull();
@@ -80,10 +91,11 @@ public class PostTests
     {
         // Arrange
         var post = CreatePost();
-        post.AddImage( new PostImage(new Guid(),"image1.jpg"));
+        var image = CreatePostImage(post);
+        post.AddImage(image);
         
         // Act
-        var exception = Record.Exception(() => post.RemoveImage( new PostImage(new Guid(),"image1.jpg")));
+        var exception = Record.Exception(() => post.RemoveImage(image));
         
         // Assert
         exception.ShouldBeNull();
@@ -96,12 +108,50 @@ public class PostTests
     {
         // Arrange
         var post = CreatePost();
+        var image = CreatePostImage(post);
         
         // Act
-        var exception = Record.Exception(() => post.RemoveImage( new PostImage(new Guid(),"image1.jpg")));
+        var exception = Record.Exception(() => post.RemoveImage(image));
         
         // Assert
         exception.ShouldNotBeNull();
         exception.ShouldBeOfType<PostImageNotFoundException>();
+    }
+    
+    [Fact]
+    public void SetImageAsMain_When_2_Images_Are_There_Should_Set_First_Image_As_Main_Successfully()
+    {
+        // Arrange
+        var post = CreatePost();
+        var image1 = CreatePostImage(post);
+        var image2 = CreatePostImage(post);
+        post.AddImage(image1);
+        
+        // Act
+        var exception = Record.Exception(() =>  post.AddImage(image2));
+        
+        // Assert
+        exception.ShouldBeNull();
+        image1.IsMain.ShouldBeTrue();
+        image2.IsMain.ShouldBeFalse();
+    }
+    
+    [Fact]
+    public void SetImageAsMain_Should_Set_Image_As_Main_And_Unset_Others_Successfully()
+    {
+        // Arrange
+        var post = CreatePost();
+        var image1 = CreatePostImage(post);
+        var image2 = CreatePostImage(post);
+        post.AddImage(image1);
+        post.AddImage(image2);
+        
+        // Act
+        var exception = Record.Exception(() => post.SetImageAsMain(image2));
+        
+        // Assert
+        exception.ShouldBeNull();
+        image1.IsMain.ShouldBeFalse();
+        image2.IsMain.ShouldBeTrue();
     }
 }
