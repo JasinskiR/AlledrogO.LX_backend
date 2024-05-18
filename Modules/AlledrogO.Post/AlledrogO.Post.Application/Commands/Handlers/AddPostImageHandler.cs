@@ -12,19 +12,12 @@ namespace AlledrogO.Post.Application.Commands.Handlers;
 public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
 {
     private readonly IPostRepository _postRepository;
-    private readonly IHostEnvironment _environment;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private static string _imagesDirectory = "images";
-    private readonly string _staticFilesPath;
-
-    public AddPostImageHandler(IPostRepository postRepository, 
-        IHostEnvironment environment, 
-        IHttpContextAccessor httpContextAccessor)
+    private readonly IImageService _imageService;
+    
+    public AddPostImageHandler(IPostRepository postRepository, IImageService imageService)
     {
         _postRepository = postRepository;
-        _environment = environment;
-        _httpContextAccessor = httpContextAccessor;
-        _staticFilesPath = Path.Combine(_environment.ContentRootPath, "wwwroot");
+        _imageService = imageService;
     }
     
 
@@ -37,29 +30,16 @@ public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
             throw new PostNotFoundException(postId);
         }
         
-        ImageValidator imageValidator = new();
-        var validationResult = await imageValidator.ValidateAsync(file);
+        var validationResult = await _imageService.ValidateImageAsync(file);
         if (!validationResult.IsValid)
         {
             throw new InvalidImageException(validationResult.Errors);
         }
         
-        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-        var absPath = Path.Combine(_staticFilesPath, _imagesDirectory, fileName);
+        var image = await _imageService.SaveImageAsync(file);
         
-        using var stream = new FileStream(absPath, FileMode.Create);
-        await file.CopyToAsync(stream);
-
-        var serverImagePath = string.Join("/", _imagesDirectory, fileName);
-        var request = _httpContextAccessor.HttpContext.Request;
-        var host = request.Host.ToUriComponent();
-        var scheme = request.Scheme;
-        var fullUrl = $"{scheme}://{host}/{serverImagePath}";
-        
-        var image = new PostImage(fullUrl);
         post.AddImage(image);
         await _postRepository.UpdateAsync(post);
-        
-        return fullUrl;
+        return image.Url;
     }
 }

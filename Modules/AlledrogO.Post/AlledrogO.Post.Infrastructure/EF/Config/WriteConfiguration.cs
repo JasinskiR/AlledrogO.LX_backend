@@ -98,9 +98,11 @@ public class WriteConfiguration:
 
     public void Configure(EntityTypeBuilder<PostImage> builder)
     {
-        builder.Property<Guid>("Id");
-        builder.Property(i => i.Url);
+        builder.Property(i => i.Id)
+            .ValueGeneratedNever();
         
+        builder.Property(i => i.Url);
+        builder.Property(i => i.IsMain);
         builder.ToTable("PostImages");
     }
 }

@@ -51,7 +51,8 @@ public class PostTests
         var post = CreatePost();
     
         // Act
-        var exception = Record.Exception(() => post.AddImage(new PostImage("image1.jpg")));
+        var exception = Record.Exception(() => post.AddImage(
+            new PostImage(new Guid(),"image1.jpg")));
     
         // Assert
         exception.ShouldBeNull();
@@ -64,10 +65,10 @@ public class PostTests
     {
         // Arrange
         var post = CreatePost();
-        post.AddImage(new PostImage("image1.jpg"));
+        post.AddImage( new PostImage(new Guid(),"image1.jpg"));
         
         // Act
-        var exception = Record.Exception(() => post.AddImage(new PostImage("image1.jpg")));
+        var exception = Record.Exception(() => post.AddImage( new PostImage(new Guid(),"image1.jpg")));
         
         // Assert
         exception.ShouldNotBeNull();
@@ -79,10 +80,10 @@ public class PostTests
     {
         // Arrange
         var post = CreatePost();
-        post.AddImage(new PostImage("image1.jpg"));
+        post.AddImage( new PostImage(new Guid(),"image1.jpg"));
         
         // Act
-        var exception = Record.Exception(() => post.RemoveImage(new PostImage("image1.jpg")));
+        var exception = Record.Exception(() => post.RemoveImage( new PostImage(new Guid(),"image1.jpg")));
         
         // Assert
         exception.ShouldBeNull();
@@ -97,7 +98,7 @@ public class PostTests
         var post = CreatePost();
         
         // Act
-        var exception = Record.Exception(() => post.RemoveImage(new PostImage("image1.jpg")));
+        var exception = Record.Exception(() => post.RemoveImage( new PostImage(new Guid(),"image1.jpg")));
         
         // Assert
         exception.ShouldNotBeNull();

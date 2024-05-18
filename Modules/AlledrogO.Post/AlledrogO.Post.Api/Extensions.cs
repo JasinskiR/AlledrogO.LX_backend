@@ -10,7 +10,7 @@ public static class Extensions
 {
     public static IServiceCollection AddPostModule(this IServiceCollection services,  IConfiguration configuration)
     {
-        services.AddApplication();
+        services.AddApplication(configuration);
         services.AddInfrastructure();   
         return services;
     }
