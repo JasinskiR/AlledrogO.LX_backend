@@ -6,6 +6,7 @@ using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
+using AlledrogO.Post.Domain.ValueObjects.Exceptions;
 using AlledrogO.Shared.Commands;
 using NSubstitute;
 using Shouldly;
@@ -49,7 +50,8 @@ public class CreatePostHandlerTests
         var command = new CreatePost(
             "Post Title", 
             "Post Description", 
-            Guid.NewGuid());
+            Guid.NewGuid(),
+            null);
         
         _authorRepository.GetAsync(command.AuthorId).Returns(default(Author));
         
@@ -70,7 +72,8 @@ public class CreatePostHandlerTests
         var command = new CreatePost(
             "Post Title", 
             "Post Description", 
-            authorId);
+            authorId,
+            null);
         
         _authorRepository.GetAsync(authorId).Returns(author);
         
@@ -79,6 +82,58 @@ public class CreatePostHandlerTests
         
         // Assert
         result.ShouldNotBe(Guid.Empty);
+    }
+    
+    [Fact]
+    public async Task HandleAsync_When_AuthorDetailsDto_Is_Not_Null_Creates_Post_With_Custom_Details()
+    {
+        // Arrange
+        var authorId = Guid.NewGuid();
+        var author = CreateAuthor(authorId);
+        var authorDetailsDto = CreateAuthorDetailsDto();
+        var command = new CreatePost(
+            "Post Title", 
+            "Post Description", 
+            authorId,
+            authorDetailsDto);
+        
+        _authorRepository.GetAsync(authorId).Returns(author);
+        
+        // Act
+        var result = await Act(command);
+        
+        // Assert
+        result.ShouldNotBe(Guid.Empty);
+        author.Posts.ShouldNotBeEmpty();
+        author.Posts.First().SharedAuthorDetails.ShouldNotBeNull();
+        author.Posts.First().SharedAuthorDetails.Email.ShouldBe(authorDetailsDto.Email);
+        author.Posts.First().SharedAuthorDetails.PhoneNumber.ShouldBe(authorDetailsDto.PhoneNumber);
+    }
+    
+    [Fact]
+    public async Task HandleAsync_When_AuthorDetailsDto_Is_Invalid_Throws_DtoValidationFailedException()
+    {
+        // Arrange
+        var authorId = Guid.NewGuid();
+        var author = CreateAuthor(authorId);
+        var authorDetailsDto = new AuthorDetailsDto()
+        {
+            Email = "invalid email",
+            PhoneNumber = "123456789"
+        };
+        var command = new CreatePost(
+            "Post Title", 
+            "Post Description", 
+            authorId,
+            authorDetailsDto);
+        
+        _authorRepository.GetAsync(authorId).Returns(author);
+        // Act
+        var exception = await Record.ExceptionAsync(() => Act(command));
+        
+        // Assert
+        exception.ShouldNotBeNull();
+        exception.ShouldBeOfType<AuthorDataInvalidEmailException>();
     }
 
 }

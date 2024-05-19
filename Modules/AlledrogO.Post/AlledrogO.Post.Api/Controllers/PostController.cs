@@ -53,7 +53,6 @@ public class PostController : ControllerBase
         }
         return Ok(result);
     }
-    
 
     [HttpPost("Search")]
     [SwaggerOperation("Search for posts (only published).", 
@@ -71,16 +70,30 @@ public class PostController : ControllerBase
     
     [HttpPost]
     [Authorize]
-    [SwaggerOperation("Create post.")]
+    [SwaggerOperation("Create post. Author details are optional.")]
     public async Task<IActionResult> Post([FromBody] CreatePostDto dto)
     {
-        var command = new CreatePost(dto.Title, dto.Description, LoggedInUserId);
+        var command = new CreatePost(dto.Title, dto.Description, LoggedInUserId, dto.AuthorDetails);
         
         var result = await _commandDispatcher.DispatchAsync<CreatePost, Guid>(command);
         return CreatedAtAction(nameof(Get), new { id = result }, null);
     }
     
-    [HttpPut("{PostId:guid}/Publish")]
+    [HttpPut("{Id:guid}")]
+    [Authorize]
+    [SwaggerOperation("Update post details. Author details are optional.")]
+    public async Task<IActionResult> Put([FromRoute] Guid Id, [FromBody] CreatePostDto dto)
+    {
+        if (await _permissionService.CanEditPostAsync(LoggedInUserId, Id) is false)
+        {
+            return Forbid();
+        }
+        var command = new UpdatePost(Id, dto.Title, dto.Description, dto.AuthorDetails);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+    
+    [HttpPatch("{PostId:guid}/Publish")]
     [SwaggerOperation("Publish post.")]
     [Authorize]
     public async Task<IActionResult> Publish([FromRoute] PublishPost command)
@@ -93,7 +106,7 @@ public class PostController : ControllerBase
         return Ok();
     }
     
-    [HttpPut("{PostId:guid}/Archive")]
+    [HttpPatch("{PostId:guid}/Archive")]
     [SwaggerOperation("Archive post.")]
     [Authorize]
     public async Task<IActionResult> Archive([FromRoute] ArchivePost command)

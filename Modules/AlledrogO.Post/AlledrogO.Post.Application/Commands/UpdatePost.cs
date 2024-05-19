@@ -1,14 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Shared.Commands;
 
 namespace AlledrogO.Post.Application.Commands;
 
-public record CreatePost(
+public record UpdatePost(
+    Guid PostId,
     string Title,
     string Description,
-    Guid AuthorId,
-    AuthorDetailsDto? AuthorDetails) : ICommand<Guid>;
-
-    
-    
+    AuthorDetailsDto? AuthorDetails) : ICommand;

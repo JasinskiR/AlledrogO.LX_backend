@@ -7,61 +7,54 @@ using FluentValidation;
 
 namespace AlledrogO.Post.Application.Commands.Handlers;
 
-public class CreatePostHandler : ICommandHandler<CreatePost, Guid>
+public class UpdatePostHandler : ICommandHandler<UpdatePost>
 {
     private readonly IPostRepository _postRepository;
     private readonly IAuthorRepository _authorRepository;
     private readonly IPostFactory _postFactory;
 
-    public CreatePostHandler(IPostRepository postRepository, IAuthorRepository authorRepository, IPostFactory postFactory)
+    public UpdatePostHandler(IPostRepository postRepository, IAuthorRepository authorRepository, IPostFactory postFactory)
     {
         _postRepository = postRepository;
         _authorRepository = authorRepository;
         _postFactory = postFactory;
     }
 
-    public async Task<Guid> HandleAsync(CreatePost command)
+    public async Task HandleAsync(UpdatePost command)
     {
-        var ( title, description, authorId, authorDetailsDto) = command;
-        var validator = new CreatePostValidator();
+        var (id, title, description, authorDetailsDto) = command;
+        var validator = new UpdatePostValidator();
         var validationResult = await validator.ValidateAsync(command);
         if (!validationResult.IsValid)
         {
             throw new DtoValidationFailedException(validationResult.Errors.FirstOrDefault()!.ErrorMessage);
         }
-        var author = await _authorRepository.GetAsync(authorId);
-        if (author is null)
+        
+        var post = await _postRepository.GetAsync(id);
+        if (post is null)
         {
-            throw new AuthorNotFoundException(authorId);
+            throw new PostNotFoundException(id);
         }
-        var id = Guid.NewGuid();
         
         var authorDetails = default(AuthorDetails);
-        var post = default(Domain.Entities.Post);
         
         if (authorDetailsDto is not null)
         { 
             authorDetails= new AuthorDetails(authorDetailsDto.Email, authorDetailsDto.PhoneNumber);
-            post = _postFactory.CreateWithCustomDetails(id, title, description, author, authorDetails);
+            post.UpdateAuthorDetails(authorDetails);
         }
-        else
-        {
-            post = _postFactory.Create(id, title, description, author);
-        }
-        author.AddPost(post);
-        await _postRepository.AddAsync(post);
-        // await _authorRepository.UpdateAsync(author);
-
-        return id;
+        post.UpdateTitle(title);
+        post.UpdateDescription(description);
+        await _postRepository.UpdateAsync(post);
     }
     
-    private class CreatePostValidator : AbstractValidator<CreatePost>
+    private class UpdatePostValidator : AbstractValidator<UpdatePost>
     {
-        public CreatePostValidator()
+        public UpdatePostValidator()
         {
             RuleFor(x => x.Title).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.AuthorId).NotEmpty();
+            RuleFor(x => x.PostId).NotEmpty();
         }
     }
 }
