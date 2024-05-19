@@ -1,10 +1,10 @@
 ﻿services:
   alledrogo.post.api:
-    image: alledrogo.post.api
-    container_name: post.api
+    image: alledrogo.api
+    container_name: Api
     build:
       context: .
-      dockerfile: src/AlledrogO.Post/AlledrogO.Post.Api/Dockerfile
+      dockerfile: Bootstrapper/AlledrogO.Bootstrapper/Dockerfile
     ports:
       - "5000:8080"
   alledrogo.database:
