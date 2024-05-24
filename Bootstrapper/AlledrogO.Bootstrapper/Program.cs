@@ -1,3 +1,4 @@
+using AlledrogO.Message.Api;
 using AlledrogO.Post.Api;
 using AlledrogO.Shared;
 using AlledrogO.User.Api;
@@ -9,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddShared(builder.Configuration);
 builder.Services.AddUserModule();
 builder.Services.AddPostModule(builder.Configuration);
+builder.Services.AddMessageModule();
 
 
 var app = builder.Build();
