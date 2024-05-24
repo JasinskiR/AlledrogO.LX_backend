@@ -1,9 +1,13 @@
+using System.Security.Claims;
 using AlledrogO.Message.Core.Commands;
 using AlledrogO.Message.Core.DTOs;
+using AlledrogO.Message.Core.DTOs.External;
 using AlledrogO.Message.Core.Queries;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AlledrogO.Message.Api.Controllers;
 
@@ -13,6 +17,8 @@ public class ChatUserController : ControllerBase
 {
     private readonly IQueryDispatcher _queryDispatcher;
     private readonly ICommandDispatcher _commandDispatcher;
+    
+    private Guid LoggedInUserId => new(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
     public ChatUserController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher)
     {
@@ -21,7 +27,8 @@ public class ChatUserController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ChatUserDto>>> Get()
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Get all chat users")]
+    public async Task<ActionResult<IEnumerable<ChatUserDto>>> GetAll()
     {
         var query = new GetChatUsers();
         var result = await _queryDispatcher.QueryAsync(query);
@@ -32,11 +39,51 @@ public class ChatUserController : ControllerBase
         return Ok(result);
     }
     
-    [HttpPost]
-    public async Task<ActionResult<Guid>> Create()
+    [HttpGet("info")]
+    [Authorize]
+    [SwaggerOperation("Get data about logged in chatUser")]
+    public async Task<ActionResult<ChatUserDto>> GetById()
     {
-        var command = new CreateChatUser();
-        var result = await _commandDispatcher.DispatchAsync<CreateChatUser, Guid>(command);
+        var query = new GetChatUserById(LoggedInUserId);
+        var result = await _queryDispatcher.QueryAsync(query);
+        if (result is null)
+        {
+            return NotFound();
+        }
         return Ok(result);
     }
+    
+    [HttpGet("chats/{ChatId}")]
+    [Authorize]
+    [SwaggerOperation("Get chat with given id")]
+    public async Task<ActionResult<ChatDto>> GetChatById(Guid ChatId)
+    {
+        var query = new GetChatById(ChatId);
+        var result = await _queryDispatcher.QueryAsync(query);
+        if (result is null)
+        {
+            return NotFound();
+        }
+        return Ok(result);
+    }
+    
+    [HttpPost("chats")]
+    [Authorize]
+    [SwaggerOperation("Create chat with given user")]
+    public async Task<ActionResult> CreateChat([FromBody] CreateChatDto createChatDto)
+    {
+        var command = new CreateChat(BuyerId: LoggedInUserId, AdvertiserId: createChatDto.RecieverId);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+    
+    
+    
+    // [HttpPost]
+    // public async Task<ActionResult<Guid>> Create()
+    // {
+    //     var command = new CreateChatUser();
+    //     var result = await _commandDispatcher.DispatchAsync<CreateChatUser, Guid>(command);
+    //     return Ok(result);
+    // }
 }
