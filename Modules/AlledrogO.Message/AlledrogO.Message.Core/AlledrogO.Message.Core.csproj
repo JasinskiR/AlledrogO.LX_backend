@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="EventHandlers\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\AlledrogO.Shared\AlledrogO.Shared.csproj" />
     </ItemGroup>
 
