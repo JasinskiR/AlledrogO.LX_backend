@@ -10,8 +10,4 @@
       <ProjectReference Include="..\AlledrogO.Message.Core\AlledrogO.Message.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Hubs\" />
-    </ItemGroup>
-
 </Project>

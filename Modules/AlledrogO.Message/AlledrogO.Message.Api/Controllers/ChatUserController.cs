@@ -77,6 +77,15 @@ public class ChatUserController : ControllerBase
         return Ok();
     }
     
+    [HttpPatch]
+    [Authorize]
+    public async Task<ActionResult> AddMessageToChat([FromBody] IncomingMessageDto incomingMessageDto)
+    {
+        var command = new AddMessageToChat(incomingMessageDto, LoggedInUserId);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+    
     
     
     // [HttpPost]
