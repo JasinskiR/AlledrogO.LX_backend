@@ -5,10 +5,32 @@ Accept: application/json
 
 ###
 
-POST http://localhost:5044/api/User/login
+POST https://localhost:7056/api/User/login
 Content-Type: application/json
 
 {
-  "email": "user@mail.com",
-  "password": "Qwerty123@#" 
+  "email": "helluva@boss.com",
+  "password": "Qwerty123@#",
+  "rememberMe": true
+}
+
+###
+
+POST https://localhost:7056/api/User/login
+Content-Type: application/json
+
+{
+  "email": "client@wp.pl",
+  "password": "Qwerty123@#",
+  "rememberMe": true
+}
+
+###
+
+PATCH https://localhost:7056/api/ChatUser
+Content-Type: application/json
+
+{
+  "chatId": "a94ac6d2-1953-4e29-a2b9-5d9eee9a3459",
+  "content": "IIIIILEEEEE"
 }

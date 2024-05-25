@@ -46,6 +46,7 @@ public class AddMessageToChatHandler : ICommandHandler<AddMessageToChat>
             
         chat.Messages.AddLast(message);
         await _chatRepository.UpdateAsync(chat);
+
         await _hubContext.Clients.Group(chatId.ToString()).SendAsync("ReceiveMessage", message.AsDto());
     }
 }
