@@ -9,9 +9,10 @@ public static class Extensions
 {
     private const string SectionName = "Postgres";
     
-    internal static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<PostgresOptions>(configuration.GetSection(SectionName));
+        services.Configure<PostgresOptions>(options => 
+            configuration.GetSection(SectionName).Bind(options));
         services.AddHostedService<DatabaseInitializer>();
         return services;
     }
@@ -19,7 +20,9 @@ public static class Extensions
     public static IServiceCollection AddPostgres<T>(this IServiceCollection services) where T : DbContext
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-        var connectionString = configuration[$"{SectionName}:{nameof(PostgresOptions.ConnectionString)}"];
+        // var connectionString = configuration[$"{SectionName}:{nameof(PostgresOptions.ConnectionString)}"];
+        // var connectionString = "Host=postgres;Database=alledrogo;Username=postgres;Password=postgres";
+        var connectionString = configuration.GetSection("Postgres")["ConnectionString"];
         services.AddDbContext<T>(x => x.UseNpgsql(connectionString));
 
         return services;
