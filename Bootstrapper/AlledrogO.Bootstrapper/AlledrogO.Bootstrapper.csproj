@@ -12,7 +12,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.4">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,8 +21,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.1" />
+        
     </ItemGroup>
 
     <ItemGroup>
@@ -46,11 +44,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot\images\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Api\AlledrogO.Post.Api.csproj" />
+      <ProjectReference Include="..\..\Modules\AlledrogO.User\AlledrogO.User.Api\AlledrogO.User.Api.csproj" />
+      <ProjectReference Include="..\..\Modules\AlledrogO.User\AlledrogO.User.Core\AlledrogO.User.Core.csproj" />
       <ProjectReference Include="..\..\Shared\AlledrogO.Shared\AlledrogO.Shared.csproj" />
     </ItemGroup>
 

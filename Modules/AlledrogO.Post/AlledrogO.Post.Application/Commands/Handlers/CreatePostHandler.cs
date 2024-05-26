@@ -1,6 +1,7 @@
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Domain.Factories;
+using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
 using FluentValidation;
 
@@ -21,25 +22,35 @@ public class CreatePostHandler : ICommandHandler<CreatePost, Guid>
 
     public async Task<Guid> HandleAsync(CreatePost command)
     {
-        var ( title, description, authorId) = command;
+        var ( title, description, authorId, authorDetailsDto) = command;
         var validator = new CreatePostValidator();
         var validationResult = await validator.ValidateAsync(command);
         if (!validationResult.IsValid)
         {
             throw new DtoValidationFailedException(validationResult.Errors.FirstOrDefault()!.ErrorMessage);
         }
-        
         var author = await _authorRepository.GetAsync(authorId);
-        
         if (author is null)
         {
             throw new AuthorNotFoundException(authorId);
         }
         var id = Guid.NewGuid();
-        var post = _postFactory.Create(id, title, description, author);
+        
+        var authorDetails = default(AuthorDetails);
+        var post = default(Domain.Entities.Post);
+        
+        if (authorDetailsDto is not null)
+        { 
+            authorDetails= new AuthorDetails(authorDetailsDto.Email, authorDetailsDto.PhoneNumber);
+            post = _postFactory.CreateWithCustomDetails(id, title, description, author, authorDetails);
+        }
+        else
+        {
+            post = _postFactory.Create(id, title, description, author);
+        }
         author.AddPost(post);
         await _postRepository.AddAsync(post);
-        await _authorRepository.UpdateAsync(author);
+        // await _authorRepository.UpdateAsync(author);
 
         return id;
     }

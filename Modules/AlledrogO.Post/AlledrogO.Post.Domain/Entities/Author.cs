@@ -44,23 +44,6 @@ public class Author : AggregateRoot<Guid>
         AddEvent(new AuthorPostAddedDE(this, post));
     }
     
-    public void PublishPost(string title)
-    {
-        var post = getPostByTitle(title);
-        post.Publish();
-    }
-    
-    public void ArchivePost(string title)
-    {
-        var post = getPostByTitle(title);
-        post.Archive();
-    }
-    
-    public void DeleteAllPosts()
-    {
-        DeleteManyPosts(Posts);
-    }
-    
     public void DeletePost(Post post)
     {
         if (!Posts.Contains(post))

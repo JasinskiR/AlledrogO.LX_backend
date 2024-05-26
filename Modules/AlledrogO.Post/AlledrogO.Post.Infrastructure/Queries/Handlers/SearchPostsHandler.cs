@@ -1,5 +1,6 @@
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
+using AlledrogO.Post.Domain.Consts;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.Post.Infrastructure.EF.Models;
 using AlledrogO.Shared.Queries;
@@ -22,6 +23,7 @@ public class SearchPostsHandler : IQueryHandler<SearchPosts, IEnumerable<PostCar
         List<string> tags = query.Search.Tags.ToList();
         
         var dbQuery = _posts
+            .Where(p => p.Status == PostStatus.Published)
             .Include(p => p.Images)
             .Include(p => p.Tags)
             .AsQueryable();

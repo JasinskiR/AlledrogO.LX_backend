@@ -1,4 +1,4 @@
-using AlledrogO.Post.Domain.ValueObjects;
+using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Shared.Domain;
 
 namespace AlledrogO.Post.Domain.Events.Post;

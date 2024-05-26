@@ -4,7 +4,7 @@ namespace AlledrogO.Post.Domain.Entities.Exceptions;
 
 public class PostImageAlreadyExistsException : AlledrogoException
 {
-    public PostImageAlreadyExistsException(string url) : base($"Post image with url '{url}' already exists")
+    public PostImageAlreadyExistsException(Guid id) : base($"Post image with id {id} already exists.")
     {
     }
 }

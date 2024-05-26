@@ -1,5 +1,6 @@
 using AlledrogO.Post.Application.DTOs;
 using AlledrogO.Post.Application.Queries;
+using AlledrogO.Post.Domain.Consts;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.Post.Infrastructure.EF.Models;
 using AlledrogO.Shared.Queries;
@@ -19,6 +20,7 @@ public class GetPostCardsHandler : IQueryHandler<GetPostCards, IEnumerable<PostC
     public async Task<IEnumerable<PostCardDto>> HandleAsync(GetPostCards query)
     {
         var posts = await _posts
+            .Where(p => p.Status == PostStatus.Published)
             .Include(p => p.Images)
             .Select(p => p.AsCardDto())
             .AsNoTracking()

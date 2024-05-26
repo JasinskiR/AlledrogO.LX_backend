@@ -1,10 +1,8 @@
-using System.Net.Mime;
 using AlledrogO.Post.Domain.Consts;
 using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AlledrogO.Post.Infrastructure.EF.Config;
 
@@ -46,7 +44,9 @@ public class WriteConfiguration:
                 details => AuthorDetails.Create(details))
             .HasColumnName("SharedAuthorDetails");
 
-        builder.HasMany(p => p.Images);
+        builder.HasMany(p => p.Images)
+            .WithOne(i => i.Post)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(p => p.Tags)
             .WithMany(t => t.Posts);
@@ -98,9 +98,12 @@ public class WriteConfiguration:
 
     public void Configure(EntityTypeBuilder<PostImage> builder)
     {
-        builder.Property<Guid>("Id");
+        builder.Property(i => i.Id)
+            .ValueGeneratedNever();
+        builder.Property(i => i.Version)
+            .IsRowVersion();
         builder.Property(i => i.Url);
-        
+        builder.Property(i => i.IsMain);
         builder.ToTable("PostImages");
     }
 }

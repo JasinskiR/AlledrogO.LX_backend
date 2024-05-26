@@ -20,6 +20,7 @@ public class GetAuthorByIdHandler : IQueryHandler<GetAuthorById, AuthorDto>
     {
         return await _authors
             .Where(a => a.Id == query.Id)
+            .Include(a => a.Posts)
             .Select(a => a.AsDto())
             .AsNoTracking()
             .FirstOrDefaultAsync();

@@ -4,3 +4,11 @@ GET {{AlledrogO.Post.Api_HostAddress}}/api/Post/a7cfed78-a5f2-4b28-8014-3109f4cd
 Accept: application/json
 
 ###
+
+POST http://localhost:5044/api/User/login
+Content-Type: application/json
+
+{
+  "email": "user@mail.com",
+  "password": "Qwerty123@#" 
+}

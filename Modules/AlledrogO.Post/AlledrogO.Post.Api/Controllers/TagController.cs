@@ -57,13 +57,4 @@ public class TagController : ControllerBase
         }
         return Ok(result);
     }
-    
-    [HttpPost]
-    [SwaggerOperation("DEPRECEATED. Add tag to a post", 
-        "Tag creation is now handled by the Post service. This endpoint will be removed in the future.")]
-    public async Task<ActionResult<Guid>> Post([FromBody] AddTagToPost command)
-    {
-        var result = await _commandDispatcher.DispatchAsync<AddTagToPost, Guid>(command);
-        return CreatedAtAction(nameof(Get), new { Id = result }, result);
-    }
 }

@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using AlledrogO.Post.Application.Contracts;
 using AlledrogO.Post.Application.Exceptions;
 using AlledrogO.Post.Application.Services;
+using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
 using AlledrogO.Shared.Commands;
 using Microsoft.AspNetCore.Http;
@@ -11,54 +13,41 @@ namespace AlledrogO.Post.Application.Commands.Handlers;
 public class AddPostImageHandler : ICommandHandler<AddPostImage, string>
 {
     private readonly IPostRepository _postRepository;
-    private readonly IHostEnvironment _environment;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private static string _imagesDirectory = "images";
-    private readonly string _staticFilesPath;
-
+    private readonly IImageService _imageService;
+    private readonly IPostImageFactory _postImageFactory;
+    
     public AddPostImageHandler(IPostRepository postRepository, 
-        IHostEnvironment environment, 
-        IHttpContextAccessor httpContextAccessor)
+        IImageService imageService, 
+        IPostImageFactory postImageFactory)
     {
         _postRepository = postRepository;
-        _environment = environment;
-        _httpContextAccessor = httpContextAccessor;
-        _staticFilesPath = Path.Combine(_environment.ContentRootPath, "wwwroot");
+        _imageService = imageService;
+        _postImageFactory = postImageFactory;
     }
+    
 
     public async Task<string> HandleAsync(AddPostImage command)
     {
         var (postId, file) = command;
-        
-        ImageValidator imageValidator = new();
-        var validationResult = await imageValidator.ValidateAsync(file);
-        if (!validationResult.IsValid)
-        {
-            throw new InvalidImageException(validationResult.Errors);
-        }
-        
         var post = await _postRepository.GetAsync(postId);
         if (post is null)
         {
             throw new PostNotFoundException(postId);
         }
         
-        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-        var absPath = Path.Combine(_staticFilesPath, _imagesDirectory, fileName);
+        var validationResult = await _imageService.ValidateImageAsync(file);
+        if (!validationResult.IsValid)
+        {
+            throw new InvalidImageException(validationResult.Errors);
+        }
         
-        using var stream = new FileStream(absPath, FileMode.Create);
-        await file.CopyToAsync(stream);
-
-        var serverImagePath = string.Join("/", _imagesDirectory, fileName);
-        var request = _httpContextAccessor.HttpContext.Request;
-        var host = request.Host.ToUriComponent();
-        var scheme = request.Scheme;
-        var fullUrl = $"{scheme}://{host}/{serverImagePath}";
+        var imageId = Guid.NewGuid();
+        var imageUrl = await _imageService.SaveImageAsync(file, imageId);
+        var savedImage = _postImageFactory.Create(imageId, post, imageUrl);
         
-        var image = new PostImage(fullUrl);
-        post.AddImage(image);
+        
+        post.AddImage(savedImage);
         await _postRepository.UpdateAsync(post);
-        
-        return fullUrl;
+        return imageUrl;
     }
 }
