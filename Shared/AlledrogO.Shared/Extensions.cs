@@ -1,5 +1,6 @@
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Cors;
+using AlledrogO.Shared.Database;
 using AlledrogO.Shared.Exceptions;
 using AlledrogO.Shared.Logging;
 using AlledrogO.Shared.MassTransit;
@@ -17,6 +18,7 @@ public static class Extensions
    {
        services.AddControllers();
        services.AddHttpContextAccessor();
+       services.AddPostgres(configuration);
        services.AddCorsForAngular(configuration);
        services.AddSwaggerGen(swagger =>
        {
