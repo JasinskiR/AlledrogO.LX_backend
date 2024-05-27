@@ -30,6 +30,7 @@ public static class Extensions
                Version = "v1"
            });
        });
+       services.AddSignalR();
        services.AddMessageBroker();
        services.AddTransient<ExceptionMiddleware>();
        services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
