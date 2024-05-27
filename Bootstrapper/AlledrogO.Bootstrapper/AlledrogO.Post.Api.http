@@ -12,3 +12,25 @@ Content-Type: application/json
   "email": "user@mail.com",
   "password": "Qwerty123@#" 
 }
+
+###
+
+POST http://localhost:5000/api/User/login
+Content-Type: application/json
+
+{
+  "email": "helluva@boss.com",
+  "password": "Qwerty123@#",
+  "rememberMe": true
+}
+
+###
+
+POST http://localhost:5000/api/User/register
+Content-Type: application/json
+
+{
+  "email": "helluva@boss.com",
+  "password": "Qwerty123@#",
+  "phoneNumber": "666666666"
+}
