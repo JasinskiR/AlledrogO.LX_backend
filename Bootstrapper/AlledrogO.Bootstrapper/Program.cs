@@ -11,7 +11,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddShared(builder.Configuration);
 builder.Services.AddUserModule();
 builder.Services.AddPostModule(builder.Configuration);
-builder.Services.AddMessageModule();
 
 
 var app = builder.Build();

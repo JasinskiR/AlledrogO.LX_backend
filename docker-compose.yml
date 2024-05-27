@@ -1,5 +1,5 @@
 ﻿services:
-  alledrogo.post.api:
+  alledrogo.api:
     image: alledrogo.api
     container_name: Api
     build:

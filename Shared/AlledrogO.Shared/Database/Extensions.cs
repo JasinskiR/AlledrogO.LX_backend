@@ -7,23 +7,22 @@ namespace AlledrogO.Shared.Database;
 
 public static class Extensions
 {
-    private const string sectionName = "Postgres";
+    private const string SectionName = "Postgres";
     
-    internal static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
-        var section = configuration.GetSection(sectionName)
-            ?? throw new NullReferenceException("Postgres options not found");
-        
+        services.Configure<PostgresOptions>(options => 
+            configuration.GetSection(SectionName).Bind(options));
         services.AddHostedService<DatabaseInitializer>();
-        services.Configure<PostgresOptions>(options => section.Bind(options));
-        
         return services;
     }
     
     public static IServiceCollection AddPostgres<T>(this IServiceCollection services) where T : DbContext
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-        var connectionString = configuration[$"{sectionName}:{nameof(PostgresOptions.ConnectionString)}"];
+        // var connectionString = configuration[$"{SectionName}:{nameof(PostgresOptions.ConnectionString)}"];
+        // var connectionString = "Host=postgres;Database=alledrogo;Username=postgres;Password=postgres";
+        var connectionString = configuration.GetSection("Postgres")["ConnectionString"];
         services.AddDbContext<T>(x => x.UseNpgsql(connectionString));
 
         return services;
