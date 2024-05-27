@@ -4,4 +4,4 @@ using AlledrogO.Shared.Commands;
 
 namespace AlledrogO.Message.Core.Commands;
 
-public record AddMessageToChat(IncomingMessageDto IncomingMessageDto, Guid SenderId) : ICommand;
+public record AddMessageToChat(Guid ChatId, IncomingMessageDto IncomingMessageDto, Guid SenderId) : ICommand;

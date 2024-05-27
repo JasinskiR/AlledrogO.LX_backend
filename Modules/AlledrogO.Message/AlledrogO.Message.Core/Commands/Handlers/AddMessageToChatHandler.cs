@@ -19,7 +19,7 @@ public class AddMessageToChatHandler : ICommandHandler<AddMessageToChat>
 
     public async Task HandleAsync(AddMessageToChat command)
     {
-        var chatId = command.IncomingMessageDto.ChatId;
+        var chatId = command.ChatId;
         var chat = await _chatRepository.GetByIdAsync(chatId);
         if (chat == null)
         {

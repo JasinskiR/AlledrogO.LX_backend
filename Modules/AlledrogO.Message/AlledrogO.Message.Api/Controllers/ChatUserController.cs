@@ -53,6 +53,16 @@ public class ChatUserController : ControllerBase
         return Ok(result);
     }
     
+    [HttpPost("chats")]
+    [Authorize]
+    [SwaggerOperation("Create chat with given user")]
+    public async Task<ActionResult> CreateChat([FromBody] CreateChatDto createChatDto)
+    {
+        var command = new CreateChat(BuyerId: LoggedInUserId, AdvertiserId: createChatDto.RecieverId);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+    
     [HttpGet("chats/{ChatId}")]
     [Authorize]
     [SwaggerOperation("Get chat with given id")]
@@ -67,32 +77,13 @@ public class ChatUserController : ControllerBase
         return Ok(result);
     }
     
-    [HttpPost("chats")]
+    [HttpPatch("chats/{ChatId}")]
     [Authorize]
-    [SwaggerOperation("Create chat with given user")]
-    public async Task<ActionResult> CreateChat([FromBody] CreateChatDto createChatDto)
+    [SwaggerOperation("Add message to chat")]
+    public async Task<ActionResult> AddMessageToChat([FromBody] IncomingMessageDto incomingMessageDto, [FromRoute] Guid ChatId)
     {
-        var command = new CreateChat(BuyerId: LoggedInUserId, AdvertiserId: createChatDto.RecieverId);
+        var command = new AddMessageToChat(ChatId, incomingMessageDto, LoggedInUserId);
         await _commandDispatcher.DispatchAsync(command);
         return Ok();
     }
-    
-    [HttpPatch]
-    [Authorize]
-    public async Task<ActionResult> AddMessageToChat([FromBody] IncomingMessageDto incomingMessageDto)
-    {
-        var command = new AddMessageToChat(incomingMessageDto, LoggedInUserId);
-        await _commandDispatcher.DispatchAsync(command);
-        return Ok();
-    }
-    
-    
-    
-    // [HttpPost]
-    // public async Task<ActionResult<Guid>> Create()
-    // {
-    //     var command = new CreateChatUser();
-    //     var result = await _commandDispatcher.DispatchAsync<CreateChatUser, Guid>(command);
-    //     return Ok(result);
-    // }
 }

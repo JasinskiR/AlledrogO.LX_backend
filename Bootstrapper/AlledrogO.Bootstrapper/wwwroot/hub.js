@@ -71,11 +71,13 @@ connectButton.addEventListener("click", async event => {
 sendButton.addEventListener("click", async event => {
     const message = document.getElementById("messageInput").value;
     document.getElementById("messageInput").value = "";
+    const chatId = document.getElementById("chatInput").value;
     const messageObject = {
-        chatId: document.getElementById("chatInput").value,
         content: message
     };
-    await fetch(`/api/ChatUser`, {
+    const route = `/api/ChatUser/chats/${chatId}`;
+    console.log(route);
+    await fetch(route, {
         method: "PATCH",
         headers: {
             "Content-Type": "application/json"
