@@ -103,7 +103,8 @@ public class WriteConfiguration:
         builder.Property(i => i.Version)
             .IsRowVersion();
         builder.Property(i => i.Url);
-        builder.Property(i => i.IsMain);
+        builder.Property(p=>p.IsMain)
+            .HasColumnName("IsMain");
         builder.ToTable("PostImages");
     }
 }

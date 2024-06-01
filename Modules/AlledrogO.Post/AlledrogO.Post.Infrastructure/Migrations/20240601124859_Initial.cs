@@ -74,7 +74,9 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     Url = table.Column<string>(type: "text", nullable: false),
+                    IsMain = table.Column<bool>(type: "boolean", nullable: false),
                     PostId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

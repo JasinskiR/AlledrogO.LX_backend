@@ -89,7 +89,8 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsMain")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("IsMain");
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uuid");
@@ -97,6 +98,12 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<uint>("Version")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("xid")
+                        .HasColumnName("xmin");
 
                     b.HasKey("Id");
 
