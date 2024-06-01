@@ -27,6 +27,13 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
+        var validator = new RegisterDtoValidator();
+        var validationResult = await validator.ValidateAsync(dto);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(new { Errors = validationResult.Errors.FirstOrDefault()!.ErrorMessage });
+        }
+        
         var user = new Core.Entities.User
         {
             UserName = dto.Email,
