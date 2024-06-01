@@ -44,11 +44,12 @@ internal class DatabaseInitializer : IHostedService
             {
                 continue;
             }
-            var dbConnection = dbContext.Database.GetDbConnection();
-            Console.WriteLine($"DbContext: {dbContextType.Name}, Connection String: {dbConnection.ConnectionString}");    
+            // var dbConnection = dbContext.Database.GetDbConnection();
+            // Console.WriteLine($"DbContext: {dbContextType.Name}, Connection String: {dbConnection.ConnectionString}");    
             _logger.LogInformation($"Running DB context: {dbContext.GetType().Name}...");
             try
             {
+                await dbContext.Database.EnsureCreatedAsync();
                 await dbContext.Database.MigrateAsync(cancellationToken);
             }
             catch (Exception e)
