@@ -4,8 +4,10 @@ using AlledrogO.Shared.Database;
 using AlledrogO.Shared.Exceptions;
 using AlledrogO.Shared.Logging;
 using AlledrogO.Shared.MassTransit;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -30,6 +32,22 @@ public static class Extensions
                Version = "v1"
            });
        });
+       services.ConfigureApplicationCookie(options =>
+       {
+           options.ExpireTimeSpan = TimeSpan.FromHours(8);
+           options.SlidingExpiration = true;
+           options.Cookie.SameSite = SameSiteMode.None;
+           options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+           options.Cookie.HttpOnly = false;
+       });
+       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+           // .AddCookie(options =>
+           // {
+           //     options.Cookie.SameSite = SameSiteMode.None;
+           //      options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+           // });
+       
+       services.AddAuthorizationBuilder();
        services.AddMessageBroker();
        services.AddTransient<ExceptionMiddleware>();
        services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
@@ -41,6 +59,8 @@ public static class Extensions
        app.UseDefaultFiles();
        app.UseStaticFiles();
        app.UseCorsForAngular();
+       app.UseAuthentication();
+       app.UseAuthorization();
        app.UseSwagger();
        app.UseSwaggerUI();
        app.UseMiddleware<ExceptionMiddleware>();

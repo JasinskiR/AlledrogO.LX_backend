@@ -66,7 +66,7 @@ public class UserController : ControllerBase
         {
             return BadRequest(new { Message = "Invalid email or password" });
         }
-        _signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
+        // _signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
         var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
         
         if (result.Succeeded)
@@ -90,6 +90,13 @@ public class UserController : ControllerBase
     public IActionResult Test()
     {
         return Ok($"Hello {User.Identity.Name}");
+    }
+    
+    [HttpGet("testCookie")]
+    public IActionResult TestCookie()
+    {
+        var cookies = Request.Cookies;
+        return Ok(cookies);
     }
     
     [HttpDelete("deleteAccount")]

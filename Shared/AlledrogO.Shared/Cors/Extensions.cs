@@ -19,12 +19,29 @@ public static class Extensions
                     .AllowAnyHeader()
                     .AllowCredentials()
             ));
+        services.AddTestCors();
+        
+        return services;
+    }
+
+    private static IServiceCollection AddTestCors(this IServiceCollection services)
+    {
+        services.AddCors(
+            options => options.AddPolicy(
+                "Test",
+                policy => policy
+                    .WithOrigins(["http://127.0.0.1:5500"])
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()
+            ));
         return services;
     }
     
     public static IApplicationBuilder UseCorsForAngular(this IApplicationBuilder app)
     {
         app.UseCors("Angular");
+        app.UseCors("Test");
         return app;
     }
 }
