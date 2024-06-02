@@ -18,8 +18,9 @@ public static class Extensions
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
+                    // .WithExposedHeaders("*")
             ));
-        services.AddTestCors();
+        // services.AddTestCors();
         
         return services;
     }

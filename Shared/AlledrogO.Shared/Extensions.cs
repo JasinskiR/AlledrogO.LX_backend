@@ -32,21 +32,8 @@ public static class Extensions
                Version = "v1"
            });
        });
-       services.ConfigureApplicationCookie(options =>
-       {
-           options.ExpireTimeSpan = TimeSpan.FromHours(8);
-           options.SlidingExpiration = true;
-           options.Cookie.SameSite = SameSiteMode.None;
-           options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-           options.Cookie.HttpOnly = false;
-       });
-       services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
-           // .AddCookie(options =>
-           // {
-           //     options.Cookie.SameSite = SameSiteMode.None;
-           //      options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-           // });
-       
+       services.AddAuthorizationBuilder();
+       services.AddAuthentication();
        services.AddAuthorizationBuilder();
        services.AddMessageBroker();
        services.AddTransient<ExceptionMiddleware>();
