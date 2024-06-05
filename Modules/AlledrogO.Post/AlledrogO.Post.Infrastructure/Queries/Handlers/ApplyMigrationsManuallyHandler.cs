@@ -16,6 +16,11 @@ public class ApplyMigrationsManuallyHandler : IQueryHandler<ApplyMigrationsManua
 
     public async Task<bool> HandleAsync(ApplyMigrationsManually query)
     {
+        // var migrations = _context.Database.GetMigrations();
+        // foreach (var migration in migrations)
+        // {
+        //     await _context.Database.ExecuteSqlRawAsync($"DELETE FROM __EFMigrationsHistory WHERE MigrationId = '{migration}'");
+        // }
         await _context.Database.MigrateAsync();
         return true;
     }
