@@ -37,6 +37,15 @@ public class AuthorController : ControllerBase
         return Ok(result);
     }
     
+    [HttpGet("applyMigrationsManually")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Apply migrations manually")]
+    public async Task<ActionResult> ApplyMigrationsManually()
+    {
+        var command = new ApplyMigrationsManually();
+        await _queryDispatcher.QueryAsync(command);
+        return Ok();
+    }
+    
     [HttpGet("info")]
     [SwaggerOperation("Get info about logged author")]
     [Authorize]
