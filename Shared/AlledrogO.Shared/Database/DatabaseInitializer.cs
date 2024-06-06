@@ -49,7 +49,7 @@ internal class DatabaseInitializer : IHostedService
             _logger.LogInformation($"Running DB context: {dbContext.GetType().Name}...");
             try
             {
-                await dbContext.Database.EnsureCreatedAsync();
+                await dbContext.Database.EnsureCreatedAsync(cancellationToken);
                 await dbContext.Database.MigrateAsync(cancellationToken);
             }
             catch (Exception e)
