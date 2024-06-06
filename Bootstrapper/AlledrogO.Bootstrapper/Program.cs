@@ -2,7 +2,9 @@ using AlledrogO.Message.Api;
 using AlledrogO.Message.Core.Hubs;
 using AlledrogO.Post.Api;
 using AlledrogO.Shared;
+using AlledrogO.Shared.Database;
 using AlledrogO.User.Api;
+using AlledrogO.User.Core.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,7 @@ app.UseMessageModule();
 app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
     .Produces(200)
     .ExcludeFromDescription();
+
 app.MapHub<ChatHub>("/chat");
 
 app.Run();

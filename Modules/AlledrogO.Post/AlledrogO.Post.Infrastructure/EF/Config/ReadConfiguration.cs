@@ -45,6 +45,8 @@ internal sealed class ReadConfiguration :
     {
         builder.Property(p => p.Version)
             .IsRowVersion();
+        builder.Property(p=>p.IsMain)
+            .HasColumnName("IsMain");
         builder.ToTable("PostImages");
     }
 

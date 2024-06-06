@@ -2,7 +2,10 @@ using System.Security.Claims;
 using AlledrogO.Shared.MassTransit.Events;
 using AlledrogO.User.Api.DTOs;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +30,13 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
+        var validator = new RegisterDtoValidator();
+        var validationResult = await validator.ValidateAsync(dto);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(new { Errors = validationResult.Errors.FirstOrDefault()!.ErrorMessage });
+        }
+        
         var user = new Core.Entities.User
         {
             UserName = dto.Email,
@@ -52,22 +62,23 @@ public class UserController : ControllerBase
     }
     
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto dto)
+    public async Task<Results<Ok<AccessTokenResponse>, EmptyHttpResult, ProblemHttpResult>> Login([FromBody] LoginDto dto)
     {
         var user = await _userManager.FindByEmailAsync(dto.Email);
         if (user is null)
         {
-            return BadRequest(new { Message = "Invalid email or password" });
+            return TypedResults.Problem("User with this email does not exist", statusCode: StatusCodes.Status400BadRequest);
         }
-        _signInManager.AuthenticationScheme = IdentityConstants.ApplicationScheme;
-        var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, false);
         
+        _signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+        var result = await _signInManager.PasswordSignInAsync(user, dto.Password, false, false);
+
         if (result.Succeeded)
         {
-            return Ok(new { Message = "Login successful" });
+            return TypedResults.Empty;
         }
 
-        return Unauthorized();
+        return TypedResults.Problem("Invalid email or password", statusCode: StatusCodes.Status401Unauthorized);
     }
     
     [HttpPost("logout")]
@@ -83,6 +94,13 @@ public class UserController : ControllerBase
     public IActionResult Test()
     {
         return Ok($"Hello {User.Identity.Name} with Id {User.FindFirstValue(ClaimTypes.NameIdentifier)}!");
+    }
+    
+    [HttpGet("testCookie")]
+    public IActionResult TestCookie()
+    {
+        var cookies = Request.Cookies;
+        return Ok(cookies);
     }
     
     [HttpDelete("deleteAccount")]

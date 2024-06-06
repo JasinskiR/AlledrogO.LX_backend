@@ -1,5 +1,5 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
@@ -27,4 +27,8 @@ RUN dotnet publish "AlledrogO.Bootstrapper.csproj" -c $BUILD_CONFIGURATION -o /a
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir -p /app/wwwroot/images
+RUN chmod -R 777 /app/wwwroot/images
+USER $APP_UID
+
 ENTRYPOINT ["dotnet", "AlledrogO.Bootstrapper.dll"]
