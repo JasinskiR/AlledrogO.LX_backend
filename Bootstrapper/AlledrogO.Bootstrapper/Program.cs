@@ -35,3 +35,7 @@ app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
 app.MapHub<ChatHub>("/chat");
 
 app.Run();
+
+public partial class Program
+{
+}

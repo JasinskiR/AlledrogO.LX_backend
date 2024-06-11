@@ -50,7 +50,11 @@ connectButton.addEventListener("click", async event => {
             connectButton.textContent = "Połączono";
             connectButton.disabled = true;
             connectButton.classList.add("btn-success");
-            fetch(`/api/ChatUser/chats/${chatId}`)
+            fetch(`/api/ChatUser/chats/${chatId}`, {
+                headers: {
+                    "Authorization": "Bearer " + document.getElementById("tokenInput").value
+                },
+            })
                 .then(response => response.json())
                 .then(chatHistory => {
                     myRole = chatHistory.buyerId === myId ? "buyer" : "seller";
@@ -80,7 +84,8 @@ sendButton.addEventListener("click", async event => {
     await fetch(route, {
         method: "PATCH",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + document.getElementById("tokenInput").value
         },
         body: JSON.stringify(messageObject)
     });
