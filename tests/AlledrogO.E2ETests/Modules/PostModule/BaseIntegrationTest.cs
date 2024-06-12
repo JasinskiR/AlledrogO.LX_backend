@@ -13,9 +13,11 @@ public abstract class BaseIntegrationTest
     protected readonly ICommandDispatcher CommandDispatcher;
     protected readonly IQueryDispatcher QueryDispatcher;
     protected readonly UserDbContext DbContext;
+    protected HttpClient HttpClient { get; init; }
 
     protected BaseIntegrationTest(WebAppFactory factory)
     {
+        HttpClient = factory.CreateClient();
         _scope = factory.Services.CreateScope();
 
         CommandDispatcher = _scope.ServiceProvider.GetRequiredService<ICommandDispatcher>();
