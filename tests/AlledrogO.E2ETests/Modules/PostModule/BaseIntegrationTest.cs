@@ -1,9 +1,11 @@
+using System.Net.Http.Json;
+using System.Text.Json;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
 using AlledrogO.User.Core.EF.Contexts;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AlledrogO.E2ETests.Modules.UserModule;
+namespace AlledrogO.E2ETests.Modules.PostModule;
 
 public abstract class BaseIntegrationTest
     : IClassFixture<WebAppFactory>,
@@ -25,6 +27,32 @@ public abstract class BaseIntegrationTest
 
         DbContext = _scope.ServiceProvider
             .GetRequiredService<UserDbContext>();
+    }
+    
+    protected async Task GenerateSampleUserAsync()
+    {
+        var response = await HttpClient.PostAsJsonAsync("api/User/register", new
+        {
+            email = "user@email.com",
+            password = "Qwerty123@#",
+            phoneNumber = "123123123"
+        });
+        response.EnsureSuccessStatusCode();
+        
+    }
+    
+    protected async Task<string> GetSampleAccessTokenAsync()
+    {
+        var response = await HttpClient.PostAsJsonAsync("api/User/login", new
+        {
+            email = "user@email.com",
+            password = "Qwerty123@#",
+            rememberMe = true
+        });
+        response.EnsureSuccessStatusCode();
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var token = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent)!["accessToken"];
+        return token;
     }
 
     public void Dispose()

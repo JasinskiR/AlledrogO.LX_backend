@@ -1,5 +1,4 @@
 using AlledrogO.Post.Infrastructure.EF.Contexts;
-using AlledrogO.User.Core.EF.Contexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Testcontainers.PostgreSql;
 
-namespace AlledrogO.E2ETests.Modules.UserModule;
+namespace AlledrogO.E2ETests.Modules.PostModule;
 
 public class WebAppFactory
     : WebApplicationFactory<Program>,
@@ -37,21 +36,6 @@ public class WebAppFactory
             {
                 options.UseNpgsql(_dbContainer.GetConnectionString());
             });
-            
-            // var descriptorType =
-            //     typeof(DbContextOptions<UserDbContext>);
-            //
-            // var descriptor = services
-            //     .SingleOrDefault(s => s.ServiceType == descriptorType);
-            //
-            // if (descriptor is not null)
-            // {
-            //     services.Remove(descriptor);
-            // }
-            //
-            // services.AddDbContext<UserDbContext>(options =>
-            //     options.UseNpgsql(_dbContainer.GetConnectionString()));
-
         });
     }
 

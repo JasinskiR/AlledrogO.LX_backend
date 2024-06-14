@@ -17,7 +17,8 @@ public class AuthorController : ControllerBase
     private readonly IQueryDispatcher _queryDispatcher;
     private readonly ICommandDispatcher _commandDispatcher;
 
-    private Guid LoggedInUserId => new(User.FindFirstValue(ClaimTypes.NameIdentifier));
+    private Guid LoggedInUserId => new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier) 
+                                            ?? Guid.Empty.ToString());
     public AuthorController(IQueryDispatcher queryDispatcher, ICommandDispatcher commandDispatcher)
     {
         _queryDispatcher = queryDispatcher;
