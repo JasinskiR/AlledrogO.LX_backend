@@ -56,11 +56,15 @@ public class ChatUserController : ControllerBase
     [HttpPost("chats")]
     [Authorize]
     [SwaggerOperation("Create chat with given user")]
-    public async Task<ActionResult> CreateChat([FromBody] CreateChatDto createChatDto)
+    public async Task<IActionResult> CreateChat([FromBody] CreateChatDto createChatDto)
     {
         var command = new CreateChat(BuyerId: LoggedInUserId, AdvertiserId: createChatDto.RecieverId);
-        await _commandDispatcher.DispatchAsync(command);
-        return Ok();
+        var result = await _commandDispatcher.DispatchAsync<CreateChat, Guid>(command);
+        if (result == Guid.Empty)
+        {
+            return BadRequest();
+        }
+        return Ok(new { ChatId = result });
     }
     
     [HttpGet("chats/{ChatId}")]

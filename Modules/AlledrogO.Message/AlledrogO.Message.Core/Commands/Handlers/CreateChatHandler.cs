@@ -5,7 +5,7 @@ using AlledrogO.Shared.Commands;
 
 namespace AlledrogO.Message.Core.Commands.Handlers;
 
-public class CreateChatHandler : ICommandHandler<CreateChat>
+public class CreateChatHandler : ICommandHandler<CreateChat, Guid>
 {
     private readonly IChatRepository _chatRepository;
     private readonly IChatUserRepository _chatUserRepository;
@@ -16,7 +16,7 @@ public class CreateChatHandler : ICommandHandler<CreateChat>
         _chatUserRepository = chatUserRepository;
     }
 
-    public async Task HandleAsync(CreateChat command)
+    public async Task<Guid> HandleAsync(CreateChat command)
     {
         if (command.BuyerId == command.AdvertiserId)
         {
@@ -41,5 +41,6 @@ public class CreateChatHandler : ICommandHandler<CreateChat>
             Messages = new LinkedList<Entities.Message>()
         };
         await _chatRepository.CreateAsync(chat);
+        return chat.Id;
     }
 }
