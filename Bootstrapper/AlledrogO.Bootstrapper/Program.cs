@@ -32,10 +32,7 @@ app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
     .Produces(200)
     .ExcludeFromDescription();
 
-app.MapHub<ChatHub>("/chat");
-
 app.Run();
-
 public partial class Program
 {
 }

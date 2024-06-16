@@ -4,16 +4,6 @@ const sendButton = document.getElementById("sendButton");
 let myId = null;
 let myRole = null;
 
-// sprawdzenie jakie Id ma zalogowany użytkownik
-document.addEventListener("DOMContentLoaded", async () => {
-    
-    await fetch(`/api/ChatUser/info`)
-        .then(response => response.json())
-        .then(userdata => { myId = userdata.id; });
-
-    console.log(myId);
-});
-
 const messagesList = document.getElementById("messagesList");
 
 function addMessageToChat(message) {
@@ -26,12 +16,23 @@ function addMessageToChat(message) {
     newMessage.textContent = message.content;
     messagesList.appendChild(newMessage);
 }
+
 connectButton.addEventListener("click", async event => {
-    
+    // get chatId from user input
     const chatId = document.getElementById("chatInput").value;
 
+    // get myId from server
+    await fetch(`http://localhost:5000/api/ChatUser/info`, {
+        headers: {
+            "Authorization": "Bearer " + document.getElementById("tokenInput").value
+        }})
+        .then(response => response.json())
+        .then(userdata => { myId = userdata.id; })
+        .catch(error => console.error('Error:', error));
+
+    // start signalR connection
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chat?chatId=" + chatId)
+        .withUrl("http://localhost:5000/chat?chatId=" + chatId)
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
@@ -50,7 +51,7 @@ connectButton.addEventListener("click", async event => {
             connectButton.textContent = "Połączono";
             connectButton.disabled = true;
             connectButton.classList.add("btn-success");
-            fetch(`/api/ChatUser/chats/${chatId}`, {
+            fetch(`http://localhost:5000/api/ChatUser/chats/${chatId}`, {
                 headers: {
                     "Authorization": "Bearer " + document.getElementById("tokenInput").value
                 },
@@ -79,7 +80,7 @@ sendButton.addEventListener("click", async event => {
     const messageObject = {
         content: message
     };
-    const route = `/api/ChatUser/chats/${chatId}`;
+    const route = `http://localhost:5000/api/ChatUser/chats/${chatId}`;
     console.log(route);
     await fetch(route, {
         method: "PATCH",

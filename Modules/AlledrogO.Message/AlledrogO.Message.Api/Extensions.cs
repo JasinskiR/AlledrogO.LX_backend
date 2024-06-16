@@ -1,4 +1,5 @@
 using AlledrogO.Message.Core;
+using AlledrogO.Message.Core.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +16,10 @@ public static class Extensions
     
     public static IApplicationBuilder UseMessageModule(this IApplicationBuilder app)
     {
-        
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapHub<ChatHub>("/chat");
+        });
         return app;
     }
 }

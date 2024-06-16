@@ -73,6 +73,7 @@ public static class Extensions
     
    public static IApplicationBuilder UseShared(this IApplicationBuilder app)
    {
+       app.UseRouting();
        app.UseDefaultFiles();
        app.UseStaticFiles();
        app.UseCorsForAngular();
