@@ -8,10 +8,12 @@ namespace AlledrogO.Message.Core.Commands.Handlers;
 public class CreateChatHandler : ICommandHandler<CreateChat>
 {
     private readonly IChatRepository _chatRepository;
+    private readonly IChatUserRepository _chatUserRepository;
 
-    public CreateChatHandler(IChatRepository chatRepository)
+    public CreateChatHandler(IChatRepository chatRepository, IChatUserRepository chatUserRepository)
     {
         _chatRepository = chatRepository;
+        _chatUserRepository = chatUserRepository;
     }
 
     public async Task HandleAsync(CreateChat command)
@@ -24,6 +26,13 @@ public class CreateChatHandler : ICommandHandler<CreateChat>
         {
             throw new ChatAlreadyExistsException(command.BuyerId, command.AdvertiserId);
         }
+
+        if (await _chatUserRepository.GetByIdAsync(command.BuyerId) == null 
+            || await _chatUserRepository.GetByIdAsync(command.AdvertiserId) == null)
+        {
+            throw new ChatUserNotFoundException(command.BuyerId);
+        }
+
         var chat = new Chat()
         {
             Id = Guid.NewGuid(),
