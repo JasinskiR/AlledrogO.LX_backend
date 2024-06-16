@@ -3,30 +3,23 @@ using System.Text.Json;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
 using AlledrogO.User.Core.EF.Contexts;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace AlledrogO.E2ETests.Modules.PostModule;
+namespace AlledrogO.E2ETests.Modules;
 
 public abstract class BaseIntegrationTest
     : IClassFixture<WebAppFactory>,
         IDisposable
 {
     private readonly IServiceScope _scope;
-    protected readonly ICommandDispatcher CommandDispatcher;
-    protected readonly IQueryDispatcher QueryDispatcher;
-    protected readonly UserDbContext DbContext;
     protected HttpClient HttpClient { get; init; }
 
     protected BaseIntegrationTest(WebAppFactory factory)
     {
         HttpClient = factory.CreateClient();
         _scope = factory.Services.CreateScope();
-
-        CommandDispatcher = _scope.ServiceProvider.GetRequiredService<ICommandDispatcher>();
-        QueryDispatcher = _scope.ServiceProvider.GetRequiredService<IQueryDispatcher>();
-
-        DbContext = _scope.ServiceProvider
-            .GetRequiredService<UserDbContext>();
+        
     }
     
     protected async Task GenerateSampleUserAsync()
@@ -41,6 +34,14 @@ public abstract class BaseIntegrationTest
         
     }
     
+    private class TokenResponse
+    {
+        public string tokenType { get; set; }
+        public string accessToken { get; set; }
+        public int expiresIn { get; set; }
+        public string refreshToken { get; set; }
+    }
+    
     protected async Task<string> GetSampleAccessTokenAsync()
     {
         var response = await HttpClient.PostAsJsonAsync("api/User/login", new
@@ -49,15 +50,15 @@ public abstract class BaseIntegrationTest
             password = "Qwerty123@#",
             rememberMe = true
         });
+
         response.EnsureSuccessStatusCode();
         var responseContent = await response.Content.ReadAsStringAsync();
-        var token = JsonSerializer.Deserialize<Dictionary<string, string>>(responseContent)!["accessToken"];
+        var token = JsonSerializer.Deserialize<TokenResponse>(responseContent)!.accessToken;
         return token;
     }
 
     public void Dispose()
     {
         _scope?.Dispose();
-        DbContext?.Dispose();
     }
 }

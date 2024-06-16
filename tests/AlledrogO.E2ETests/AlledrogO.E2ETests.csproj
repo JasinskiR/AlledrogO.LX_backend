@@ -27,4 +27,8 @@
       <ProjectReference Include="..\..\Bootstrapper\AlledrogO.Bootstrapper\AlledrogO.Bootstrapper.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Modules\UserModule\" />
+    </ItemGroup>
+
 </Project>
