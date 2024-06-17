@@ -33,8 +33,8 @@ public abstract class BaseIntegrationTest
         response.EnsureSuccessStatusCode();
         
     }
-    
-    private class TokenResponse
+
+    internal class TokenResponse
     {
         public string tokenType { get; set; }
         public string accessToken { get; set; }
