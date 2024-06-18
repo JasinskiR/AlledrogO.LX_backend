@@ -22,9 +22,10 @@ public class CreateChatHandler : ICommandHandler<CreateChat, Guid>
         {
             throw new ChatWithYourselfException();
         }
-        if (await _chatRepository.GetByUsersPairAsync(command.AdvertiserId, command.BuyerId) != null)
+        var existingChat = await _chatRepository.GetByUsersPairAsync(command.BuyerId, command.AdvertiserId);
+        if (existingChat is not null)
         {
-            throw new ChatAlreadyExistsException(command.BuyerId, command.AdvertiserId);
+            return existingChat.Id;
         }
 
         if (await _chatUserRepository.GetByIdAsync(command.BuyerId) == null 

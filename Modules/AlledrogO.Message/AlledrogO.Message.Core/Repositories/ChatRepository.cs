@@ -22,7 +22,9 @@ public class ChatRepository : IChatRepository
     public async Task<Chat> GetByUsersPairAsync(Guid advertiserId, Guid buyerId)
     {
         return await _dbContext.Chats
-            .FirstOrDefaultAsync(chat => chat.AdvertiserId == advertiserId && chat.BuyerId == buyerId);
+            .Where(chat => chat.AdvertiserId == advertiserId && chat.BuyerId == buyerId ||
+                chat.AdvertiserId == buyerId && chat.BuyerId == advertiserId)
+            .FirstOrDefaultAsync();
     }
 
     public async Task CreateAsync(Chat chat)
