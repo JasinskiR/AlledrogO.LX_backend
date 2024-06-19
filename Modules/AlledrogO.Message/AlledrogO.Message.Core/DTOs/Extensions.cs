@@ -9,6 +9,7 @@ internal static class Extensions
         return new ChatUserDto
         {
             Id = chatUser.Id,
+            Email = chatUser.Email,
             ChatsAsBuyer = chatUser.ChatsAsBuyer?.Select(chat => chat.Id) ?? new List<Guid>(),
             ChatsAsAdvertiser = chatUser.ChatsAsAdvertiser?.Select(chat => chat.Id) ?? new List<Guid>()
         };
@@ -19,7 +20,9 @@ internal static class Extensions
         return new ChatDto
         {
             Id = chat.Id,
+            AdvertiserEmail = chat.Advertiser.Email,
             AdvertiserId = chat.AdvertiserId,
+            BuyerEmail = chat.Buyer.Email,
             BuyerId = chat.BuyerId,
             Messages = chat.Messages?.Select(message => message.AsDto()) ?? new List<MessageDto>()
         };

@@ -19,7 +19,8 @@ public class CreateChatUserHandler : IMessageMarker, IConsumer<UserCreatedEvent>
     {
         var chatUser = new ChatUser()
         {
-            Id = context.Message.UserId
+            Id = context.Message.UserId,
+            Email = context.Message.Email
         };
         await _chatUserRepository.CreateAsync(chatUser);
     }
