@@ -61,6 +61,7 @@ public static class Extensions
                }
            });
        });
+       services.AddSignalR();
        services.AddAuthorizationBuilder();
        services.AddAuthentication();
        services.AddAuthorizationBuilder();
@@ -72,6 +73,7 @@ public static class Extensions
     
    public static IApplicationBuilder UseShared(this IApplicationBuilder app)
    {
+       app.UseRouting();
        app.UseDefaultFiles();
        app.UseStaticFiles();
        app.UseCorsForAngular();

@@ -93,7 +93,7 @@ public class UserController : ControllerBase
     [Authorize]
     public IActionResult Test()
     {
-        return Ok($"Hello {User.Identity.Name}");
+        return Ok($"Hello {User.Identity.Name} with Id {User.FindFirstValue(ClaimTypes.NameIdentifier)}!");
     }
     
     [HttpGet("testCookie")]

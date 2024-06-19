@@ -44,6 +44,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Modules\AlledrogO.Message\AlledrogO.Message.Api\AlledrogO.Message.Api.csproj" />
       <ProjectReference Include="..\..\Modules\AlledrogO.Post\AlledrogO.Post.Api\AlledrogO.Post.Api.csproj" />
       <ProjectReference Include="..\..\Modules\AlledrogO.User\AlledrogO.User.Api\AlledrogO.User.Api.csproj" />
       <ProjectReference Include="..\..\Modules\AlledrogO.User\AlledrogO.User.Core\AlledrogO.User.Core.csproj" />
