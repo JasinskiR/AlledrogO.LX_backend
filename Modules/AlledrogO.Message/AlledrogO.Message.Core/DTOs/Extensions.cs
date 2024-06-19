@@ -10,14 +10,25 @@ internal static class Extensions
         {
             Id = chatUser.Id,
             Email = chatUser.Email,
-            ChatsAsBuyer = chatUser.ChatsAsBuyer?.Select(chat => chat.Id) ?? new List<Guid>(),
-            ChatsAsAdvertiser = chatUser.ChatsAsAdvertiser?.Select(chat => chat.Id) ?? new List<Guid>()
+            ChatsAsBuyer = chatUser.ChatsAsBuyer?
+                .Select(chat => chat.AsDto(true)) ?? new List<ChatDto>(),
+            ChatsAsAdvertiser = chatUser.ChatsAsAdvertiser?
+                .Select(chat => chat.AsDto(false)) ?? new List<ChatDto>()
         };
     }
     
-    public static ChatDto AsDto(this Chat chat)
+    private static ChatDto AsDto(this Chat chat, bool isBuyer)
     {
         return new ChatDto
+        {
+            ChatId = chat.Id,
+            RecieverEmail = isBuyer ? chat.Advertiser.Email : chat.Buyer.Email
+        };
+    }
+    
+    public static ChatDetailsDto AsDto(this Chat chat)
+    {
+        return new ChatDetailsDto
         {
             Id = chat.Id,
             AdvertiserEmail = chat.Advertiser.Email,

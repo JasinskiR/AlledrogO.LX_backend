@@ -20,7 +20,9 @@ public class GetChatUserByIdHandler : IQueryHandler<GetChatUserById, ChatUserDto
         return await _chatUsers
             .Where(chatUser => chatUser.Id == query.Id)
             .Include(cu => cu.ChatsAsAdvertiser)
+            .ThenInclude(c => c.Buyer)
             .Include(cu => cu.ChatsAsBuyer)
+            .ThenInclude(c => c.Advertiser)
             .Select(chatUser => chatUser.AsDto())
             .AsNoTracking()
             .FirstOrDefaultAsync();

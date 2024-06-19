@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AlledrogO.Message.Core.Queries.Handlers;
 
-public class GetChatByIdHandler : IQueryHandler<GetChatById, ChatDto>
+public class GetChatByIdHandler : IQueryHandler<GetChatById, ChatDetailsDto>
 {
     private readonly DbSet<Chat> _chats;
     private readonly DbSet<ChatUser> _chatUsers;
@@ -16,7 +16,7 @@ public class GetChatByIdHandler : IQueryHandler<GetChatById, ChatDto>
         _chats = dbContext.Set<Chat>();
         _chatUsers = dbContext.Set<ChatUser>();
     }
-    public async Task<ChatDto> HandleAsync(GetChatById query)
+    public async Task<ChatDetailsDto> HandleAsync(GetChatById query)
     {
         return await _chats
             .Where(chat => chat.Id == query.ChatId)

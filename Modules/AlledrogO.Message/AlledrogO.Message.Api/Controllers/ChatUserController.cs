@@ -70,7 +70,7 @@ public class ChatUserController : ControllerBase
     [HttpGet("chats/{ChatId}")]
     [Authorize]
     [SwaggerOperation("Get chat with given id")]
-    public async Task<ActionResult<ChatDto>> GetChatById(Guid ChatId)
+    public async Task<ActionResult<ChatDetailsDto>> GetChatById(Guid ChatId)
     {
         var query = new GetChatById(ChatId);
         var result = await _queryDispatcher.QueryAsync(query);

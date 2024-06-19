@@ -3,4 +3,4 @@ using AlledrogO.Shared.Queries;
 
 namespace AlledrogO.Message.Core.Queries;
 
-public record GetChatById(Guid ChatId) : IQuery<ChatDto>;
+public record GetChatById(Guid ChatId) : IQuery<ChatDetailsDto>;

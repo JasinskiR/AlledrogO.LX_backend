@@ -18,7 +18,9 @@ public class GetChatUsersHandler : IQueryHandler<GetChatUsers, IEnumerable<ChatU
     {
         return await _chatUsers
             .Include(cu => cu.ChatsAsAdvertiser)
+            .ThenInclude(c => c.Buyer)
             .Include(cu => cu.ChatsAsBuyer)
+            .ThenInclude(c => c.Advertiser)
             .Select(chatUser => chatUser.AsDto())
             .AsNoTracking()
             .ToListAsync();
