@@ -1,3 +1,4 @@
+using AlledrogO.Message.Core.EF;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using AlledrogO.User.Core.EF.Contexts;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ public class WebAppFactory
             services.RemoveAll(typeof(DbContextOptions<ReadDbContext>));
             services.RemoveAll(typeof(DbContextOptions<WriteDbContext>));
             services.RemoveAll(typeof(DbContextOptions<UserDbContext>));
+            services.RemoveAll(typeof(DbContextOptions<MessageDbContext>));
             
             services.AddDbContext<ReadDbContext>(options =>
             {
@@ -40,6 +42,11 @@ public class WebAppFactory
             });
             
             services.AddDbContext<UserDbContext>(options =>
+            {
+                options.UseNpgsql(_dbContainer.GetConnectionString());
+            });
+            
+            services.AddDbContext<MessageDbContext>(options =>
             {
                 options.UseNpgsql(_dbContainer.GetConnectionString());
             });
