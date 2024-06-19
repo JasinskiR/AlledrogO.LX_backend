@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AlledrogO.Post.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialRead : Migration
+    public partial class WorkDammit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,8 +20,8 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
-                    AuthorDetails = table.Column<string>(type: "text", nullable: false)
+                    AuthorDetails = table.Column<string>(type: "text", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,9 +34,9 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    PostCount = table.Column<long>(type: "bigint", nullable: false)
+                    PostCount = table.Column<long>(type: "bigint", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,12 +49,12 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
+                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false),
                     SharedAuthorDetails = table.Column<string>(type: "text", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uuid", nullable: false)
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,10 +74,10 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     Url = table.Column<string>(type: "text", nullable: false),
                     IsMain = table.Column<bool>(type: "boolean", nullable: false),
-                    PostId = table.Column<Guid>(type: "uuid", nullable: false)
+                    PostId = table.Column<Guid>(type: "uuid", nullable: false),
+                    xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {
