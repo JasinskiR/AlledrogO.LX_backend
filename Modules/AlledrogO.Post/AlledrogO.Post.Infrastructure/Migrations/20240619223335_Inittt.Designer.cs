@@ -3,6 +3,7 @@ using System;
 using AlledrogO.Post.Infrastructure.EF.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -10,10 +11,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AlledrogO.Post.Infrastructure.Migrations
 {
-    [DbContext(typeof(ReadDbContext))]
-    partial class ReadDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(WriteDbContext))]
+    [Migration("20240619223335_Inittt")]
+    partial class Inittt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +26,7 @@ namespace AlledrogO.Post.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.AuthorDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.Author", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +34,8 @@ namespace AlledrogO.Post.Infrastructure.Migrations
 
                     b.Property<string>("AuthorDetails")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("AuthorDetails");
 
                     b.Property<uint>("Version")
                         .IsConcurrencyToken()
@@ -44,7 +48,7 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.ToTable("Authors", "PostSchema");
                 });
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.PostDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.Post", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,19 +59,23 @@ namespace AlledrogO.Post.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Description");
 
                     b.Property<string>("SharedAuthorDetails")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("SharedAuthorDetails");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Status");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("Title");
 
                     b.Property<uint>("Version")
                         .IsConcurrencyToken()
@@ -82,10 +90,9 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.ToTable("Posts", "PostSchema");
                 });
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.PostImageDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.PostImage", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<bool>("IsMain")
@@ -112,7 +119,7 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.ToTable("PostImages", "PostSchema");
                 });
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.TagDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.Tag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -136,7 +143,7 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.ToTable("Tags", "PostSchema");
                 });
 
-            modelBuilder.Entity("PostDbModelTagDbModel", b =>
+            modelBuilder.Entity("PostTag", b =>
                 {
                     b.Property<Guid>("PostsId")
                         .HasColumnType("uuid");
@@ -151,9 +158,9 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.ToTable("PostTag", "PostSchema");
                 });
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.PostDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.Post", b =>
                 {
-                    b.HasOne("AlledrogO.Post.Infrastructure.EF.Models.AuthorDbModel", "Author")
+                    b.HasOne("AlledrogO.Post.Domain.Entities.Author", "Author")
                         .WithMany("Posts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -162,9 +169,9 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.PostImageDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.PostImage", b =>
                 {
-                    b.HasOne("AlledrogO.Post.Infrastructure.EF.Models.PostDbModel", "Post")
+                    b.HasOne("AlledrogO.Post.Domain.Entities.Post", "Post")
                         .WithMany("Images")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -173,27 +180,27 @@ namespace AlledrogO.Post.Infrastructure.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("PostDbModelTagDbModel", b =>
+            modelBuilder.Entity("PostTag", b =>
                 {
-                    b.HasOne("AlledrogO.Post.Infrastructure.EF.Models.PostDbModel", null)
+                    b.HasOne("AlledrogO.Post.Domain.Entities.Post", null)
                         .WithMany()
                         .HasForeignKey("PostsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AlledrogO.Post.Infrastructure.EF.Models.TagDbModel", null)
+                    b.HasOne("AlledrogO.Post.Domain.Entities.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.AuthorDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.Author", b =>
                 {
                     b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("AlledrogO.Post.Infrastructure.EF.Models.PostDbModel", b =>
+            modelBuilder.Entity("AlledrogO.Post.Domain.Entities.Post", b =>
                 {
                     b.Navigation("Images");
                 });

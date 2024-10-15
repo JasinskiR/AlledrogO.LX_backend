@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AlledrogO.Post.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class redundant_migration : Migration
+    public partial class Inittt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -96,13 +96,6 @@ public class UserController : ControllerBase
         return Ok($"Hello {User.Identity.Name} with Id {User.FindFirstValue(ClaimTypes.NameIdentifier)}!");
     }
     
-    [HttpGet("testCookie")]
-    public IActionResult TestCookie()
-    {
-        var cookies = Request.Cookies;
-        return Ok(cookies);
-    }
-    
     [HttpDelete("deleteAccount")]
     [Authorize]
     public async Task<IActionResult> DeleteAccount()

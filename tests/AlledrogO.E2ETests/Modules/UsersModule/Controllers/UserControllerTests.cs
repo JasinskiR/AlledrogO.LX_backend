@@ -18,7 +18,7 @@ public class UserControllerTests : BaseIntegrationTest
         // Arrange
         var registerDto = new RegisterDto()
         {
-            Email = "test@email.com",
+            Email = "test1@email.com",
             Password = "Qwerty123@#",
             PhoneNumber = "123456789"
         };
@@ -36,7 +36,7 @@ public class UserControllerTests : BaseIntegrationTest
         // Arrange
         var registerDto = new RegisterDto()
         {
-            Email = "test@email.com",
+            Email = "test2@email.com",
             Password = "Qwerty123@#",
             PhoneNumber = "123456789"
         };
@@ -44,7 +44,7 @@ public class UserControllerTests : BaseIntegrationTest
         
         var loginDto = new LoginDto()
         {
-            Email = "test@email.com",
+            Email = "test2@email.com",
             Password = "Qwerty123@#",
             RememberMe = true
         };
