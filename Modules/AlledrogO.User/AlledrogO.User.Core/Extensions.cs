@@ -11,16 +11,16 @@ public static class Extensions
 {
     public static IServiceCollection AddCore(this IServiceCollection services)
     {
-        services.AddDatabase();
-        services.AddIdentityApiEndpoints<Entities.User>(options =>
-            {
-                options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedEmail = false;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-            })
-            .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<UserDbContext>();
+        // services.AddDatabase();
+        // services.AddIdentityApiEndpoints<Entities.User>(options =>
+        //     {
+        //         options.SignIn.RequireConfirmedAccount = false;
+        //         options.SignIn.RequireConfirmedEmail = false;
+        //         options.Password.RequiredLength = 8;
+        //         options.Password.RequireNonAlphanumeric = false;
+        //     })
+        //     .AddRoles<IdentityRole>()
+        //     .AddEntityFrameworkStores<UserDbContext>();
         return services;
     }
 }
