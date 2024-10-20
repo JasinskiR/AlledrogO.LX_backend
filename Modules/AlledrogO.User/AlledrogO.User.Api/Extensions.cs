@@ -14,8 +14,8 @@ public static class Extensions
 
     public static IApplicationBuilder UseUserModule(this IApplicationBuilder app)
     {
-        app.UseAuthentication();
-        app.UseAuthorization();
+        // app.UseAuthentication();
+        // app.UseAuthorization();
         return app;
     }
 }

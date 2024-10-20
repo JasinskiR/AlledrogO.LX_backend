@@ -1283,17 +1283,29 @@
       }
     },
     "securitySchemes": {
-      "Bearer": {
-        "type": "apiKey",
-        "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
-        "name": "Authorization",
-        "in": "header"
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://alledrogo.auth.us-east-1.amazoncognito.com/oauth2/authorize",
+            "tokenUrl": "https://alledrogo.auth.us-east-1.amazoncognito.com/oauth2/token",
+            "scopes": {
+              "openid": "OpenID information",
+              "email": "Email address",
+              "profile": "User profile"
+            }
+          }
+        }
       }
     }
   },
   "security": [
     {
-      "Bearer": [ ]
+      "oauth2": [
+        "openid",
+        "email",
+        "profile"
+      ]
     }
   ]
 }
