@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
-using AlledrogO.User.Core.EF.Contexts;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.Extensions.DependencyInjection;
 

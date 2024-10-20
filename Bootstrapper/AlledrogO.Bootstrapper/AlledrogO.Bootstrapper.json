@@ -826,7 +826,7 @@
         }
       }
     },
-    "/api/User/register": {
+    "/api/User/register-event": {
       "post": {
         "tags": [
           "User"
@@ -835,64 +835,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterEventDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterEventDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterEventDto"
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/User/login": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/User/logout": {
-      "post": {
-        "tags": [
-          "User"
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -902,18 +859,6 @@
     },
     "/api/User/test": {
       "get": {
-        "tags": [
-          "User"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/User/deleteAccount": {
-      "delete": {
         "tags": [
           "User"
         ],
@@ -1246,31 +1191,14 @@
         "type": "integer",
         "format": "int32"
       },
-      "AlledrogO.User.Api.DTOs.LoginDto": {
+      "AlledrogO.User.Api.DTOs.RegisterEventDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "rememberMe": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AlledrogO.User.Api.DTOs.RegisterDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
             "type": "string",
             "nullable": true
           },
