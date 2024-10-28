@@ -14,10 +14,9 @@ public static class Extensions
             options => options.AddPolicy(
                 "Angular",
                 policy => policy
-                    .WithOrigins(allowedHosts)
+                    .AllowAnyOrigin()
                     .AllowAnyMethod()
                     .AllowAnyHeader()
-                    .AllowCredentials()
             ));
         
         return services;

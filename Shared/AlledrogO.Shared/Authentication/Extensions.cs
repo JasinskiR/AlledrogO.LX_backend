@@ -11,6 +11,8 @@ namespace AlledrogO.Shared.Authentication;
 
 public static class Extensions
 {
+    private const string CognitoUserPoolIdEnvironmentVariable = "COGNITO_USER_POOL_ID";
+    private const string CognitoAuthorityEnvironmentVariable = "COGNITO_AUTHORITY";
     public static IServiceCollection AddCognitoAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         // Configure authentication
@@ -24,8 +26,15 @@ public static class Extensions
             options.SaveToken = true;
             
             // Your Cognito configuration
-            var cognitoConfig = configuration.GetSection("AWS:Cognito").Get<CognitoConfiguration>()
-                ?? throw new NullReferenceException("Cognito configuration is missing in appsettings.json");
+            // var cognitoConfig = configuration.GetSection("AWS:Cognito").Get<CognitoConfiguration>()
+            //     ?? throw new NullReferenceException("Cognito configuration is missing in appsettings.json");
+            var cognitoConfig = new CognitoConfiguration
+            {
+                UserPoolId = Environment.GetEnvironmentVariable(CognitoUserPoolIdEnvironmentVariable)
+                    ?? throw new NullReferenceException("Cognito User Pool ID is missing in environment variables"),
+                Authority = Environment.GetEnvironmentVariable(CognitoAuthorityEnvironmentVariable)
+                    ?? throw new NullReferenceException("Cognito Authority is missing in environment variables")
+            };
             
             options.TokenValidationParameters = new TokenValidationParameters
             {
