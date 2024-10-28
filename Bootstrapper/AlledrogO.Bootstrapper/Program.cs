@@ -4,7 +4,7 @@ using AlledrogO.Shared;
 using AlledrogO.User.Api;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.UseUrls("http://*:8080", "https://*:8081");
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddShared(builder.Configuration);

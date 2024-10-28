@@ -31,5 +31,6 @@ COPY --from=publish /app/publish .
 RUN mkdir -p /app/wwwroot/images
 RUN chmod -R 777 /app/wwwroot/images
 USER $APP_UID
+COPY Cert/alledrogo_backend.pfx /https/alledrogo_backend.pfx
 
 ENTRYPOINT ["dotnet", "AlledrogO.Bootstrapper.dll"]
