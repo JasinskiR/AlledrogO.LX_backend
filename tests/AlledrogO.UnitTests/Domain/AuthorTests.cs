@@ -2,6 +2,7 @@ using AlledrogO.Post.Domain.Entities;
 using AlledrogO.Post.Domain.Entities.Exceptions;
 using AlledrogO.Post.Domain.Factories;
 using AlledrogO.Post.Domain.ValueObjects;
+using AlledrogO.Post.Domain.ValueObjects.Exceptions;
 using Shouldly;
 
 namespace AlledrogO.UnitTests.Domain;
@@ -45,6 +46,54 @@ public class AuthorTests
             author);
         return post;
     }
+    
+    [Fact]
+    public void PhoneNumber_With9Digits_ShouldCreateValueObjectSuccessfully()
+    {
+        // Arrange
+        var phoneNumber = "123456789";
+        var email = "mymail@email.com";
+        
+        // Act
+        var exception = Record.Exception(() => new AuthorDetails(email, phoneNumber));
+        
+        // Assert
+        exception.ShouldBeNull();
+    }
+
+    [Theory]
+    [InlineData("+1999999999")]
+    [InlineData("+12999999999")]
+    [InlineData("+123999999999")]
+    public void PhoneNumber_WithPrefix_ShouldCreateValueObjectSuccessfully(string phoneNumber)
+    {
+        // Arrange
+        var email = "mymail@email.com";
+        
+        // Act
+        var exception = Record.Exception(() => new AuthorDetails(email, phoneNumber));
+        
+        // Assert
+        exception.ShouldBeNull();
+    }
+    
+    [Theory]
+    [InlineData("12345678")]
+    [InlineData("1234567890")]
+    [InlineData("-48123456789")]
+    public void PhoneNumber_WithInvalidLength_ShouldThrowException(string phoneNumber)
+    {
+        // Arrange
+        var email = "mymail@email.com";
+        
+        // Act
+        var exception = Record.Exception(() => new AuthorDetails(email, phoneNumber));
+        
+        // Assert
+        exception.ShouldNotBeNull();
+        exception.ShouldBeOfType<AuthorDataInvalidPhoneNumberException>();
+    }
+    
     
     [Fact]
     public void AddPost_With_New_Post_Should_Add_Post_Successfully()

@@ -1,0 +1,8 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=405aabdf_002Dbc16_002D45e8_002D839e_002D42bad5b39357/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="PhoneNumber_With9Digits_ShouldCreateValueObjectSuccessfully" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::064C727E-F4CC-4F13-B049-F945216F3CBD::net8.0::AlledrogO.UnitTests.Domain.AuthorTests.PhoneNumber_With9Digits_ShouldCreateValueObjectSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::064C727E-F4CC-4F13-B049-F945216F3CBD::net8.0::AlledrogO.UnitTests.Domain.AuthorTests.PhoneNumber_WithPrefix_ShouldCreateValueObjectSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::064C727E-F4CC-4F13-B049-F945216F3CBD::net8.0::AlledrogO.UnitTests.Domain.AuthorTests.PhoneNumber_WithInvalidLength_ShouldThrowException&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
