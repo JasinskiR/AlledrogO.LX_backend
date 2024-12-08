@@ -1,8 +1,11 @@
+using System.Text.Json;
 using AlledrogO.Message.Core.DTOs;
 using AlledrogO.Message.Core.Exceptions;
 using AlledrogO.Message.Core.Hubs;
 using AlledrogO.Message.Core.Repositories;
 using AlledrogO.Shared.Commands;
+using Amazon.SQS;
+using Amazon.SQS.Model;
 using Microsoft.AspNetCore.SignalR;
 
 namespace AlledrogO.Message.Core.Commands.Handlers;
@@ -11,10 +14,16 @@ public class AddMessageToChatHandler : ICommandHandler<AddMessageToChat>
 {
     private readonly IChatRepository _chatRepository;
     private readonly IHubContext<ChatHub> _hubContext;
-    public AddMessageToChatHandler(IChatRepository chatRepository, IHubContext<ChatHub> hubContext)
+    private readonly IAmazonSQS _sqsClient;
+    private readonly string _queueUrl;
+    public AddMessageToChatHandler(IChatRepository chatRepository, IHubContext<ChatHub> hubContext, 
+        IAmazonSQS sqsClient)
     {
         _chatRepository = chatRepository;
         _hubContext = hubContext;
+        _sqsClient = sqsClient;
+        _queueUrl = Environment.GetEnvironmentVariable("SQS_QUEUE_URL")
+            ?? throw new NullReferenceException("SQS_QUEUE_URL environment variable is not set");
     }
 
     public async Task HandleAsync(AddMessageToChat command)
@@ -43,7 +52,8 @@ public class AddMessageToChatHandler : ICommandHandler<AddMessageToChat>
         {
             throw new UnauthorizedChatException();
         }
-            
+        var messageJson = JsonSerializer.Serialize(message);
+        await _sqsClient.SendMessageAsync(_queueUrl, messageJson);
         chat.Messages.AddLast(message);
         await _chatRepository.UpdateAsync(chat);
 

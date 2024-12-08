@@ -309,6 +309,19 @@
         }
       }
     },
+    "/api/ChatUser/test-message": {
+      "get": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Send test message to SQS",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Post": {
       "get": {
         "tags": [

@@ -90,4 +90,13 @@ public class ChatUserController : ControllerBase
         await _commandDispatcher.DispatchAsync(command);
         return Ok();
     }
+    
+    [HttpGet("test-message")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Send test message to SQS")]
+    public async Task<ActionResult> TestMessage()
+    {
+        var command = new AddTestSqsMessage();
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
 }

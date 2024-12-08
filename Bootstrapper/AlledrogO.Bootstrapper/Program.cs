@@ -10,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddShared(builder.Configuration);
 builder.Services.AddUserModule();
 builder.Services.AddPostModule(builder.Configuration);
-builder.Services.AddMessageModule();
+builder.Services.AddMessageModule(builder.Configuration);
 
 
 var app = builder.Build();
