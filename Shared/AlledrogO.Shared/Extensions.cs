@@ -27,45 +27,6 @@ public static class Extensions
        services.AddCorsForAngular(configuration);
        services.AddCognitoAuthentication(configuration);
        services.AddSwaggerWithJwtAuth(configuration);
-       // services.AddSwaggerGen(swagger =>
-       // {
-       //     swagger.EnableAnnotations();
-       //     swagger.CustomSchemaIds(x => x.FullName);
-       //     swagger.SwaggerDoc("v1", new OpenApiInfo
-       //     {
-       //         Title = "Alledrogo API",
-       //         Version = "v1"
-       //     });
-       //     swagger.AddSecurityDefinition("Bearer",
-       //         new OpenApiSecurityScheme
-       //         {
-       //             Description =
-       //                 "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
-       //             Name = "Authorization",
-       //             In = ParameterLocation.Header,
-       //             Type = SecuritySchemeType.ApiKey,
-       //             Scheme = "Bearer"
-       //         });
-       //
-       //     swagger.AddSecurityRequirement(new OpenApiSecurityRequirement()
-       //     {
-       //         {
-       //             new OpenApiSecurityScheme
-       //             {
-       //                 Reference = new OpenApiReference
-       //                 {
-       //                     Type = ReferenceType.SecurityScheme,
-       //                     Id = "Bearer"
-       //                 },
-       //                 Scheme = "oauth2",
-       //                 Name = "Bearer",
-       //                 In = ParameterLocation.Header,
-       //
-       //             },
-       //             new List<string>()
-       //         }
-       //     });
-       // });
        services.AddSignalR();
        services.AddAuthorizationBuilder();
        services.AddMessageBroker();
@@ -82,8 +43,15 @@ public static class Extensions
        app.UseCorsForAngular();
        app.UseAuthentication();
        app.UseAuthorization();
-       app.UseSwagger();
-       app.UseSwaggerUI();
+       app.UseSwagger(c =>
+       {
+           c.RouteTemplate = "api/swagger/{documentName}/swagger.json";
+       });
+       app.UseSwaggerUI( c => 
+       {
+           c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "API V1");
+           c.RoutePrefix = "api/swagger";
+       });
        app.UseMiddleware<ExceptionMiddleware>();
        return app;
    }

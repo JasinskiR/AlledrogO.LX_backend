@@ -2,7 +2,6 @@
 
 WORKDIR /app
 
-EXPOSE 8081
 EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
@@ -30,7 +29,7 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 RUN mkdir -p /app/wwwroot/images
 RUN chmod -R 777 /app/wwwroot/images
-USER $APP_UID
-COPY Cert/backend.pfx /https/backend.pfx
+RUN apt-get update
+RUN apt install curl -y
 
 ENTRYPOINT ["dotnet", "AlledrogO.Bootstrapper.dll"]

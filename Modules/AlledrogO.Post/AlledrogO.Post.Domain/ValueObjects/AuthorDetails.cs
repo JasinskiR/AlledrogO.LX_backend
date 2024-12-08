@@ -54,7 +54,7 @@ public record AuthorDetails
             RuleFor(x => x.Email).EmailAddress();
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty()
-                .Matches(@"^\d{9}$");
+                .Matches(@"^(\+)?(\s*\d+\s*){9,}$");
         }
     }
     
