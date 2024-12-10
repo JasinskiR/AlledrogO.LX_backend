@@ -322,6 +322,38 @@
         }
       }
     },
+    "/api/ChatUser/send-warning": {
+      "post": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Send warning message to user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.Commands.SendWarningMessage"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.Commands.SendWarningMessage"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.Commands.SendWarningMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Post": {
       "get": {
         "tags": [
@@ -885,6 +917,20 @@
   },
   "components": {
     "schemas": {
+      "AlledrogO.Message.Core.Commands.SendWarningMessage": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AlledrogO.Message.Core.DTOs.ChatDetailsDto": {
         "type": "object",
         "properties": {

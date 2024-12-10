@@ -32,6 +32,7 @@ public static class Extensions
        services.AddMessageBroker();
        services.AddTransient<ExceptionMiddleware>();
        services.TryDecorate(typeof(ICommandHandler<>), typeof(LoggingCommandHandlerDecorator<>));
+       
        return services;
    }
     

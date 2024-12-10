@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AlledrogO.Message.Core.Commands;
+using AlledrogO.Message.Core.Commands.Handlers;
 using AlledrogO.Message.Core.DTOs;
 using AlledrogO.Message.Core.DTOs.External;
 using AlledrogO.Message.Core.Queries;
@@ -99,4 +100,13 @@ public class ChatUserController : ControllerBase
         await _commandDispatcher.DispatchAsync(command);
         return Ok();
     }
+    
+    [HttpPost("send-warning")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Send warning message to user")]
+    public async Task<ActionResult> SendWarning([FromBody] SendWarningMessage sendWarningMessage)
+    {
+        await _commandDispatcher.DispatchAsync(sendWarningMessage);
+        return Ok();
+    }
 }
+
