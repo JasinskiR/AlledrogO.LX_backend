@@ -108,5 +108,14 @@ public class ChatUserController : ControllerBase
         await _commandDispatcher.DispatchAsync(sendWarningMessage);
         return Ok();
     }
+    
+    [HttpPost("spam")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Create spam messages in SQS for testing alarms")]
+    public async Task<ActionResult> CreateSpam(int count)
+    {
+        var command = new CreateSpamMessages(count);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
 }
 

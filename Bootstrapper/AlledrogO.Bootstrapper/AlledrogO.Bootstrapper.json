@@ -354,6 +354,29 @@
         }
       }
     },
+    "/api/ChatUser/spam": {
+      "post": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Create spam messages in SQS for testing alarms",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Post": {
       "get": {
         "tags": [

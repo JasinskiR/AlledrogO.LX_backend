@@ -22,7 +22,7 @@ internal class DatabaseInitializer : IHostedService
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var shouldApplyMigrations = _configuration.GetValue<bool>("ApplyMigrations");
+        var shouldApplyMigrations = _configuration.GetValue<bool>("RunMigrations");
         if (shouldApplyMigrations)
         {
             var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
