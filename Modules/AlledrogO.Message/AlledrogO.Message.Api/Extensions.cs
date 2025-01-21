@@ -1,15 +1,16 @@
 using AlledrogO.Message.Core;
 using AlledrogO.Message.Core.Hubs;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AlledrogO.Message.Api;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMessageModule(this IServiceCollection services)
+    public static IServiceCollection AddMessageModule(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMessageCore();
+        services.AddMessageCore(configuration);
         services.AddSignalR();
         return services;
     }

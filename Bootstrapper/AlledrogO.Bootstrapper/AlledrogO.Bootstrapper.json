@@ -309,6 +309,74 @@
         }
       }
     },
+    "/api/ChatUser/test-message": {
+      "get": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Send test message to SQS",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ChatUser/send-warning": {
+      "post": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Send warning message to user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.Commands.SendWarningMessage"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.Commands.SendWarningMessage"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.Commands.SendWarningMessage"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ChatUser/spam": {
+      "post": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Create spam messages in SQS for testing alarms",
+        "parameters": [
+          {
+            "name": "count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Post": {
       "get": {
         "tags": [
@@ -826,7 +894,7 @@
         }
       }
     },
-    "/api/User/register": {
+    "/api/User/register-event": {
       "post": {
         "tags": [
           "User"
@@ -835,64 +903,21 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterEventDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterEventDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterEventDto"
               }
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/User/login": {
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/User/logout": {
-      "post": {
-        "tags": [
-          "User"
-        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -911,22 +936,24 @@
           }
         }
       }
-    },
-    "/api/User/deleteAccount": {
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "AlledrogO.Message.Core.Commands.SendWarningMessage": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "AlledrogO.Message.Core.DTOs.ChatDetailsDto": {
         "type": "object",
         "properties": {
@@ -1246,31 +1273,14 @@
         "type": "integer",
         "format": "int32"
       },
-      "AlledrogO.User.Api.DTOs.LoginDto": {
+      "AlledrogO.User.Api.DTOs.RegisterEventDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
-            "type": "string",
-            "nullable": true
-          },
-          "rememberMe": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AlledrogO.User.Api.DTOs.RegisterDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
             "type": "string",
             "nullable": true
           },

@@ -8,7 +8,7 @@ namespace AlledrogO.Shared.Database;
 public static class Extensions
 {
     private const string SectionName = "Postgres";
-    
+    private const string EnvironmentVariableName = "DATABASE_CONNECTION_STRING";
     public static IServiceCollection AddPostgres(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<PostgresOptions>(options => 
@@ -20,9 +20,8 @@ public static class Extensions
     public static IServiceCollection AddPostgres<T>(this IServiceCollection services) where T : DbContext
     {
         var configuration = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
-        // var connectionString = configuration[$"{SectionName}:{nameof(PostgresOptions.ConnectionString)}"];
-        // var connectionString = "Host=postgres;Database=alledrogo;Username=postgres;Password=postgres";
-        var connectionString = configuration.GetSection("Postgres")["ConnectionString"];
+        // var connectionString = configuration.GetSection("Postgres")["ConnectionString"];
+        var connectionString = Environment.GetEnvironmentVariable(EnvironmentVariableName);
         services.AddDbContext<T>(x => x.UseNpgsql(connectionString));
 
         return services;
