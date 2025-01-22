@@ -1,0 +1,19 @@
+name: Notify jenkins
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  send_http_request:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: trigger single Job
+      uses: appleboy/jenkins-action@master
+      with:
+        url: "http://52.72.202.247:8080"
+        user: "admin"
+        token: ${{ secrets.JENKINS_TOKEN }}
+        job: "build_pipeline"

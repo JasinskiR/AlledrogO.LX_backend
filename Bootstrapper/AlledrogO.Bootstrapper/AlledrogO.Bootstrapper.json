@@ -1,0 +1,1308 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Alledrogo API",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/Author": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Get all authors",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Author/applyMigrationsManually": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Apply migrations manually",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Author/info": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "summary": "Get info about logged author",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Author/posts": {
+      "get": {
+        "tags": [
+          "Author"
+        ],
+        "summary": "Get all posts of logged author (all statuses)",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ChatUser": {
+      "get": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "ONLY FOR TESTING PURPOSE. Get all chat users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatUserDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatUserDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatUserDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ChatUser/info": {
+      "get": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "Get data about logged in chatUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatUserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatUserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatUserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ChatUser/chats": {
+      "post": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "Create chat with given user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.External.CreateChatDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.External.CreateChatDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.External.CreateChatDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ChatUser/chats/{ChatId}": {
+      "get": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "Get chat with given id",
+        "parameters": [
+          {
+            "name": "ChatId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatDetailsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatDetailsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatDetailsDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "ChatUser"
+        ],
+        "summary": "Add message to chat",
+        "parameters": [
+          {
+            "name": "ChatId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.External.IncomingMessageDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.External.IncomingMessageDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.External.IncomingMessageDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Post": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Get all post cards for home page (only published)",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Create post. Author details are optional.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.External.CreatePostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.External.CreatePostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.External.CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Post/{Id}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Get post by ID (details view).",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Update post details. Author details are optional.",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.External.CreatePostDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.External.CreatePostDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.External.CreatePostDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Post/Search": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Search for posts (only published).",
+        "description": "Returns post cards with search query in title or description. You can provide tags to filter posts.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.Queries.SearchPosts"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.Queries.SearchPosts"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.Post.Application.Queries.SearchPosts"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostCardDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Post/{PostId}/Publish": {
+      "patch": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Publish post.",
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Post/{PostId}/Archive": {
+      "patch": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Archive post.",
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Post/{PostId}/Image": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Upload image for post in jpg or png format.",
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "file": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Post/{PostId}/Image/{ImageId}": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Delete image from post.",
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "ImageId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Post/{PostId}/Tag/{TagName}": {
+      "put": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Add tag to post.",
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "TagName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Delete tag from post.",
+        "parameters": [
+          {
+            "name": "PostId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "TagName",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Tag": {
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Get all tags (only name and post count) ordered by popularity",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Tag/{Id}": {
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Get tag by ID",
+        "parameters": [
+          {
+            "name": "Id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDetailsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDetailsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDetailsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Tag/{Name}": {
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "summary": "Get tag by name",
+        "parameters": [
+          {
+            "name": "Name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDetailsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDetailsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.TagDetailsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/User/register": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AlledrogO.User.Api.DTOs.LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/logout": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/test": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/testCookie": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/User/deleteAccount": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlledrogO.Message.Core.DTOs.ChatDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "advertiserEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "advertiserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "buyerEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "buyerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.MessageDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Message.Core.DTOs.ChatDto": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "recieverEmail": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Message.Core.DTOs.ChatUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "chatsAsBuyer": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatDto"
+            },
+            "nullable": true
+          },
+          "chatsAsAdvertiser": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlledrogO.Message.Core.DTOs.ChatDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Message.Core.DTOs.External.CreateChatDto": {
+        "type": "object",
+        "properties": {
+          "recieverId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Message.Core.DTOs.External.IncomingMessageDto": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Message.Core.DTOs.MessageDto": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
+          },
+          "sentByBuyer": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.AuthorDetailsDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.AuthorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "details": {
+            "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDetailsDto"
+          },
+          "posts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.External.CreatePostDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "authorDetails": {
+            "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.External.PostSearchWithTagsDto": {
+        "type": "object",
+        "properties": {
+          "queryString": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.PostCardDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "image": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.PostDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.PostImageDto"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "status": {
+            "$ref": "#/components/schemas/AlledrogO.Post.Domain.Consts.PostStatus"
+          },
+          "authorId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "authorDetails": {
+            "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.AuthorDetailsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.PostImageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "isMain": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.TagDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "postIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.DTOs.TagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "postCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Application.Queries.SearchPosts": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "$ref": "#/components/schemas/AlledrogO.Post.Application.DTOs.External.PostSearchWithTagsDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.Post.Domain.Consts.PostStatus": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "AlledrogO.User.Api.DTOs.LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "rememberMe": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AlledrogO.User.Api.DTOs.RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "apiKey",
+        "description": "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ]
+}
