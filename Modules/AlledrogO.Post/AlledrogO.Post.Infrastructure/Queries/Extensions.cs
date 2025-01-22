@@ -38,6 +38,7 @@ public static class Extensions
             Image = model.Images
                 .FirstOrDefault(i => i.IsMain)?
                 .Url ?? string.Empty,
+            Status = model.Status
         };
     }
     

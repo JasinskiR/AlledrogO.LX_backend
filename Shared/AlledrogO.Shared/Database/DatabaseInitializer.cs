@@ -11,37 +11,43 @@ internal class DatabaseInitializer : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<DatabaseInitializer> _logger;
-    public DatabaseInitializer(IServiceProvider serviceProvider, ILogger<DatabaseInitializer> logger)
+    private readonly IConfiguration _configuration;
+    public DatabaseInitializer(IServiceProvider serviceProvider, ILogger<DatabaseInitializer> logger, 
+        IConfiguration configuration)
     {
         _serviceProvider = serviceProvider;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(x => x.GetTypes())
-            .Where(x => typeof(DbContext).IsAssignableFrom(x) && !x.IsInterface && x != typeof(DbContext));
-
-        using var scope = _serviceProvider.CreateScope();
-        foreach (var dbContextType in dbContextTypes)
+        var shouldApplyMigrations = _configuration.GetValue<bool>("RunMigrations");
+        if (shouldApplyMigrations)
         {
-            var dbContext = scope.ServiceProvider.GetService(dbContextType) as DbContext;
-            if (dbContext is null)
+            var dbContextTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(x => x.GetTypes())
+                .Where(x => typeof(DbContext).IsAssignableFrom(x) && !x.IsInterface && x != typeof(DbContext));
+
+            using var scope = _serviceProvider.CreateScope();
+            foreach (var dbContextType in dbContextTypes)
             {
-                continue;
+                var dbContext = scope.ServiceProvider.GetService(dbContextType) as DbContext;
+                if (dbContext is null)
+                {
+                    continue;
+                }
+                _logger.LogInformation($"Running DB context: {dbContext.GetType().Name}...");
+                try
+                {
+                    await dbContext.Database.EnsureCreatedAsync(cancellationToken);
+                    await dbContext.Database.MigrateAsync(cancellationToken);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
-            _logger.LogInformation($"Running DB context: {dbContext.GetType().Name}...");
-            try
-            {
-                await dbContext.Database.EnsureCreatedAsync(cancellationToken);
-                await dbContext.Database.MigrateAsync(cancellationToken);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            
         }
     }
 

@@ -1,5 +1,6 @@
 using AlledrogO.Message.Core.EF;
 using AlledrogO.Message.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlledrogO.Message.Core.Repositories;
 
@@ -15,6 +16,11 @@ public class ChatUserRepository : IChatUserRepository
     public async Task<ChatUser> GetByIdAsync(Guid id)
     {
         return await _context.ChatUsers.FindAsync(id);
+    }
+
+    public async Task<ChatUser> GetByEmailAsync(string email)
+    {
+        return await _context.ChatUsers.FirstOrDefaultAsync(chatUser => chatUser.Email == email);
     }
 
     public async Task CreateAsync(ChatUser chatUser)

@@ -16,11 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlledrogO.Post.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlledrogO.Bootstrapper", "Bootstrapper\AlledrogO.Bootstrapper\AlledrogO.Bootstrapper.csproj", "{70C89E1D-57FA-4B4E-9359-AA49CEA1CCE4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{71BA6B58-233C-4258-A1C1-C181C47729C1}"
-	ProjectSection(SolutionItems) = preProject
-		docker-compose.yml = docker-compose.yml
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlledrogO.UnitTests", "tests\AlledrogO.UnitTests\AlledrogO.UnitTests.csproj", "{064C727E-F4CC-4F13-B049-F945216F3CBD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bootstrapper", "Bootstrapper", "{7318B118-3A50-4517-8465-04F81AFB39FD}"

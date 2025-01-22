@@ -19,6 +19,21 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "withEnvs": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "api/swagger",
+      "applicationUrl": "http://localhost:8080",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "COGNITO_AUTHORITY": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_LCejVYxX1",
+        "COGNITO_USER_POOL_ID": "us-east-1_LCejVYxX1",
+        "DATABASE_CONNECTION_STRING": "Host=alledrogo-postgresql.czcs88g82ce0.us-east-1.rds.amazonaws.com:5432;Database=alledrogo;Username=postgres;Password=Terraform123!",
+        "FRONTEND_IP": "frontend-lb-81148153.us-east-1.elb.amazonaws.com",
+        "SQS_QUEUE_URL": "https://sqs.us-east-1.amazonaws.com/658583182001/message_queue"
+      }
+    },
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,

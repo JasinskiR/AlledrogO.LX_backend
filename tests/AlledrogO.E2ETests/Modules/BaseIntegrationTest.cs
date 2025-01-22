@@ -2,7 +2,6 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using AlledrogO.Shared.Commands;
 using AlledrogO.Shared.Queries;
-using AlledrogO.User.Core.EF.Contexts;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,14 +31,6 @@ public abstract class BaseIntegrationTest
         });
         response.EnsureSuccessStatusCode();
         
-    }
-
-    internal class TokenResponse
-    {
-        public string tokenType { get; set; }
-        public string accessToken { get; set; }
-        public int expiresIn { get; set; }
-        public string refreshToken { get; set; }
     }
     
     protected async Task<string> GetSampleAccessTokenAsync()

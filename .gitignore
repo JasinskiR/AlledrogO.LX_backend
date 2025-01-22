@@ -38,3 +38,4 @@ Desktop.ini
 **/obj/
 .containers/
 *.http
+/Cert

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using AlledrogO.Message.Core.Commands;
+using AlledrogO.Message.Core.Commands.Handlers;
 using AlledrogO.Message.Core.DTOs;
 using AlledrogO.Message.Core.DTOs.External;
 using AlledrogO.Message.Core.Queries;
@@ -90,4 +91,31 @@ public class ChatUserController : ControllerBase
         await _commandDispatcher.DispatchAsync(command);
         return Ok();
     }
+    
+    [HttpGet("test-message")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Send test message to SQS")]
+    public async Task<ActionResult> TestMessage()
+    {
+        var command = new AddTestSqsMessage();
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+    
+    [HttpPost("send-warning")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Send warning message to user")]
+    public async Task<ActionResult> SendWarning([FromBody] SendWarningMessage sendWarningMessage)
+    {
+        await _commandDispatcher.DispatchAsync(sendWarningMessage);
+        return Ok();
+    }
+    
+    [HttpPost("spam")]
+    [SwaggerOperation("ONLY FOR TESTING PURPOSE. Create spam messages in SQS for testing alarms")]
+    public async Task<ActionResult> CreateSpam(int count)
+    {
+        var command = new CreateSpamMessages(count);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
 }
+
