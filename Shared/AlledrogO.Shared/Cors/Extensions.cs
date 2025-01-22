@@ -14,6 +14,7 @@ public static class Extensions
         
         var frontendIp = Environment.GetEnvironmentVariable("FRONTEND_IP");
         allowedHosts.Add($"https://{frontendIp}");
+        allowedHosts.Add($"http://{frontendIp}");
         Console.WriteLine($"Allowed hosts: {string.Join(", ", allowedHosts)}");
         
         services.AddCors(
