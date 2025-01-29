@@ -12,4 +12,3 @@ Use the following connection string:
 ```
 Host=localhost:5432;Database=alledrogo;Username=postgres;Password=postgres
 ```
-
